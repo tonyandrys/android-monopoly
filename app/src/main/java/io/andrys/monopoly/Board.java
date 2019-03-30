@@ -18,9 +18,12 @@ public class Board {
         this.d2 = new Die();
     }
 
-    public int[] rollDice() {
+    public void rollDice() {
         d1.roll();
         d2.roll();
+    }
+
+    public int[] getDiceValues() {
         return new int[]{d1.getValue(), d2.getValue()};
     }
 
