@@ -17,13 +17,34 @@
         android:background="@color/colorPrimary"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/board_iv"
-            android:layout_width="0dp"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/board_panel_cl"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="1.25"
-            app:srcCompat="@drawable/monopoly_board" />
+            android:layout_weight="1.25">
+
+            <ImageView
+                android:id="@+id/board_iv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1.25"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/monopoly_board"
+                tools:layout_editor_absoluteY="5dp" />
+
+            <ImageView
+                android:id="@+id/pawn_iv"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/board_iv"
+                app:layout_constraintRight_toRightOf="@+id/board_iv"
+                app:srcCompat="@drawable/green_oval" />
+        </android.support.constraint.ConstraintLayout>
 
         <FrameLayout
             android:id="@+id/score_panel_fl"
