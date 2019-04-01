@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="480px" height="800px" viewBox="0 0 480 800" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Space/Property/Ventnor Avenue</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="164" width="480" height="24"></rect>
+        <rect id="path-2" x="0" y="0" width="480" height="164"></rect>
+        <rect id="path-3" x="0" y="188" width="480" height="612"></rect>
+    </defs>
+    <g id="Property-Spaces" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-2579.000000, -3135.000000)">
+        <g id="Space/Property" transform="translate(2819.000000, 3535.000000) rotate(180.000000) translate(-2819.000000, -3535.000000) translate(2579.000000, 3135.000000)">
+            <g id="Property-Square">
+                <g id="Squared-Black-Separator">
+                    <use fill="#000000" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    <rect stroke="#000000" stroke-width="1" x="0.5" y="164.5" width="479" height="23"></rect>
+                </g>
+                <g id="Property-Square/Top-Color/Yellow">
+                    <g>
+                        <use fill="#FDE703" fill-rule="evenodd" xlink:href="#path-2"></use>
+                        <rect stroke="#FDE703" stroke-width="1" x="0.5" y="0.5" width="479" height="163"></rect>
+                    </g>
+                </g>
+                <g id="Squared-Teal-Field">
+                    <use fill="#CBE8E0" fill-rule="evenodd" xlink:href="#path-3"></use>
+                    <rect stroke="#CBE8E0" stroke-width="1" x="0.5" y="188.5" width="479" height="611"></rect>
+                </g>
+                <text id="PROPERTY-NAME" font-family="KabobLight" font-size="60" font-weight="300" fill="#000000">
+                    <tspan x="110.64" y="358">VENTNOR</tspan>
+                    <tspan x="128.52" y="425">AVENUE</tspan>
+                </text>
+                <text id="PRICE" font-family="KabobLight" font-size="45" font-weight="300" fill="#000000">
+                    <tspan x="112.1925" y="765">PRICE</tspan>
+                </text>
+                <text id="$000" font-family="KabobLight" font-size="60" font-weight="300" fill="#000000">
+                    <tspan x="238" y="775">$260</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>
