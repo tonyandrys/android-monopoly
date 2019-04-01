@@ -22,12 +22,18 @@
             android:layout_height="match_parent"
             android:layout_weight="1.25">
 
+            <Space
+                android:layout_width="53dp"
+                android:layout_height="52dp"
+                android:layout_marginBottom="3dp"
+                app:layout_constraintBottom_toBottomOf="@+id/board_iv"
+                app:layout_constraintRight_toRightOf="@+id/board_iv" />
+
             <ImageView
                 android:id="@+id/board_iv"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
-                android:layout_marginStart="8dp"
                 android:layout_weight="1.25"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -38,12 +44,13 @@
                 android:id="@+id/pawn_iv"
                 android:layout_width="10dp"
                 android:layout_height="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginRight="150dp"
+                android:layout_marginBottom="5dp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/board_iv"
                 app:layout_constraintRight_toRightOf="@+id/board_iv"
                 app:srcCompat="@drawable/green_oval" />
+
         </android.support.constraint.ConstraintLayout>
 
         <FrameLayout
