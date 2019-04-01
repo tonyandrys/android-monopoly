@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fullscreen_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0099cc"
@@ -10,129 +11,173 @@
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
-    <LinearLayout
-        android:id="@+id/fullscreen_content"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/board_panel_cl"
-            android:layout_height="match_parent"
-            android:layout_weight="1.25">
-
-            <Space
-                android:layout_width="53dp"
-                android:layout_height="52dp"
-                android:layout_marginBottom="3dp"
-                app:layout_constraintBottom_toBottomOf="@+id/board_iv"
-                app:layout_constraintRight_toRightOf="@+id/board_iv" />
+            android:layout_width="0dp"
+            android:background="@color/colorPrimaryDark"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/score_panel_cl"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/board_iv"
+                android:id="@+id/tile_reading_rr_iv"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1.25"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/monopoly_board"
-                tools:layout_editor_absoluteY="5dp" />
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="3:5"
+                app:layout_constraintLeft_toRightOf="@+id/tile_oriental_avenue_iv"
+                app:layout_constraintTop_toTopOf="@+id/tile_oriental_avenue_iv"
+                app:srcCompat="@drawable/tile_reading_rr" />
 
             <ImageView
-                android:id="@+id/pawn_iv"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_marginRight="150dp"
-                android:layout_marginBottom="5dp"
+                android:id="@+id/tile_connecticut_avenue_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="@+id/board_iv"
-                app:layout_constraintRight_toRightOf="@+id/board_iv"
-                app:srcCompat="@drawable/green_oval" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="3:5"
+                app:layout_constraintLeft_toRightOf="@+id/tile_jail_iv"
+                app:layout_constraintTop_toTopOf="@+id/tile_jail_iv"
+                app:srcCompat="@drawable/tile_connecticut_avenue" />
 
             <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                app:srcCompat="@drawable/otile_rr" />
+                android:id="@+id/tile_go_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintLeft_toRightOf="@+id/tile_medit_avenue_iv"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tile_jail_iv"
+                app:srcCompat="@drawable/tile_go" />
+
+            <ImageView
+                android:id="@+id/tile_jail_iv"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:srcCompat="@drawable/tile_jail" />
+
+            <ImageView
+                android:id="@+id/tile_chance_bottom_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="3:5"
+                app:layout_constraintLeft_toRightOf="@+id/tile_vermont_avenue_iv"
+                app:layout_constraintTop_toTopOf="@+id/tile_vermont_avenue_iv"
+                app:srcCompat="@drawable/tile_chance_bottom_side" />
+
+            <ImageView
+                android:id="@+id/tile_vermont_avenue_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="3:5"
+                app:layout_constraintLeft_toRightOf="@+id/tile_connecticut_avenue_iv"
+                app:layout_constraintTop_toTopOf="@+id/tile_connecticut_avenue_iv"
+                app:srcCompat="@drawable/tile_vermont_avenue" />
+
+            <ImageView
+                android:id="@+id/tile_oriental_avenue_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="3:5"
+                app:layout_constraintLeft_toRightOf="@+id/tile_chance_bottom_iv"
+                app:layout_constraintTop_toTopOf="@+id/tile_chance_bottom_iv"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/tile_oriental_avenue" />
+
+            <ImageView
+                android:id="@+id/title_income_tax_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="3:5"
+                app:layout_constraintLeft_toRightOf="@+id/tile_reading_rr_iv"
+                app:layout_constraintTop_toTopOf="@+id/tile_jail_iv"
+                app:srcCompat="@drawable/tile_income_tax" />
+
+            <ImageView
+                android:id="@+id/title_baltic_avenue_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="3:5"
+                app:layout_constraintLeft_toRightOf="@+id/title_income_tax_iv"
+                app:layout_constraintTop_toTopOf="@+id/tile_jail_iv"
+                app:srcCompat="@drawable/tile_baltic_avenue" />
+
+            <ImageView
+                android:id="@+id/tile_cchest_bottom_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="3:5"
+                app:layout_constraintLeft_toRightOf="@+id/title_baltic_avenue_iv"
+                app:layout_constraintTop_toTopOf="@+id/tile_jail_iv"
+                app:srcCompat="@drawable/tile_cchest_bottom_side" />
+
+            <ImageView
+                android:id="@+id/tile_medit_avenue_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="3:5"
+                app:layout_constraintLeft_toRightOf="@+id/tile_cchest_bottom_iv"
+                app:layout_constraintTop_toTopOf="@+id/tile_jail_iv"
+                app:srcCompat="@drawable/tile_mediterranean_avenue" />
 
         </android.support.constraint.ConstraintLayout>
 
-        <FrameLayout
-            android:id="@+id/score_panel_fl"
-            android:layout_width="0dp"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/score_panel_cl"
+            android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/imageview_border">
+            android:background="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/die_1_iv"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="75dp"
+                app:layout_constraintRight_toRightOf="@+id/die_2_iv"
+                app:srcCompat="@drawable/diceface_1"
+                tools:layout_editor_absoluteY="36dp" />
 
-                <ImageView
-                    android:id="@+id/die_1_iv"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="36dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.394"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/diceface_1" />
+            <ImageView
+                android:id="@+id/die_2_iv"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="25dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:srcCompat="@drawable/diceface_1"
+                tools:layout_editor_absoluteY="36dp" />
 
-                <ImageView
-                    android:id="@+id/die_2_iv"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="36dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.619"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/diceface_1" />
+            <Button
+                android:id="@+id/roll_dice_btn"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Roll"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+        </android.support.constraint.ConstraintLayout>
 
-                <Button
-                    android:id="@+id/roll_dice_btn"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="Roll"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-            </android.support.constraint.ConstraintLayout>
-        </FrameLayout>
-
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
-    <FrameLayout
-        android:id="@+id/touch_ctrls_frame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:id="@+id/fullscreen_content_controls"
-            style="?metaButtonBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/black_overlay"
-            android:orientation="horizontal"
-            tools:ignore="UselessParent">
-
-            <Button
-                android:id="@+id/dummy_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Button" />
-        </LinearLayout>
-    </FrameLayout>
 
 </FrameLayout>
