@@ -51,6 +51,12 @@
                 app:layout_constraintRight_toRightOf="@+id/board_iv"
                 app:srcCompat="@drawable/green_oval" />
 
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/otile_rr" />
+
         </android.support.constraint.ConstraintLayout>
 
         <FrameLayout
