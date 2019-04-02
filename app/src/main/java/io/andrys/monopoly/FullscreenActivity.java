@@ -6,6 +6,7 @@ import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseIntArray;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,7 @@ public class FullscreenActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getSimpleName();
 
     private Board board;
+    private SparseIntArray tokenIVMap;
     private VisualAssetManager visualAssetManager;
 
     private View mContentView;
@@ -44,9 +46,11 @@ public class FullscreenActivity extends AppCompatActivity {
 
         // init layout references
         boardPanelCL = findViewById(R.id.board_panel_cl);
+        tokenIVMap = new SparseIntArray();
         startNewGame();
 
     }
+
 
     @Override
     protected void onDestroy() {
@@ -68,7 +72,7 @@ public class FullscreenActivity extends AppCompatActivity {
         this.board = new Board();
 
         // add tokens to board
-        addTokenToBoard(0);
+        addTokenToBoard(1);
 
         Button rollButton = findViewById(R.id.roll_dice_btn);
         rollButton.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +104,9 @@ public class FullscreenActivity extends AppCompatActivity {
         die1.setImageDrawable(visualAssetManager.getDieFace(r[0]));
         die2.setImageDrawable(visualAssetManager.getDieFace(r[1]));
 
+        // move the token along the board
+        moveTokenToPosition(1, r[0]+r[1]);
+
     }
 
     /**
@@ -128,10 +135,34 @@ public class FullscreenActivity extends AppCompatActivity {
         // apply new constraints to board layout and display the new token
         newSet.applyTo(boardPanelCL);
         tokenIV.setVisibility(View.VISIBLE);
+
+        // add the *view ID* of this new IV to the map so it can be referenced by tokenID elsewhere
+        tokenIVMap.put(tokenID, tokenIV.getId());
+
     }
 
-    private void drawTokenAtPosition(int tokenID, int position) {
+    private void moveTokenToPosition(int tokenID, int newPos) {
+        // get a reference to the ImageView to re-locate
+        int viewID = tokenIVMap.get(tokenID);
+        ImageView tokenIV = findViewById(viewID);
+        tokenIV.setVisibility(View.INVISIBLE);
 
+        // clear all assoc. constraints
+        ConstraintSet newSet = new ConstraintSet();
+        newSet.clone(boardPanelCL);
+        newSet.clear(viewID);
+
+        // new constraints will center the marker within the new tile on the board
+        ImageView newTileIV = visualAssetManager.getIVForBoardPosition(newPos);
+        int tokenHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, this.getResources().getDisplayMetrics());
+        newSet.constrainHeight(viewID, tokenHeight);
+        newSet.constrainWidth(viewID, tokenHeight);
+        newSet.centerVertically(viewID, newTileIV.getId());
+        newSet.centerHorizontally(viewID, newTileIV.getId());
+
+        // apply
+        newSet.applyTo(boardPanelCL);
+        tokenIV.setVisibility(View.VISIBLE);
     }
 
 
