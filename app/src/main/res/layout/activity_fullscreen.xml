@@ -31,7 +31,9 @@
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="3:5"
-                app:layout_constraintLeft_toRightOf="@+id/tile_oriental_avenue_iv"
+                app:layout_constraintEnd_toStartOf="@+id/title_income_tax_iv"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tile_oriental_avenue_iv"
                 app:layout_constraintTop_toTopOf="@+id/tile_oriental_avenue_iv"
                 app:srcCompat="@drawable/tile_reading_rr" />
 
@@ -42,28 +44,22 @@
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="3:5"
-                app:layout_constraintLeft_toRightOf="@+id/tile_jail_iv"
+                app:layout_constraintEnd_toStartOf="@+id/tile_vermont_avenue_iv"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tile_jail_iv"
                 app:layout_constraintTop_toTopOf="@+id/tile_jail_iv"
                 app:srcCompat="@drawable/tile_connecticut_avenue" />
 
             <ImageView
-                android:id="@+id/tile_go_iv"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintLeft_toRightOf="@+id/tile_medit_avenue_iv"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tile_jail_iv"
-                app:srcCompat="@drawable/tile_go" />
-
-            <ImageView
                 android:id="@+id/tile_jail_iv"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tile_connecticut_avenue_iv"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/tile_jail" />
 
             <ImageView
@@ -72,7 +68,9 @@
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="3:5"
-                app:layout_constraintLeft_toRightOf="@+id/tile_vermont_avenue_iv"
+                app:layout_constraintEnd_toStartOf="@+id/tile_oriental_avenue_iv"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tile_vermont_avenue_iv"
                 app:layout_constraintTop_toTopOf="@+id/tile_vermont_avenue_iv"
                 app:srcCompat="@drawable/tile_chance_bottom_side" />
 
@@ -82,7 +80,9 @@
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="3:5"
-                app:layout_constraintLeft_toRightOf="@+id/tile_connecticut_avenue_iv"
+                app:layout_constraintEnd_toStartOf="@+id/tile_chance_bottom_iv"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tile_connecticut_avenue_iv"
                 app:layout_constraintTop_toTopOf="@+id/tile_connecticut_avenue_iv"
                 app:srcCompat="@drawable/tile_vermont_avenue" />
 
@@ -92,7 +92,9 @@
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="3:5"
-                app:layout_constraintLeft_toRightOf="@+id/tile_chance_bottom_iv"
+                app:layout_constraintEnd_toStartOf="@+id/tile_reading_rr_iv"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tile_chance_bottom_iv"
                 app:layout_constraintTop_toTopOf="@+id/tile_chance_bottom_iv"
                 app:layout_constraintVertical_bias="0.0"
                 app:srcCompat="@drawable/tile_oriental_avenue" />
@@ -103,7 +105,9 @@
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="3:5"
-                app:layout_constraintLeft_toRightOf="@+id/tile_reading_rr_iv"
+                app:layout_constraintEnd_toStartOf="@+id/title_baltic_avenue_iv"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tile_reading_rr_iv"
                 app:layout_constraintTop_toTopOf="@+id/tile_jail_iv"
                 app:srcCompat="@drawable/tile_income_tax" />
 
@@ -113,7 +117,9 @@
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="3:5"
-                app:layout_constraintLeft_toRightOf="@+id/title_income_tax_iv"
+                app:layout_constraintEnd_toStartOf="@+id/tile_cchest_bottom_iv"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/title_income_tax_iv"
                 app:layout_constraintTop_toTopOf="@+id/tile_jail_iv"
                 app:srcCompat="@drawable/tile_baltic_avenue" />
 
@@ -123,7 +129,9 @@
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="3:5"
-                app:layout_constraintLeft_toRightOf="@+id/title_baltic_avenue_iv"
+                app:layout_constraintEnd_toStartOf="@+id/tile_medit_avenue_iv"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/title_baltic_avenue_iv"
                 app:layout_constraintTop_toTopOf="@+id/tile_jail_iv"
                 app:srcCompat="@drawable/tile_cchest_bottom_side" />
 
@@ -133,9 +141,122 @@
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="3:5"
-                app:layout_constraintLeft_toRightOf="@+id/tile_cchest_bottom_iv"
+                app:layout_constraintEnd_toStartOf="@+id/tile_go_iv"
+                app:layout_constraintStart_toEndOf="@+id/tile_cchest_bottom_iv"
                 app:layout_constraintTop_toTopOf="@+id/tile_jail_iv"
                 app:srcCompat="@drawable/tile_mediterranean_avenue" />
+
+            <ImageView
+                android:id="@+id/tile_go_iv"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tile_medit_avenue_iv"
+                app:layout_constraintTop_toTopOf="@+id/tile_medit_avenue_iv"
+                app:srcCompat="@drawable/tile_go" />
+
+            <ImageView
+                android:id="@+id/tile_st_charles_place_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/tile_jail_iv"
+                app:layout_constraintDimensionRatio="5:3"
+                app:layout_constraintEnd_toEndOf="@+id/tile_jail_iv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/tile_st_charles_place" />
+
+            <ImageView
+                android:id="@+id/tile_electric_company_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/tile_st_charles_place_iv"
+                app:layout_constraintDimensionRatio="5:3"
+                app:layout_constraintEnd_toEndOf="@+id/tile_st_charles_place_iv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/tile_electric_company" />
+
+            <ImageView
+                android:id="@+id/tile_states_avenue_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/tile_electric_company_iv"
+                app:layout_constraintDimensionRatio="5:3"
+                app:layout_constraintEnd_toEndOf="@+id/tile_electric_company_iv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/tile_states_avenue" />
+
+            <ImageView
+                android:id="@+id/tile_virginia_avenue_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/tile_states_avenue_iv"
+                app:layout_constraintDimensionRatio="5:3"
+                app:layout_constraintEnd_toEndOf="@+id/tile_states_avenue_iv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/tile_virginia_avenue" />
+
+            <ImageView
+                android:id="@+id/tile_pennsylvania_rr_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/tile_virginia_avenue_iv"
+                app:layout_constraintDimensionRatio="5:3"
+                app:layout_constraintEnd_toEndOf="@+id/tile_virginia_avenue_iv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/tile_pennsylvania_rr" />
+
+            <ImageView
+                android:id="@+id/tile_st_james_place_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/tile_pennsylvania_rr_iv"
+                app:layout_constraintDimensionRatio="5:3"
+                app:layout_constraintEnd_toEndOf="@+id/tile_pennsylvania_rr_iv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/tile_st_james_place" />
+
+            <ImageView
+                android:id="@+id/tile_cchest_left_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/tile_st_james_place_iv"
+                app:layout_constraintDimensionRatio="5:3"
+                app:layout_constraintEnd_toEndOf="@+id/tile_st_james_place_iv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/tile_cchest_left_side" />
+
+            <ImageView
+                android:id="@+id/tile_tennessee_avenue_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/tile_cchest_left_iv"
+                app:layout_constraintDimensionRatio="5:3"
+                app:layout_constraintEnd_toEndOf="@id/tile_cchest_left_iv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/tile_tennessee_avenue" />
+
+            <ImageView
+                android:id="@+id/tile_new_york_avenue_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/tile_tennessee_avenue_iv"
+                app:layout_constraintDimensionRatio="5:3"
+                app:layout_constraintEnd_toEndOf="@+id/tile_tennessee_avenue_iv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/tile_new_york_avenue" />
+
+            <ImageView
+                android:id="@+id/tile_free_parking_iv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/tile_new_york_avenue_iv"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="@+id/tile_new_york_avenue_iv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/tile_free_parking" />
 
         </android.support.constraint.ConstraintLayout>
 
