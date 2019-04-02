@@ -1,9 +1,12 @@
 package io.andrys.monopoly;
 
 import android.graphics.drawable.Drawable;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,6 +22,7 @@ public class FullscreenActivity extends AppCompatActivity {
     private VisualAssetManager visualAssetManager;
 
     private View mContentView;
+    private ConstraintLayout boardPanelCL;
 
 
     @Override
@@ -37,6 +41,9 @@ public class FullscreenActivity extends AppCompatActivity {
 
         // initialize singleton rendering objects
         visualAssetManager = new VisualAssetManager(this);
+
+        // init layout references
+        boardPanelCL = findViewById(R.id.board_panel_cl);
         startNewGame();
 
     }
@@ -59,6 +66,9 @@ public class FullscreenActivity extends AppCompatActivity {
     protected void startNewGame() {
         Log.v(TAG, "A new game is starting now...");
         this.board = new Board();
+
+        // add tokens to board
+        addTokenToBoard(0);
 
         Button rollButton = findViewById(R.id.roll_dice_btn);
         rollButton.setOnClickListener(new View.OnClickListener() {
@@ -91,4 +101,38 @@ public class FullscreenActivity extends AppCompatActivity {
         die2.setImageDrawable(visualAssetManager.getDieFace(r[1]));
 
     }
+
+    /**
+     * Initializes an ImageView for a token and places it on Go.
+     * @param tokenID
+     */
+    private void addTokenToBoard(int tokenID) {
+        // create the new token
+        ImageView tokenIV = new ImageView(this);
+        tokenIV.setId(View.generateViewId());
+        Drawable d = visualAssetManager.getTokenDrawable(tokenID);
+        tokenIV.setImageDrawable(d);
+        tokenIV.setVisibility(View.INVISIBLE);
+        int tokenHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, this.getResources().getDisplayMetrics());
+        tokenIV.setLayoutParams(new ConstraintLayout.LayoutParams(tokenHeight, tokenHeight));
+
+        // add it to the board layout
+        boardPanelCL.addView(tokenIV);
+        ConstraintSet newSet = new ConstraintSet();
+        newSet.clone(boardPanelCL);
+
+        // center the new token on the Go space
+        newSet.centerHorizontally(tokenIV.getId(), R.id.tile_go_iv);
+        newSet.centerVertically(tokenIV.getId(), R.id.tile_go_iv);
+
+        // apply new constraints to board layout and display the new token
+        newSet.applyTo(boardPanelCL);
+        tokenIV.setVisibility(View.VISIBLE);
+    }
+
+    private void drawTokenAtPosition(int tokenID, int position) {
+
+    }
+
+
 }
