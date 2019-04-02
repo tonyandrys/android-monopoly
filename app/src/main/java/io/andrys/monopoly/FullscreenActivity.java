@@ -5,6 +5,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
@@ -149,7 +150,7 @@ public class FullscreenActivity extends AppCompatActivity {
         // get a reference to the ImageView to re-locate
         int viewID = tokenIVMap.get(tokenID);
         ImageView tokenIV = findViewById(viewID);
-        tokenIV.setVisibility(View.INVISIBLE);
+        //tokenIV.setVisibility(View.INVISIBLE);
 
         // clear all assoc. constraints
         ConstraintSet newSet = new ConstraintSet();
@@ -165,6 +166,7 @@ public class FullscreenActivity extends AppCompatActivity {
         newSet.centerHorizontally(viewID, newTileIV.getId());
 
         // apply
+        TransitionManager.beginDelayedTransition(boardPanelCL);
         newSet.applyTo(boardPanelCL);
         tokenIV.setVisibility(View.VISIBLE);
     }
