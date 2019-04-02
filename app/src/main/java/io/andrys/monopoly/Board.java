@@ -26,18 +26,22 @@ public class Board {
         this.tokenPositionMap = new SparseIntArray();
     }
 
-    public void addPlayer(int tokenID) {
+    /**
+     * Adds a token to this board.
+     * @param tokenID
+     */
+    public void addPlayerToken(int tokenID) {
         if (tokenPositionMap.get(tokenID, -1) != -1) {
             throw new IllegalArgumentException(String.format("TokenID '%d' already exists in this game; each player must use a different token!", tokenID));
         }
         tokenPositionMap.append(tokenID, 0);
     }
     /**
-     * Moves a player's token forward a number of spaces on the board.
+     * Moves a player token forward a number of spaces on the board.
      * @param tokenID id of token to move
      * @param p Non-negative integer number of spaces to advance.
      */
-    public void incrementPlayerPosition(int tokenID, int p) {
+    public void incrementTokenPosition(int tokenID, int p) {
         if (p >= 0) {
             int currentPos = tokenPositionMap.get(tokenID, -1);
             if (currentPos != -1) {
@@ -49,7 +53,7 @@ public class Board {
                 throw new IllegalArgumentException(String.format("TokenID '%d' does not exist on this board!", tokenID));
             }
         } else {
-            throw new IllegalArgumentException("Cannot add a negative value to a player's position!");
+            throw new IllegalArgumentException("Cannot add a negative value to a token's position!");
         }
     }
 
@@ -58,7 +62,7 @@ public class Board {
      * @param tokenID id of token to inspect
      * @return
      */
-    public int getPlayerPosition(int tokenID) {
+    public int getTokenPosition(int tokenID) {
         int pos = tokenPositionMap.get(tokenID, -1);
         if (pos == -1) {
             throw new IllegalArgumentException(String.format("TokenID '%d' does not exist on this board!", tokenID));
