@@ -1,9 +1,14 @@
 package io.andrys.monopoly;
 
 import android.graphics.drawable.Drawable;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.TransitionManager;
 import android.util.Log;
+import android.util.SparseIntArray;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,7 +23,12 @@ public class FullscreenActivity extends AppCompatActivity {
     private Board board;
     private VisualAssetManager visualAssetManager;
 
+    // tokenID -> ImageView that represents the position of the player using that token
+    private SparseIntArray tokenIVMap;
+
+
     private View mContentView;
+    private ConstraintLayout boardPanelCL;
 
 
     @Override
@@ -37,9 +47,14 @@ public class FullscreenActivity extends AppCompatActivity {
 
         // initialize singleton rendering objects
         visualAssetManager = new VisualAssetManager(this);
+
+        // init layout references
+        boardPanelCL = findViewById(R.id.board_panel_cl);
+        tokenIVMap = new SparseIntArray();
         startNewGame();
 
     }
+
 
     @Override
     protected void onDestroy() {
@@ -59,6 +74,10 @@ public class FullscreenActivity extends AppCompatActivity {
     protected void startNewGame() {
         Log.v(TAG, "A new game is starting now...");
         this.board = new Board();
+
+        // add tokens to board
+        board.addPlayerToken(1);        // data model
+        drawTokenOntoBoard(1);          // visual manifestation of data model
 
         Button rollButton = findViewById(R.id.roll_dice_btn);
         rollButton.setOnClickListener(new View.OnClickListener() {
@@ -90,5 +109,67 @@ public class FullscreenActivity extends AppCompatActivity {
         die1.setImageDrawable(visualAssetManager.getDieFace(r[0]));
         die2.setImageDrawable(visualAssetManager.getDieFace(r[1]));
 
+        // move our single token along the board
+        board.incrementTokenPosition(1, r[0]+r[1]);
+        drawTokenAtPosition(1, board.getTokenPosition(1));
     }
+
+    /**
+     * Initializes an ImageView for a token and places it on Go.
+     * @param tokenID
+     */
+    private void drawTokenOntoBoard(int tokenID) {
+        // create the new token
+        ImageView tokenIV = new ImageView(this);
+        tokenIV.setId(View.generateViewId());
+        Drawable d = visualAssetManager.getTokenDrawable(tokenID);
+        tokenIV.setImageDrawable(d);
+        tokenIV.setVisibility(View.INVISIBLE);
+        int tokenHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, this.getResources().getDisplayMetrics());
+        tokenIV.setLayoutParams(new ConstraintLayout.LayoutParams(tokenHeight, tokenHeight));
+
+        // add it to the board layout
+        boardPanelCL.addView(tokenIV);
+        ConstraintSet newSet = new ConstraintSet();
+        newSet.clone(boardPanelCL);
+
+        // center the new token on the Go space
+        newSet.centerHorizontally(tokenIV.getId(), R.id.tile_go_iv);
+        newSet.centerVertically(tokenIV.getId(), R.id.tile_go_iv);
+
+        // apply new constraints to board layout and display the new token
+        newSet.applyTo(boardPanelCL);
+        tokenIV.setVisibility(View.VISIBLE);
+
+        // add the *view ID* of this new IV to the map so it can be referenced by tokenID elsewhere
+        tokenIVMap.put(tokenID, tokenIV.getId());
+
+    }
+
+    private void drawTokenAtPosition(int tokenID, int p) {
+        // get a reference to the ImageView to re-locate
+        int viewID = tokenIVMap.get(tokenID);
+        ImageView tokenIV = findViewById(viewID);
+        //tokenIV.setVisibility(View.INVISIBLE);
+
+        // clear all assoc. constraints
+        ConstraintSet newSet = new ConstraintSet();
+        newSet.clone(boardPanelCL);
+        newSet.clear(viewID);
+
+        // new constraints will center the marker within the new tile on the board
+        ImageView newTileIV = visualAssetManager.getIVForBoardPosition(p);
+        int tokenHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, this.getResources().getDisplayMetrics());
+        newSet.constrainHeight(viewID, tokenHeight);
+        newSet.constrainWidth(viewID, tokenHeight);
+        newSet.centerVertically(viewID, newTileIV.getId());
+        newSet.centerHorizontally(viewID, newTileIV.getId());
+
+        // apply
+        TransitionManager.beginDelayedTransition(boardPanelCL);
+        newSet.applyTo(boardPanelCL);
+        tokenIV.setVisibility(View.VISIBLE);
+    }
+
+
 }
