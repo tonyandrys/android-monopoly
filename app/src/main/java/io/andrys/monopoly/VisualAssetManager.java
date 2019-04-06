@@ -61,6 +61,151 @@ public class VisualAssetManager {
     }
 
     /**
+     * Returns the drawable of the property card that corresponds to the space at position 'p'.
+     * Generally, a valid position is a number from 0 to 39 where 0 represents Go & 39 represents Boardwalk,
+     * but since all positions on the board *are not* properties (such as the Jail or Luxury Tax spaces) not all
+     * positions will return Drawables!
+     *
+     * Calling this method with a non-property space position will throw an exception
+     *
+     * @param p
+     * @return
+     */
+    /*
+    public Drawable getPropertyCardDrawable(int p) {
+
+        Drawable card;
+        switch (p) {
+            case 0:
+                //card = context.getDrawable(R.drawable.pcard_go_iv);
+                break;
+            case 1:
+                card = context.getDrawable(R.drawable.pcard_mediterranean_avenue);
+                break;
+            case 2:
+                card = context.getDrawable(R.drawable.pcard_cchest_bottom_iv);
+                break;
+            case 3:
+                card = context.findViewById(R.id.title_baltic_avenue_iv);
+                break;
+            case 4:
+                card = context.findViewById(R.id.title_income_tax_iv);
+                break;
+            case 5:
+                card = context.getDrawable(R.drawable.pcard_reading_rr_iv);
+                break;
+            case 6:
+                card = context.getDrawable(R.drawable.pcard_oriental_avenue_iv);
+                break;
+            case 7:
+                card = context.getDrawable(R.drawable.pcard_chance_bottom_iv);
+                break;
+            case 8:
+                card = context.getDrawable(R.drawable.pcard_vermont_avenue_iv);
+                break;
+            case 9:
+                card = context.getDrawable(R.drawable.pcard_connecticut_avenue_iv);
+                break;
+            case 10:
+                card = context.getDrawable(R.drawable.pcard_jail_iv);
+                break;
+            case 11:
+                card = context.getDrawable(R.drawable.pcard_st_charles_place_iv);
+                break;
+            case 12:
+                card = context.getDrawable(R.drawable.pcard_electric_company_iv);
+                break;
+            case 13:
+                card = context.getDrawable(R.drawable.pcard_states_avenue_iv);
+                break;
+            case 14:
+                card = context.getDrawable(R.drawable.pcard_virginia_avenue_iv);
+                break;
+            case 15:
+                card = context.getDrawable(R.drawable.pcard_pennsylvania_rr_iv);
+                break;
+            case 16:
+                card = context.getDrawable(R.drawable.pcard_st_james_place_iv);
+                break;
+            case 17:
+                card = context.getDrawable(R.drawable.pcard_cchest_left_iv);
+                break;
+            case 18:
+                card = context.getDrawable(R.drawable.pcard_tennessee_avenue_iv);
+                break;
+            case 19:
+                card = context.getDrawable(R.drawable.pcard_new_york_avenue_iv);
+                break;
+            case 20:
+                card = context.getDrawable(R.drawable.pcard_free_parking_iv);
+                break;
+            case 21:
+                card = context.getDrawable(R.drawable.pcard_kentucky_avenue_iv);
+                break;
+            case 22:
+                card = context.getDrawable(R.drawable.pcard_chance_top_iv);
+                break;
+            case 23:
+                card = context.getDrawable(R.drawable.pcard_indiana_avenue_iv);
+                break;
+            case 24:
+                card = context.getDrawable(R.drawable.pcard_illinois_avenue_iv);
+                break;
+            case 25:
+                card = context.getDrawable(R.drawable.pcard_bando_rr_iv);
+                break;
+            case 26:
+                card = context.getDrawable(R.drawable.pcard_atlantic_avenue_iv);
+                break;
+            case 27:
+                card = context.getDrawable(R.drawable.pcard_ventnor_avenue_iv);
+                break;
+            case 28:
+                card = context.getDrawable(R.drawable.pcard_water_works_iv);
+                break;
+            case 29:
+                card = context.getDrawable(R.drawable.pcard_marvin_gardens_iv);
+                break;
+            case 30:
+                card = context.getDrawable(R.drawable.pcard_go_to_jail_iv);
+                break;
+            case 31:
+                card = context.getDrawable(R.drawable.pcard_pacific_avenue_iv);
+                break;
+            case 32:
+                card = context.getDrawable(R.drawable.pcard_north_carolina_avenue_iv);
+                break;
+            case 33:
+                card = context.getDrawable(R.drawable.pcard_cchest_right_iv);
+                break;
+            case 34:
+                card = context.getDrawable(R.drawable.pcard_pennsylvania_avenue_iv);
+                break;
+            case 35:
+                card = context.getDrawable(R.drawable.pcard_short_line_rr_iv);
+                break;
+            case 36:
+                card = context.getDrawable(R.drawable.pcard_chance_right_iv);
+                break;
+            case 37:
+                card = context.getDrawable(R.drawable.pcard_park_place_iv);
+                break;
+            case 38:
+                card = context.getDrawable(R.drawable.pcard_luxury_tax_iv);
+                break;
+            case 39:
+                card = context.getDrawable(R.drawable.pcard_boardwalk_iv);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("No tile exists at position '%d'!", p));
+        }
+        return iv;
+
+    }
+
+    */
+
+    /**
      * Returns the drawable representing a player token mapped to the token ID value provided.
      * @param tokenID
      * @return

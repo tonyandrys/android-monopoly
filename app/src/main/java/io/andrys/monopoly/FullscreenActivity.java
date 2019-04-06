@@ -1,5 +1,9 @@
 package io.andrys.monopoly;
 
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
@@ -96,6 +100,17 @@ public class FullscreenActivity extends AppCompatActivity {
         // roll & retrieve new values for both dice
         board.rollDice();
         render();
+
+        // try to show a dialog fragment
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        DialogFragment dialogFragment = new PropertyActionDialogFragment();
+        dialogFragment.show(ft, "dialog");
     }
 
     /**
