@@ -1,12 +1,15 @@
 package io.andrys.monopoly;
 
 import android.app.DialogFragment;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 /**
  * PropertyActionDialogFragment.java // Monopoly
@@ -16,14 +19,29 @@ import android.widget.Button;
 public class PropertyActionDialogFragment extends DialogFragment {
     private final String TAG = this.getClass().getSimpleName();
 
+    // Bundle keys
+    public static final String KEY_PROPERTY_DRAWABLE_ID = "KEY_PROPERTY_DRAWABLE_ID";
+
+    private int propertyDrawableID;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle b = this.getArguments();
+        if (b != null) {
+            this.propertyDrawableID = b.getInt(KEY_PROPERTY_DRAWABLE_ID);
+        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.property_action_modal, container, false);
+
+        // load the property card imageview w/ the correct drawable for this position on the board.
+        ImageView propertyCardIV = v.findViewById(R.id.property_card_container_iv);
+        Drawable d = ContextCompat.getDrawable(getActivity(), propertyDrawableID);
+        propertyCardIV.setImageDrawable(d);
 
         // attach button listeners
         Button buyBtn = v.findViewById(R.id.buy_btn);
@@ -58,6 +76,8 @@ public class PropertyActionDialogFragment extends DialogFragment {
      */
     public void manageButtonPressed() {
         Log.v(TAG, "Manage button clicked!");
+
+        this.dismiss();
 
     }
 

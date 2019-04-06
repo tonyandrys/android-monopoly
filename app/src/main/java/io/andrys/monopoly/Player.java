@@ -1,7 +1,7 @@
 package io.andrys.monopoly;
 
 /**
- * null.java // Monopoly
+ * Player.java // Monopoly
  * Tony Andrys (tony@andrys.io)
  * Copyright 2019 - All rights reserved
  */

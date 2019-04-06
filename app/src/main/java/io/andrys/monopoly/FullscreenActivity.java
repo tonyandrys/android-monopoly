@@ -101,16 +101,20 @@ public class FullscreenActivity extends AppCompatActivity {
         board.rollDice();
         render();
 
-        // try to show a dialog fragment
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        ft.addToBackStack(null);
+        // show property action popup if we're on the right kind of a space
+        int position = board.getTokenPosition(1);
 
-        DialogFragment dialogFragment = new PropertyActionDialogFragment();
-        dialogFragment.show(ft, "dialog");
+        // check if position is a property space; if it is show a popup
+        if (board.getSpaceTypeForPosition(position) == SpaceType.PROPERTY) {
+            // get ID reference to the property card graphic for this space on the board; pass it to the dialog
+            int propDrawableID = visualAssetManager.getPropertyCardDrawableID(position);
+            showPropertyActionModal(propDrawableID);
+        } else {
+            Log.v(TAG, String.format("position '%d' isn't a property space, so we're not going to do anything yet!", position));
+        }
+
+
+
     }
 
     /**
@@ -127,6 +131,25 @@ public class FullscreenActivity extends AppCompatActivity {
         // move our single token along the board
         board.incrementTokenPosition(1, r[0]+r[1]);
         drawTokenAtPosition(1, board.getTokenPosition(1));
+    }
+
+    private void showPropertyActionModal(int propertyDrawableID) {
+        // try to show a dialog fragment
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("propertyDialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // pass the property card's drawable id to the dialog fragment we're building
+        Bundle b = new Bundle();
+        b.putInt(PropertyActionDialogFragment.KEY_PROPERTY_DRAWABLE_ID, propertyDrawableID);
+        DialogFragment dialogFragment = new PropertyActionDialogFragment();
+        dialogFragment.setArguments(b);
+
+        // present the dialog
+        dialogFragment.show(ft, "propertyDialog");
     }
 
     /**
