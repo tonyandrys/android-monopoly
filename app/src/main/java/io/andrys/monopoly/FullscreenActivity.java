@@ -59,6 +59,13 @@ public class FullscreenActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // re-hide the system bars when this activity regains focus
+        updateUI();
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -69,7 +76,26 @@ public class FullscreenActivity extends AppCompatActivity {
         if (visualAssetManager != null) {
             visualAssetManager.onDestroy();
         }
+    }
 
+    /**
+     * Call to re-apply the UI visibility flags & hide the system bars again.
+     */
+    public void updateUI() {
+        final View decorView = getWindow().getDecorView();
+        decorView.setOnSystemUiVisibilityChangeListener (new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                    decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                }
+            }
+        });
     }
 
     /**
@@ -101,16 +127,20 @@ public class FullscreenActivity extends AppCompatActivity {
         board.rollDice();
         render();
 
-        // try to show a dialog fragment
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        ft.addToBackStack(null);
+        // show property action popup if we're on the right kind of a space
+        int position = board.getTokenPosition(1);
 
-        DialogFragment dialogFragment = new PropertyActionDialogFragment();
-        dialogFragment.show(ft, "dialog");
+        // check if position is a property space; if it is show a popup
+        if (board.getSpaceTypeForPosition(position) == SpaceType.PROPERTY) {
+            // get ID reference to the property card graphic for this space on the board; pass it to the dialog
+            int propDrawableID = visualAssetManager.getPropertyCardDrawableID(position);
+            showPropertyActionModal(propDrawableID);
+        } else {
+            Log.v(TAG, String.format("position '%d' isn't a property space, so we're not going to do anything yet!", position));
+        }
+
+
+
     }
 
     /**
@@ -127,6 +157,29 @@ public class FullscreenActivity extends AppCompatActivity {
         // move our single token along the board
         board.incrementTokenPosition(1, r[0]+r[1]);
         drawTokenAtPosition(1, board.getTokenPosition(1));
+    }
+
+    /**
+     * Displays the modal with Buy/Auction/Manage command buttons for a specific property.
+     * @param propertyDrawableID the Drawable with this ID will be displayed in the center of this popup window.
+     */
+    private void showPropertyActionModal(int propertyDrawableID) {
+        // try to show a dialog fragment
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("propertyDialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // pass the property card's drawable id to the dialog fragment we're building
+        Bundle b = new Bundle();
+        b.putInt(PropertyActionDialogFragment.KEY_PROPERTY_DRAWABLE_ID, propertyDrawableID);
+        DialogFragment dialogFragment = new PropertyActionDialogFragment();
+        dialogFragment.setArguments(b);
+
+        // present the dialog
+        dialogFragment.show(ft, "propertyActionDialog");
     }
 
     /**
