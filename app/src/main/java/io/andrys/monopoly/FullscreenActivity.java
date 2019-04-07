@@ -59,6 +59,13 @@ public class FullscreenActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // re-hide the system bars when this activity regains focus
+        updateUI();
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -69,7 +76,26 @@ public class FullscreenActivity extends AppCompatActivity {
         if (visualAssetManager != null) {
             visualAssetManager.onDestroy();
         }
+    }
 
+    /**
+     * Call to re-apply the UI visibility flags & hide the system bars again.
+     */
+    public void updateUI() {
+        final View decorView = getWindow().getDecorView();
+        decorView.setOnSystemUiVisibilityChangeListener (new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                    decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                }
+            }
+        });
     }
 
     /**
@@ -133,6 +159,10 @@ public class FullscreenActivity extends AppCompatActivity {
         drawTokenAtPosition(1, board.getTokenPosition(1));
     }
 
+    /**
+     * Displays the modal with Buy/Auction/Manage command buttons for a specific property.
+     * @param propertyDrawableID the Drawable with this ID will be displayed in the center of this popup window.
+     */
     private void showPropertyActionModal(int propertyDrawableID) {
         // try to show a dialog fragment
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -149,7 +179,7 @@ public class FullscreenActivity extends AppCompatActivity {
         dialogFragment.setArguments(b);
 
         // present the dialog
-        dialogFragment.show(ft, "propertyDialog");
+        dialogFragment.show(ft, "propertyActionDialog");
     }
 
     /**
