@@ -17,6 +17,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -117,6 +124,24 @@ public class FullscreenActivity extends AppCompatActivity {
             }
         });
 
+        jsonExperiment();
+
+    }
+
+    private void jsonExperiment() {
+        String jStr = RawUtils.readRawResource(this, R.raw.property_data);
+        ArrayList<Property> parsedProperties = new ArrayList<>();
+        try {
+            JSONArray propertiesJSON = new JSONArray(jStr);
+            for (int i=0; i<propertiesJSON.length(); i++) {
+                JSONObject o = propertiesJSON.getJSONObject(i);
+                Property p = new Property(o.toString());
+                parsedProperties.add(p);
+            }
+
+        } catch (JSONException e) {
+            Log.e(TAG, "failed to parse JSON property file!", e);
+        }
     }
 
     /**
