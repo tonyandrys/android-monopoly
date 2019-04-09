@@ -1,5 +1,6 @@
 package io.andrys.monopoly;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -34,7 +35,7 @@ public class FullscreenActivity extends AppCompatActivity {
     private Board board;
     private VisualAssetManager visualAssetManager;
 
-    // tokenID -> ImageView that represents the position of the player using that token
+    // Maps tokenIDs to their ImageViews that display their position on the board.
     private SparseIntArray tokenIVMap;
 
 
@@ -129,19 +130,24 @@ public class FullscreenActivity extends AppCompatActivity {
     }
 
     private void jsonExperiment() {
-        String jStr = RawUtils.readRawResource(this, R.raw.property_data);
-        ArrayList<Property> parsedProperties = new ArrayList<>();
-        try {
-            JSONArray propertiesJSON = new JSONArray(jStr);
-            for (int i=0; i<propertiesJSON.length(); i++) {
-                JSONObject o = propertiesJSON.getJSONObject(i);
-                Property p = new Property(o.toString());
-                parsedProperties.add(p);
+        ArrayList<Property> properties = PropertyBuilder.loadProperties(this);
+        Log.v(TAG, String.format("Loaded '%d' properties from JSON", properties.size()));
+        for (int i=0; i<properties.size(); i++) {
+            if (properties.get(i) instanceof StreetProperty) {
+                StreetProperty p = (StreetProperty) properties.get(i);
+                @SuppressLint("DefaultLocale") String s = String.format("'%s' => StreetProperty[%s] / pos: '%d', price: '%d', max rent: '%d'", p.getName(), p.getColorGroup(), p.getPosition(), p.getPrice(), p.calculateRentPayment(5));
+                Log.v(TAG, s);
+            } else if (properties.get(i) instanceof RailroadProperty) {
+                RailroadProperty p = (RailroadProperty) properties.get(i);
+                @SuppressLint("DefaultLocale") String s = String.format("'%s' => RailroadProperty / pos: '%d', price: '%d', max rent: '%d'", p.getName(), p.getPosition(), p.getPrice(), p.calculateRentPayment(4));
+                Log.v(TAG, s);
+            } else if (properties.get(i) instanceof UtilityProperty) {
+                UtilityProperty p = (UtilityProperty) properties.get(i);
+                @SuppressLint("DefaultLocale") String s = String.format("'%s' => UtilityProperty / pos: '%d', price: '%d', max rent: '%d'", p.getName(), p.getPosition(), p.getPrice(), p.calculateRentPayment(2, 12));
+                Log.v(TAG, s);
             }
-
-        } catch (JSONException e) {
-            Log.e(TAG, "failed to parse JSON property file!", e);
         }
+        Log.v(TAG, "Done!");
     }
 
     /**

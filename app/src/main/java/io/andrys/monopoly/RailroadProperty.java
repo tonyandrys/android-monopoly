@@ -19,6 +19,6 @@ public class RailroadProperty extends Property {
     }
 
     public int calculateRentPayment(int numRailroadsOwned) {
-        return 25*(2^numRailroadsOwned);
+        return (int)(25*(Math.pow(2, numRailroadsOwned-1)));
     }
 }

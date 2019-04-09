@@ -24,22 +24,23 @@ enum SpaceType {
 }
 
 public class Board {
+
     private final String TAG = this.getClass().getSimpleName();
 
     /** There are 40 different spaces on a Monopoly board that a player can land on. */
     private final int NUM_BOARD_POSITIONS = 40;
-
     private final int[] POSITIONS_CHANCE = {7,22,36};
     private final int[] POSITIONS_CCHEST = {2,17,33,36};
     private final int[] POSITIONS_TAX = {4,38};
     private final int[] POSITIONS_CORNER = {0,10,20,30};
 
-    private Die d1;
-    private Die d2;
     /** Keeps track of each token's position on the board by its tokenID. */
     private SparseIntArray tokenPositionMap;
     /** Mapping of each position on the board to its SpaceType. */
     private SparseArray<SpaceType> positionTypeMap;
+
+    private Die d1;
+    private Die d2;
 
     public Board() {
         this.d1 = new Die();

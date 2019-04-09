@@ -7,6 +7,7 @@ package io.andrys.monopoly;
  */
 
 
+import android.graphics.Color;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -14,16 +15,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * 28 of the 40 spaces on a Monopoly board represent real estate (or "property") that a player can
+ * 22 of the 40 spaces on a Monopoly board represents "street" real estate that a player can
  * purchase. A player who lands on one of these spaces can purchase the property, charge rent
- * payments to other players who land on it in subsequent rounds, and develop it to increase
- * rent values.
+ * to other players who land on it, and develop it with houses and hotels to increase rent values.
  *
- * The price of a property, the cost to develop on it, and its chargeable amount of rent differ from
- * property to property.
+ * All streets belong to one of eight color groups (StreetProperty.ColorGroup). A player that owns
+ * every property in a color group is said to have a monopoly on that group, and can begin developing
+ * the spaces in this group.
  *
- * We model each property space using a Property object; it encapsulates the different costs/values
- * associated with purchasing/landing on the space in the game.
+ * The price of a property, the cost to develop it, and the values of rent the owner may charge
+ * varies from property to property.
  */
 public class StreetProperty extends Property {
     final private String TAG = this.getClass().getSimpleName();
@@ -57,6 +58,20 @@ public class StreetProperty extends Property {
      */
     enum ColorGroup {
         PURPLE, LIGHT_BLUE, PINK, ORANGE, RED, YELLOW, GREEN, DARK_BLUE
+    }
+
+    /**
+     * @return The ColorGroup this property belongs to
+     */
+    public ColorGroup getColorGroup() {
+        return this.color;
+    }
+
+    /**
+     * @return The cost of adding an additional house or hotel on this property
+     */
+    public int getDevelopmentCost() {
+        return this.developmentCost;
     }
 
     /**
@@ -104,44 +119,4 @@ public class StreetProperty extends Property {
         }
         return payment;
     }
-
-
-
-    // TODO: MOVE THIS OUT AND INTO A "PROPERTYBUILDER" TYPE STATIC METHOD vvvvv
-    /**
-     * Constructs a Property from its JSON representation.
-     * Examples of a JSON representation of a Property can be found in res/raw/property_data.json.
-     * @param jsonString Stringified JSON object to transform into a Property instance.
-     */
-    public StreetProperty(String jsonString) {
-        try {
-            // extract json structures from the input string
-            JSONObject jRoot = new JSONObject(jsonString);
-            JSONArray jRents = jRoot.getJSONArray("rent");
-            this.name = jRoot.getString("name");
-            this.price = jRoot.getInt("cost");
-            this.position = jRoot.getInt("position");
-            this.developmentCost = jRoot.getInt("house");
-            this.rentValues = new int[] {
-                    jRents.getInt(0),
-                    jRents.getInt(1),
-                    jRents.getInt(2),
-                    jRents.getInt(3),
-                    jRents.getInt(4),
-                    jRents.getInt(5)
-            };
-            // color group should be converted to its appropriate enum value
-            this.color = ColorGroup.valueOf(jRoot.getString("color"));
-        } catch (JSONException e) {
-            Log.e(TAG, "cannot parse Property object from provided JSON string!", e);
-        }
-    }
-    // TODO: MOVE THIS OUT AND INTO A "PROPERTYBUILDER" TYPE STATIC METHOD ^^^^^^
-
-
-
-
-
-
-
 }

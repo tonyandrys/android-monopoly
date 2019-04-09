@@ -6,6 +6,8 @@ package io.andrys.monopoly;
  * Copyright 2019 - All rights reserved
  */
 
+import android.support.annotation.NonNull;
+
 /**
  * 28 of the 40 spaces on a Monopoly board represent real estate (or "property") that a player can
  * purchase. A player who lands on one of these spaces can purchase the property, charge rent
@@ -18,7 +20,7 @@ package io.andrys.monopoly;
  * We model each property space using a Property object; it encapsulates the different costs/values
  * associated with purchasing/landing on the space in the game.
  */
-public class Property {
+public class Property implements Comparable<Property>{
     String name;
 
     /** The price to purchase this property from the bank */
@@ -37,6 +39,13 @@ public class Property {
         this.name = name;
         this.price = price;
         this.position = position;
+    }
+
+    /**
+     * @return Display name of this property
+     */
+    public String getName() {
+        return this.name;
     }
 
     /**
@@ -68,4 +77,18 @@ public class Property {
         return Math.round((int)(price*1.10));
     }
 
+    /**
+     * Define a total ordering over the set of Property objects wrt their position on the board.
+     *
+     * Property A precedes Property B iff A's position is smaller than B's position
+     * Property A equals Property B iff A and B have the same position
+     * Property A succeeds Property B iff A's position is larger than B's position
+     *
+     * @param o Another Property instance to compare against this instance
+     * @return negative integer, 0 if equal, or positive integer
+     */
+    @Override
+    public int compareTo(@NonNull Property o) {
+        return (this.position - o.getPosition());
+    }
 }

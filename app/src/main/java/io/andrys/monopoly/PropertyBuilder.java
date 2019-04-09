@@ -14,13 +14,40 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+
+/**
+ * Example on how to load Property objects from disk, cast them to their correct subclasses,
+ * and use overloaded methods.
+ *
+ *     private void jsonExperiment() {
+ *         ArrayList<Property> properties = PropertyBuilder.loadProperties(this);
+ *         Log.v(TAG, String.format("Loaded '%d' properties from JSON", properties.size()));
+ *         for (int i=0; i<properties.size(); i++) {
+ *             if (properties.get(i) instanceof StreetProperty) {
+ *                 StreetProperty p = (StreetProperty) properties.get(i);
+ *                 @SuppressLint("DefaultLocale") String s = String.format("'%s' => StreetProperty[%s] / pos: '%d', price: '%d', max rent: '%d'", p.getName(), p.getColorGroup(), p.getPosition(), p.getPrice(), p.calculateRentPayment(5));
+ *                 Log.v(TAG, s);
+ *             } else if (properties.get(i) instanceof RailroadProperty) {
+ *                 RailroadProperty p = (RailroadProperty) properties.get(i);
+ *                 @SuppressLint("DefaultLocale") String s = String.format("'%s' => RailroadProperty / pos: '%d', price: '%d', max rent: '%d'", p.getName(), p.getPosition(), p.getPrice(), p.calculateRentPayment(4));
+ *                 Log.v(TAG, s);
+ *             } else if (properties.get(i) instanceof UtilityProperty) {
+ *                 UtilityProperty p = (UtilityProperty) properties.get(i);
+ *                 @SuppressLint("DefaultLocale") String s = String.format("'%s' => UtilityProperty / pos: '%d', price: '%d', max rent: '%d'", p.getName(), p.getPosition(), p.getPrice(), p.calculateRentPayment(2, 12));
+ *                 Log.v(TAG, s);
+ *             }
+ *         }
+ *         Log.v(TAG, "Done!");
+ *     }
+ */
 
 /**
  * De-serializes property data from JSON & converts each object to its proper Property subclass.
  */
 public class PropertyBuilder {
-    final private static String TAG = this.getClass().getSimpleName();
+    final private static String TAG = "PropertyBuilder";
     final private static int NUM_PROPERTIES = 28;
 
     enum PropertyType {STREET, RAILROAD, UTILITY}
@@ -40,13 +67,15 @@ public class PropertyBuilder {
             Property p = buildProperty(itr.next());
             builtProperties.add(p);
         }
+        // sort the newly created Properties by their position
+        Collections.sort(builtProperties);
         return builtProperties;
     }
 
     /**
      * Converts a JSON string-encoded property object into the Java-equivalent Property subclass.
      * @param o JSONObject to convert
-     * @return a subclass of Property containing the data in 'o'.
+     * @return a StreetProperty, RailroadProperty, or UtilityProperty containing the data in 'o'.
      */
     private static Property buildProperty(JSONObject o) {
         try {
@@ -104,11 +133,10 @@ public class PropertyBuilder {
             for (int i=0; i<propertiesJSON.length(); i++) {
                 propObjects.add(propertiesJSON.getJSONObject(i));
             }
-            return propObjects;
-
         } catch (JSONException e) {
             Log.e(TAG, "failed to parse JSON property file!", e);
         }
+        return propObjects;
     }
 
 }
