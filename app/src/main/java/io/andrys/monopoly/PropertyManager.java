@@ -11,6 +11,11 @@ import java.util.Iterator;
  * Tony Andrys (tony@andrys.io)
  * Copyright 2019 - All rights reserved
  */
+
+/**
+ * Provides information about all purchasable properties on the board, keeps track of property
+ * ownership, and keeps track of each property's development level.
+ */
 public class PropertyManager {
     private final String TAG = this.getClass().getSimpleName();
     private SparseArray<PropertyAssignment> positionPropertyMap;
@@ -104,6 +109,42 @@ public class PropertyManager {
             PropertyAssignment pa = positionPropertyMap.get(p);
             pa.updateOwner(tokenID);
             Log.v(TAG, String.format("+ '%s' is now owned by token '%d'.", pa.getProperty().getName(), pa.getOwnerToken()));
+        }
+    }
+
+    /**
+     * Returns the development level of the Property at position p.
+     * @param p A board position with purchasable property
+     * @return
+     */
+    public int getDevelopmentLevelAtPosition(int p) {
+        if ((p < 0) || (p > 39)) {
+            throw new IllegalArgumentException(String.format("Invalid board position '%d'!", p));
+        } else if (positionPropertyMap.get(p) == null) {
+            throw new IllegalArgumentException(String.format("No purchasable Property at position '%d'!", p));
+        } else {
+            PropertyAssignment pa = positionPropertyMap.get(p);
+            return pa.getDevelopmentLevel();
+
+        }
+    }
+
+    /**
+     * Updates the development level of the Property at position p if it can be developed.
+     * @param p A board position with purchasable property
+     */
+    public void updateDevelopmentLevelAtPosition(int p, int newDevLevel) {
+        if ((p < 0) || (p > 39)) {
+            throw new IllegalArgumentException(String.format("Invalid board position '%d'!", p));
+        } else if (positionPropertyMap.get(p) == null) {
+            throw new IllegalArgumentException(String.format("No purchasable Property at position '%d'!", p));
+        } else {
+            PropertyAssignment pa = positionPropertyMap.get(p);
+            if (pa.isPropertyDevelopable()) {
+                pa.updateDevelopmentLevel(newDevLevel);
+            } else {
+                throw new IllegalArgumentException(String.format("Cannot modify development level of '%s'; property cannot be developed!", pa.getProperty().getName()));
+            }
         }
     }
 

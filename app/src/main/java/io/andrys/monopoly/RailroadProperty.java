@@ -6,6 +6,8 @@ package io.andrys.monopoly;
  * Copyright 2019 - All rights reserved
  */
 
+import java.util.Locale;
+
 /**
  * 4 of the 28 purchasable spaces on a Monopoly board are railroad properties.
  *
@@ -20,5 +22,12 @@ public class RailroadProperty extends Property {
 
     public int calculateRentPayment(int numRailroadsOwned) {
         return (int)(25*(Math.pow(2, numRailroadsOwned-1)));
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                Locale.US, "<<'%s' => RailroadProperty / pos: '%d', price: '%d', max rent: '%d'>>", super.getName(), super.getPosition(), super.getPrice(), calculateRentPayment(4)
+        );
     }
 }

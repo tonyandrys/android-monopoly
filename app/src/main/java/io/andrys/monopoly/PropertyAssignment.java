@@ -6,6 +6,8 @@ package io.andrys.monopoly;
  * Copyright 2019 - All rights reserved
  */
 
+import android.util.Log;
+
 /**
  * Models the ownership -- or lack of ownership -- of a specific Property in a game.
  */
@@ -17,6 +19,7 @@ public class PropertyAssignment {
 
     private Property property;
     private int ownerToken;
+    private int developmentLevel;
 
     /**
      * Creates an empty assignment of the Property p.
@@ -26,6 +29,7 @@ public class PropertyAssignment {
     public PropertyAssignment(Property p) {
         this.property = p;
         this.ownerToken = NO_OWNER;
+        this.developmentLevel = 0;
     }
 
     /**
@@ -36,6 +40,7 @@ public class PropertyAssignment {
     public PropertyAssignment(Property p, int tokenID) {
         this.property = p;
         this.ownerToken = tokenID;
+        this.developmentLevel = 0;
     }
 
     /**
@@ -43,6 +48,31 @@ public class PropertyAssignment {
      */
     public Property getProperty() {
         return this.property;
+    }
+
+    /**
+     * Returns the level of development of the Property associated w/ this assignment relationship
+     * if it can be developed (i.e. it is a street property).
+     * @return level of development from 0-5.
+     */
+    public int getDevelopmentLevel() {
+        if (isPropertyDevelopable()) {
+            return developmentLevel;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Checks if the Property in this assignment relationship can be developed.
+     * @return true if houses or hotels can be built on this property, false if not.
+     */
+    public boolean isPropertyDevelopable() {
+        if (property instanceof StreetProperty) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -70,5 +100,23 @@ public class PropertyAssignment {
     public void updateOwner(int newOwnerTokenID) {
         this.ownerToken = newOwnerTokenID;
     }
+
+    /**
+     * Updates the development level of the property associated with this assignment relationship.
+     * @param newDevLevel new development level from [0,5].
+     */
+    public void updateDevelopmentLevel(int newDevLevel) throws IllegalArgumentException {
+        if ((newDevLevel < 0) || (newDevLevel > 5)) {
+            if (isPropertyDevelopable()) {
+                this.developmentLevel = newDevLevel;
+                Log.v(TAG, String.format("Property '%s' updated to development level %d", property.getName(), developmentLevel));
+            } else {
+                throw new IllegalArgumentException(String.format("Property '%s' cannot be developed; cannot update its development level to '%d'!", property.getName(), newDevLevel));
+            }
+        } else {
+            throw new IllegalArgumentException(String.format("Development level parameter '%d' is out of bounds!", newDevLevel));
+        }
+    }
+
 
 }

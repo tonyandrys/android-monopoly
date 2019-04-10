@@ -113,6 +113,10 @@ public class FullscreenActivity extends AppCompatActivity {
         Log.v(TAG, "A new game is starting now...");
         this.board = new Board();
 
+        // initialize the property manager; this loads all properties from disk and provides
+        // an interface to assign them to players
+        PropertyManager pm = new PropertyManager(this);
+
         // add tokens to board
         board.addPlayerToken(1);        // data model
         drawTokenOntoBoard(1);          // visual manifestation of data model
@@ -125,7 +129,7 @@ public class FullscreenActivity extends AppCompatActivity {
             }
         });
 
-        jsonExperiment();
+
 
     }
 
@@ -177,7 +181,7 @@ public class FullscreenActivity extends AppCompatActivity {
     /**
      * Call to repaint the game's state to the screen.
      */
-    private void render() {
+    public void render() {
         // Repaint dice values
         ImageView die1 = findViewById(R.id.die_1_iv);
         ImageView die2 = findViewById(R.id.die_2_iv);
@@ -194,7 +198,7 @@ public class FullscreenActivity extends AppCompatActivity {
      * Displays the modal with Buy/Auction/Manage command buttons for a specific property.
      * @param propertyDrawableID the Drawable with this ID will be displayed in the center of this popup window.
      */
-    private void showPropertyActionModal(int propertyDrawableID) {
+    public void showPropertyActionModal(int propertyDrawableID) {
         // try to show a dialog fragment
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("propertyDialog");
@@ -217,7 +221,7 @@ public class FullscreenActivity extends AppCompatActivity {
      * Initializes an ImageView for a token and places it on Go.
      * @param tokenID
      */
-    private void drawTokenOntoBoard(int tokenID) {
+    public void drawTokenOntoBoard(int tokenID) {
         // create the new token
         ImageView tokenIV = new ImageView(this);
         tokenIV.setId(View.generateViewId());
@@ -245,7 +249,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
     }
 
-    private void drawTokenAtPosition(int tokenID, int p) {
+    public void drawTokenAtPosition(int tokenID, int p) {
         // get a reference to the ImageView to re-locate
         int viewID = tokenIVMap.get(tokenID);
         ImageView tokenIV = findViewById(viewID);

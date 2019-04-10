@@ -7,12 +7,15 @@ package io.andrys.monopoly;
  */
 
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Locale;
 
 /**
  * 22 of the 40 spaces on a Monopoly board represents "street" real estate that a player can
@@ -118,5 +121,12 @@ public class StreetProperty extends Property {
             throw new IllegalArgumentException(String.format("StreetProperties have no developmentLevel '%d'!", developmentLevel));
         }
         return payment;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                Locale.US, "<<'%s' => StreetProperty[%s] / pos: '%d', price: '%d', max rent: '%d'>>", super.getName(), this.color.toString(), super.getPosition(), super.getPrice(), calculateRentPayment(5)
+        );
     }
 }

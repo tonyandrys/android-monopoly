@@ -6,6 +6,8 @@ package io.andrys.monopoly;
  * Copyright 2019 - All rights reserved
  */
 
+import java.util.Locale;
+
 /**
  * 2 of the 28 purchasable spaces on a Monopoly board are utilities.
  *
@@ -35,6 +37,13 @@ public class UtilityProperty extends Property {
         } else {
             throw new IllegalArgumentException(String.format("Invalid number of utilities owned ('%d'); must be either 1 or 2!", numUtilitiesOwned));
         }
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                Locale.US, "<<'%s' => UtilityProperty / pos: '%d', price: '%d', max rent: '%d'>>", super.getName(), super.getPosition(), super.getPrice(), calculateRentPayment(2, 12)
+        );
     }
 
 }
