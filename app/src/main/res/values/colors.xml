@@ -11,7 +11,7 @@
     <color name="transp_light_green">#4B13A55B</color>
 
     <!-- Player-specific colors; these will eventually end up in Player instances and not here -->
-    <color name="player1_opaque">#B8E986</color>
+    <color name="player1_opaque">#FFB8E986</color>
     <color name="player1_trans">#4BB8E986</color> <!-- decimal(#4B) == 75 -->
 
 </resources>

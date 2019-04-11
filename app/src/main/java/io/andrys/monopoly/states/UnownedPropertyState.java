@@ -59,6 +59,7 @@ public class UnownedPropertyState extends GameState implements PropertyActionDia
     @Override
     protected void render() {
         Log.v(TAG, "render()");
+        engine.getActivity().redrawPropertyAtPosition(prop.getPosition(), gc.activePlayer, gc.pm.getDevelopmentLevelAtPosition(prop.getPosition()));
     }
 
 
@@ -68,9 +69,10 @@ public class UnownedPropertyState extends GameState implements PropertyActionDia
         gc.activePlayer.deductFromBalance(prop.getPrice());
         gc.pm.assignPropertyToOwner(position, gc.activePlayer.getToken());
         Log.v(TAG, String.format("%s has purchased %s for $%d.", gc.activePlayer.getName(), prop.getName(), prop.getPrice()));
-        df.dismiss();
 
-        // render() should be called here after I implement some kind of visual signifier in the activity that a user owns a property
+        // redraw the newly purchased property & kill the modal
+        render();
+        df.dismiss();
 
         // for now, just throw the dice again after a property is bought
         GameContext next = new GameContext(gc.board.getDiceValues(), gc.activePlayer, gc.players,  gc.board, gc.pm);

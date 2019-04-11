@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
@@ -127,7 +129,8 @@ public class FullscreenActivity extends AppCompatActivity {
 
         // build players and player list
         ArrayDeque<Player> players = new ArrayDeque<>();
-        Player me = new Player("Tony", 1);
+        String p1_color = "#FFB8E986";
+        Player me = new Player("Tony", 1, p1_color);
         players.add(me);
 
         // build the game engine and construct the initial game context state
@@ -232,7 +235,8 @@ public class FullscreenActivity extends AppCompatActivity {
      * @param levelOfDevelopment    Level of development to render (pass 0 if not a street property!)
      */
     public void redrawPropertyAtPosition(int position, Player owner, int levelOfDevelopment) {
-
+        ImageView propertyIV = visualAssetManager.getIVForBoardPosition(position);
+        propertyIV.setColorFilter(owner.getTransparentColor(), PorterDuff.Mode.SRC_OVER);
     }
 
     /**
