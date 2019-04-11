@@ -70,9 +70,25 @@ public class RollDiceState extends GameState {
         gc.board.incrementTokenPosition(gc.activePlayer.getToken(), r[0]+r[1]);
         render();
 
+        // the type of the property we landed on determines the next state
+        int p = gc.board.getTokenPosition(gc.activePlayer.getToken());
+        Board.SpaceType sType = gc.board.getSpaceTypeForPosition(p);
+        GameContext next;
+        switch (sType) {
+            case PROPERTY:
+                // show the unowned property modal
+                next = new GameContext(r, gc.activePlayer, gc.players, gc.board, gc.pm);
+                changeState(new UnownedPropertyState(engine, next));
+                break;
+            default:
+                // roll again
+                next = new GameContext(r, gc.activePlayer, gc.players, gc.board, gc.pm);
+                changeState(new RollDiceState(engine, next));
+                break;
+        }
+
         // advance to the next state (now is an emptystate, should fire property modal when I get back)
-        GameContext next = new GameContext(r, gc.activePlayer, gc.players, gc.board, gc.pm);
-        changeState(new RollDiceState(engine, next));
+
 
     }
 }
