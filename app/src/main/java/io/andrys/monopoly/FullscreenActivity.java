@@ -23,7 +23,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Array;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import io.andrys.monopoly.states.NewGameState;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -33,7 +37,8 @@ public class FullscreenActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getSimpleName();
 
     private Board board;
-    private VisualAssetManager visualAssetManager;
+    public VisualAssetManager visualAssetManager;
+    private GameEngine engine;
 
     // Maps tokenIDs to their ImageViews that display their position on the board.
     private SparseIntArray tokenIVMap;
@@ -63,7 +68,9 @@ public class FullscreenActivity extends AppCompatActivity {
         // init layout references
         boardPanelCL = findViewById(R.id.board_panel_cl);
         tokenIVMap = new SparseIntArray();
-        startNewGame();
+
+        // start the game engine
+        startGameEngine();
 
     }
 
@@ -107,6 +114,29 @@ public class FullscreenActivity extends AppCompatActivity {
     }
 
     /**
+     * Builds the core game objects from scratch, creates a set of players (just me for now),
+     * and starts the game engine.
+     */
+    protected void startGameEngine() {
+        Log.v(TAG, "Starting the game engine now...");
+
+        // build core objects
+        Board b = new Board();
+        PropertyManager pm = new PropertyManager(this);
+
+        // build players and player list
+        ArrayDeque<Player> players = new ArrayDeque<>();
+        Player me = new Player("Tony", 1);
+        players.add(me);
+
+        // build the game engine and construct the initial game context state
+        engine = new GameEngine(this);
+        GameContext next = new GameContext(null, null, players, b, pm);
+        engine.changeState(new NewGameState(engine, next));
+
+    }
+
+    /**
      * Build (or re-build) all game and state objects from scratch to start a new game.
      */
     protected void startNewGame() {
@@ -128,10 +158,9 @@ public class FullscreenActivity extends AppCompatActivity {
                 rollDice();
             }
         });
-
-
-
     }
+
+
 
     private void jsonExperiment() {
         ArrayList<Property> properties = PropertyBuilder.loadProperties(this);

@@ -16,7 +16,7 @@ import io.andrys.monopoly.GameEngine;
  * States must inherit this to be used in the game engine
  */
 public abstract class GameState {
-    private final String TAG = this.getClass().getSimpleName();
+    private final String TAG = String.format("%s[%s]", this.getClass().getSimpleName(), this.getShortCode());
 
     GameEngine engine;
     /** Game Context object, also known as 'gc' from here on out.*/
@@ -50,8 +50,18 @@ public abstract class GameState {
         engine.changeState(newState);
     }
 
+    /**
+     * This is just the hash code but shortened so I can append it to things in the
+     * small debugging window without breaking lines
+     * @return
+     */
+    public int getShortCode() {
+        return (this.hashCode() & 0xFF);
+
+    }
+
     @Override
     public String toString() {
-        return String.format("<GS:'%s'>", this.getClass().getSimpleName());
+        return String.format("<%s[%s]>", this.getClass().getSimpleName(), this.getShortCode());
     }
 }
