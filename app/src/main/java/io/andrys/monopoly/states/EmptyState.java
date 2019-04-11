@@ -30,11 +30,7 @@ public class EmptyState extends GameState {
     @Override
     public void execute() {
         Log.v(TAG, "onStateEnter()");
-        Log.v(TAG, "I'm waaaiittttiiinnggg to do something :)");
-        Log.v(TAG, "I'm waaaiittttiiinnggg to do something :)");
-        Log.v(TAG, "I'm waaaiittttiiinnggg to do something :)");
-        Log.v(TAG, "I'm waaaiittttiiinnggg to do something :)");
-        Log.v(TAG, "I'm waaaiittttiiinnggg to do something :)");
+        Log.v(TAG, "I'm waaaiittttiiinnggg to do something");
     }
 
     @Override

@@ -16,13 +16,24 @@ import android.widget.ImageView;
  * Tony Andrys (tony@andrys.io)
  * Copyright 2019 - All rights reserved
  */
-public class PropertyActionDialogFragment extends DialogFragment {
+public class PropertyActionDialogFragment extends DialogFragment implements View.OnClickListener {
     private final String TAG = this.getClass().getSimpleName();
 
     // Bundle keys
     public static final String KEY_PROPERTY_DRAWABLE_ID = "KEY_PROPERTY_DRAWABLE_ID";
+    public static final String KEY_PROPERTY_POSITION = "KEY_PROPERTY_POSITION";
+    public static final String KEY_BUY_BUTTON_STATE = "KEY_BUY_BUTTON_STATE";
 
+    private int propertyPosition;
     private int propertyDrawableID;
+    private boolean buyButtonState;
+    private ButtonListener listener;
+
+    public interface ButtonListener {
+        void onBuyButtonClicked(PropertyActionDialogFragment df, int position);
+        void onAuctionButtonClicked(PropertyActionDialogFragment df, int position);
+        void onManageButtonClicked(PropertyActionDialogFragment df);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,8 +41,9 @@ public class PropertyActionDialogFragment extends DialogFragment {
         Bundle b = this.getArguments();
         if (b != null) {
             this.propertyDrawableID = b.getInt(KEY_PROPERTY_DRAWABLE_ID);
+            this.propertyPosition = b.getInt(KEY_PROPERTY_POSITION);
+            this.buyButtonState = b.getBoolean(KEY_BUY_BUTTON_STATE);
         }
-
     }
 
     @Override
@@ -43,57 +55,79 @@ public class PropertyActionDialogFragment extends DialogFragment {
         Drawable d = ContextCompat.getDrawable(getActivity(), propertyDrawableID);
         propertyCardIV.setImageDrawable(d);
 
-        // attach button listeners
+        // configure buttons
         Button buyBtn = v.findViewById(R.id.buy_btn);
-        buyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                buyButtonPressed();
-            }
-        });
+        buyBtn.setEnabled(buyButtonState);
 
-        Button auctionBtn = v.findViewById(R.id.auction_btn);
-        auctionBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                auctionButtonPressed();
-            }
-        });
-
-        Button manageBtn = v.findViewById(R.id.manage_btn);
-        manageBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                manageButtonPressed();
-            }
-        });
-
+        /* this fragment receives the first click events, then calls the appropriate ButtonListener
+           method on the delegate object (listener) */
+        if (listener != null) {
+            Button auctionBtn = v.findViewById(R.id.auction_btn);
+            Button manageBtn = v.findViewById(R.id.manage_btn);
+            buyBtn.setOnClickListener(this);
+            auctionBtn.setOnClickListener(this);
+            manageBtn.setOnClickListener(this);
+        } else {
+            throw new IllegalStateException("Fragment shown before being assigned an OnClickListener! Call .setOnClickListener() first!");
+        }
         return v;
     }
 
     /**
-     * Fired when the Manage button is pressed on this dialog.
+     * Sets the object that should receive buy/auction/manage click events from the buttons in this modal.
+     * This method *must* be called before showing this fragment for proper functionality.
+     * @param listener object that implements the ButtonListener interface in this class
      */
-    public void manageButtonPressed() {
-        Log.v(TAG, "Manage button clicked!");
-
-        this.dismiss();
-
+    public void setButtonListener(ButtonListener listener) {
+        this.listener = listener;
     }
 
     /**
-     * Fired when the Buy button is pressed on this dialog.
+     * Based on the button touched in the modal, call the appropriate ButtonListener
+     * method on the object listening for click events.
+     * @param v Button clicked in the modal
      */
-    public void buyButtonPressed() {
-        Log.v(TAG, "Buy button clicked!");
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.buy_btn:
+                listener.onBuyButtonClicked(this, propertyPosition);
+                break;
+            case R.id.auction_btn:
+                listener.onAuctionButtonClicked(this, propertyPosition);
+                break;
+            case R.id.manage_btn:
+                listener.onManageButtonClicked(this);
+
+        }
+
     }
 
-    /**
-     * Fired when the Auction button is pressed on this dialog.
-     */
-    public void auctionButtonPressed() {
-        Log.v(TAG, "Auction button clicked!");
+    // *** Click events start below this line ***
+//    /**
+//     * Fired when the Manage button is pressed on this dialog.
+//     */
+//
+//    public void manageButtonPressed() {
+//        Log.v(TAG, "Manage button clicked!");
+//
+//        this.dismiss();
+//    }
+//
+//    /**
+//     * Fired when the Buy button is pressed on this dialog.
+//     */
+//    public void buyButtonPressed() {
+//        Log.v(TAG, "Buy button clicked!");
+//    }
+//
+//    /**
+//     * Fired when the Auction button is pressed on this dialog.
+//     */
+//    public void auctionButtonPressed() {
+//        Log.v(TAG, "Auction button clicked!");
+//
+//    }
 
-    }
 
 }

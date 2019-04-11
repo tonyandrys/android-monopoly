@@ -15,8 +15,16 @@ import io.andrys.monopoly.R;
  * Tony Andrys (tony@andrys.io)
  * Copyright 2019 - All rights reserved
  */
+
+/**
+ * Rolls the dice for the active player, lands on a space, constructs the next state based on the
+ * type of space we land on and the context of the game.
+ */
 public class RollDiceState extends GameState {
     private final String TAG = String.format("%s[%s]", this.getClass().getSimpleName(), this.getShortCode());
+
+    // reference to the "Roll" button in the parent activity
+    private Button rollButton;
 
     public RollDiceState(GameEngine engine, GameContext gameContext) {
         super(engine, gameContext);
@@ -26,14 +34,17 @@ public class RollDiceState extends GameState {
     public void onStateEnter() {
         Log.v(TAG, "onStateEnter()");
 
-        // setup dice roll button click listener
-        Button rollButton = engine.getParentActivity().findViewById(R.id.roll_dice_btn);
+        // let the roll dice button accept clicks
+        rollButton = engine.getActivity().findViewById(R.id.roll_dice_btn);
         rollButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // prevent double clicks
+                rollButton.setEnabled(false);
                 rollDiceButtonPressed();
             }
         });
+        rollButton.setEnabled(true);
     }
 
     @Override
@@ -46,6 +57,8 @@ public class RollDiceState extends GameState {
     public void onStateExit() {
         Log.v(TAG, "onStateExit()");
 
+        // silence roll button events
+        rollButton.setOnClickListener(null);
     }
 
     @Override
@@ -53,14 +66,14 @@ public class RollDiceState extends GameState {
         Log.v(TAG, "render()");
 
         // Repaint dice values
-        ImageView die1 = engine.getParentActivity().findViewById(R.id.die_1_iv);
-        ImageView die2 = engine.getParentActivity().findViewById(R.id.die_2_iv);
+        ImageView die1 = engine.getActivity().findViewById(R.id.die_1_iv);
+        ImageView die2 = engine.getActivity().findViewById(R.id.die_2_iv);
         int[] r = gc.board.getDiceValues();
-        die1.setImageDrawable(engine.getParentActivity().visualAssetManager.getDieFace(r[0]));
-        die2.setImageDrawable(engine.getParentActivity().visualAssetManager.getDieFace(r[1]));
+        die1.setImageDrawable(engine.getActivity().visualAssetManager.getDieFace(r[0]));
+        die2.setImageDrawable(engine.getActivity().visualAssetManager.getDieFace(r[1]));
 
         // move the active player's token forward along the board
-        engine.getParentActivity().drawTokenAtPosition(gc.activePlayer.getToken(), gc.board.getTokenPosition(1));
+        engine.getActivity().drawTokenAtPosition(gc.activePlayer.getToken(), gc.board.getTokenPosition(1));
     }
 
     private void rollDiceButtonPressed() {

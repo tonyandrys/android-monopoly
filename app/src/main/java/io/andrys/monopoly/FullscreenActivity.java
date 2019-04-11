@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import io.andrys.monopoly.states.NewGameState;
+import io.andrys.monopoly.states.UnownedPropertyState;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -139,7 +140,7 @@ public class FullscreenActivity extends AppCompatActivity {
     /**
      * Build (or re-build) all game and state objects from scratch to start a new game.
      */
-    protected void startNewGame() {
+    /*protected void startNewGame() {
         Log.v(TAG, "A new game is starting now...");
         this.board = new Board();
 
@@ -158,7 +159,7 @@ public class FullscreenActivity extends AppCompatActivity {
                 rollDice();
             }
         });
-    }
+    }*/
 
 
 
@@ -195,10 +196,10 @@ public class FullscreenActivity extends AppCompatActivity {
         int position = board.getTokenPosition(1);
 
         // check if position is a property space; if it is show a popup
-        if (board.getSpaceTypeForPosition(position) == SpaceType.PROPERTY) {
+        if (board.getSpaceTypeForPosition(position) == Board.SpaceType.PROPERTY) {
             // get ID reference to the property card graphic for this space on the board; pass it to the dialog
             int propDrawableID = visualAssetManager.getPropertyCardDrawableID(position);
-            showPropertyActionModal(propDrawableID);
+            //showPropertyActionModal(propDrawableID, 1);
         } else {
             Log.v(TAG, String.format("position '%d' isn't a property space, so we're not going to do anything yet!", position));
         }
@@ -224,10 +225,30 @@ public class FullscreenActivity extends AppCompatActivity {
     }
 
     /**
-     * Displays the modal with Buy/Auction/Manage command buttons for a specific property.
-     * @param propertyDrawableID the Drawable with this ID will be displayed in the center of this popup window.
+     * Updates the visual representation of a Property space on the board by
+     * tinting it with the owner's color and re-drawing the number of houses/hotels on it.
+     * @param position              Board position of the space to update
+     * @param owner                 Player that owns the property
+     * @param levelOfDevelopment    Level of development to render (pass 0 if not a street property!)
      */
-    public void showPropertyActionModal(int propertyDrawableID) {
+    public void redrawPropertyAtPosition(int position, Player owner, int levelOfDevelopment) {
+
+    }
+
+    /**
+     * Displays the modal with Buy/Auction/Manage command buttons for a specific property.
+     * @param caller UnownedPropertyState instance that requested that we display this modal
+     * @param position Board position of the property the player is currently on
+     * @param shouldEnableBuyButton state of the buy button in the modal
+     */
+    public void showPropertyActionModal(UnownedPropertyState caller, int position, boolean shouldEnableBuyButton) {
+        if (BuildConfig.DEBUG && ((position < 0) || (position >= 40))) {
+            throw new AssertionError(String.format("showPropertyActionModal got an invalid position -> %d", position));
+        }
+
+        // get the ID of the picture of the property card, use it to inflate the modal
+        int propertyDrawableID = visualAssetManager.getPropertyCardDrawableID(position);
+
         // try to show a dialog fragment
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("propertyDialog");
@@ -236,11 +257,16 @@ public class FullscreenActivity extends AppCompatActivity {
         }
         ft.addToBackStack(null);
 
-        // pass the property card's drawable id to the dialog fragment we're building
+        // pass the property card's drawable id and position to the dialog fragment we're building
         Bundle b = new Bundle();
         b.putInt(PropertyActionDialogFragment.KEY_PROPERTY_DRAWABLE_ID, propertyDrawableID);
-        DialogFragment dialogFragment = new PropertyActionDialogFragment();
+        b.putInt(PropertyActionDialogFragment.KEY_PROPERTY_POSITION, position);
+        b.putBoolean(PropertyActionDialogFragment.KEY_BUY_BUTTON_STATE, shouldEnableBuyButton);
+        PropertyActionDialogFragment dialogFragment = new PropertyActionDialogFragment();
         dialogFragment.setArguments(b);
+
+        // the state that called this method should be sent click events
+        dialogFragment.setButtonListener(caller);
 
         // present the dialog
         dialogFragment.show(ft, "propertyActionDialog");

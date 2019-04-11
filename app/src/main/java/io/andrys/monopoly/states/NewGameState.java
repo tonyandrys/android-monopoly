@@ -1,17 +1,12 @@
 package io.andrys.monopoly.states;
 
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
 import java.util.Iterator;
 
-import io.andrys.monopoly.Board;
-import io.andrys.monopoly.Game;
 import io.andrys.monopoly.GameContext;
 import io.andrys.monopoly.GameEngine;
 import io.andrys.monopoly.Player;
-import io.andrys.monopoly.R;
 
 /**
  * NewGameState.java // Monopoly
@@ -69,7 +64,7 @@ public class NewGameState extends GameState {
         Iterator<Player> itr = gc.players.iterator();
         while (itr.hasNext()) {
             Player p = itr.next();
-            engine.getParentActivity().drawTokenOntoBoard(p.getToken());
+            engine.getActivity().drawTokenOntoBoard(p.getToken());
         }
 
     }

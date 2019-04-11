@@ -125,11 +125,11 @@ public class GameEngine {
     }
 
     /**
-     * Returns an instance of the activity that holds the game views.
+     * Returns the Activity instance that holds the game views.
      * Right now, that's a Fullscreen activity.
      * @return FullscreenActivity
      */
-    public FullscreenActivity getParentActivity() {
+    public FullscreenActivity getActivity() {
         return this.activity;
     }
 }

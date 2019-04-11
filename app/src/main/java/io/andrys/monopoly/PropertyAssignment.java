@@ -10,6 +10,9 @@ import android.util.Log;
 
 /**
  * Models the ownership -- or lack of ownership -- of a specific Property in a game.
+ * An purchased property has both an owner and a level of development. In the case of street
+ * properties, their level of development improves as houses/hotels are built on them. Other
+ * properties cannot be developed, so their level cannot be updated (i.e. must be zero).
  */
 public class PropertyAssignment {
     private final String TAG = this.getClass().getSimpleName();

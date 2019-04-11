@@ -141,6 +141,8 @@
                 android:id="@+id/tile_go_iv"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:tint="@color/player1_trans"
+                android:tintMode="src_over"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="@+id/tile_go_to_jail_iv"
