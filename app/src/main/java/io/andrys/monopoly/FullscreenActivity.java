@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -81,7 +82,26 @@ public class FullscreenActivity extends AppCompatActivity {
         // configure dumb debug button & teardown button
         Button debugButton = findViewById(R.id.debugButton);
         Button teardownButton = findViewById(R.id.removeButton);
+        SeekBar debugSeekbar = findViewById(R.id.debugSeekbar);
+        debugSeekbar.setMax(39);
         final EditText debugText = findViewById(R.id.debugField);
+        debugSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                String t = Integer.toString(progress);
+                debugText.setText(t);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
         debugButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -309,55 +329,71 @@ public class FullscreenActivity extends AppCompatActivity {
      */
     public void drawHouseAtPosition(int position) {
         // don't do anything if there are already four houses on this property
-        if (positionDevIDMap.get(position, new int[1]).length == 4) {
+        if (positionDevIDMap.get(position, new int[0]).length == 4) {
             throw new IllegalStateException(String.format("Position '%d' has the maximum amount of houses! Build a hotel instead!", position));
         }
 
-        // construct a new ImageView w/ a house image
-        ImageView houseIV = new ImageView(this);
-        houseIV.setId(View.generateViewId());
-        houseIV.setTag("h");  // how about this means "house"?
-        houseIV.setImageDrawable(this.getDrawable(R.drawable.house4x));
-        houseIV.setVisibility(View.INVISIBLE);
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7, this.getResources().getDisplayMetrics());
-        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7, this.getResources().getDisplayMetrics());
-        ConstraintLayout.LayoutParams lp = new ConstraintLayout.LayoutParams(width, height);
-
-        // add start margin if this is the first house to go on the property
-        int[] existingHouseIDs = positionDevIDMap.get(position, null);
-        if (existingHouseIDs == null) {
-            lp.setMarginStart((int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, this.getResources().getDisplayMetrics()));
-        }
-        houseIV.setLayoutParams(new ConstraintLayout.LayoutParams(width, height));
+        // construct a new house IV for this side of the board this position is on
+        ViewBuilder vb = ViewBuilder.getInstance();
+        int[] existingHouseIDs = positionDevIDMap.get(position, new int[0]);
+        boolean propHasExistingHouses = !(existingHouseIDs.length == 0);
+        VisualAssetManager.BoardSide posBoardSide = visualAssetManager.getBoardSideForPosition(position);
+        ImageView houseIV = vb.buildHouseIV(this, posBoardSide, propHasExistingHouses);
 
         // add the new house to the view & clone the existing layout
         boardPanelCL.addView(houseIV);
         ConstraintSet newSet = new ConstraintSet();
         newSet.clone(boardPanelCL);
 
-        // all houses will be constrained within the property they're supposed to stand on
         int propID = visualAssetManager.getIVForBoardPosition(position).getId();
-        newSet.connect(houseIV.getId(), ConstraintSet.BOTTOM, propID, ConstraintSet.BOTTOM);        // house bottom -> property bottom
-        newSet.connect(houseIV.getId(), ConstraintSet.TOP, propID, ConstraintSet.TOP);              // house top -> property top
-        newSet.setVerticalBias(houseIV.getId(), 0.05f);                                       // align the house vertically within the top 5% of the property
 
-        // left align the first house on this property with the start-line of the property
-        if (existingHouseIDs == null) {
+        // houses on top and bottom will have identical constraints (i think??)
+        if ((posBoardSide == VisualAssetManager.BoardSide.BOTTOM) || (posBoardSide == VisualAssetManager.BoardSide.TOP)) {
+            // add constraints to keep this house within the property it stands on
+            newSet.connect(houseIV.getId(), ConstraintSet.BOTTOM, propID, ConstraintSet.BOTTOM);        // house bottom -> property bottom
+            newSet.connect(houseIV.getId(), ConstraintSet.TOP, propID, ConstraintSet.TOP);              // house top -> property top
+            // determine which other View the house should be anchored against
+            if (propHasExistingHouses) {
+                // anchor this house against the most recently drawn house
+                int anchorHouseID = existingHouseIDs[existingHouseIDs.length-1];
+                newSet.connect(houseIV.getId(), ConstraintSet.START, anchorHouseID, ConstraintSet.END);
+            } else {
+                // anchor house against starting edge of property
+                newSet.connect(houseIV.getId(), ConstraintSet.START, propID, ConstraintSet.START);
+            }
+            // vertical bias constrains houses to stay within the colored stripe of the property
+            if (posBoardSide == VisualAssetManager.BoardSide.BOTTOM) {
+                newSet.setVerticalBias(houseIV.getId(), 0.05f);                                    // vertical align within the top 5% of the property
+            } else {
+                newSet.setVerticalBias(houseIV.getId(), 0.95f);                                    // vertical align within the bottom 5% of the property
+            }
+        }
+
+        // houses on left and right side of board will have identical constraints (I think???)
+        else if ((posBoardSide == VisualAssetManager.BoardSide.LEFT) || (posBoardSide == VisualAssetManager.BoardSide.RIGHT)) {
             newSet.connect(houseIV.getId(), ConstraintSet.START, propID, ConstraintSet.START);
-        }
-        // left align subsequent houses against the rightmost house
-        else {
-            int rhsHouseID = existingHouseIDs[existingHouseIDs.length-1];
-            newSet.connect(houseIV.getId(), ConstraintSet.START, rhsHouseID, ConstraintSet.END);
+            newSet.connect(houseIV.getId(), ConstraintSet.END, propID, ConstraintSet.END);
+            if (propHasExistingHouses) {
+                // anchor this house against the most recently drawn house
+                int anchorHouseID = existingHouseIDs[existingHouseIDs.length-1];
+                newSet.connect(houseIV.getId(), ConstraintSet.TOP, anchorHouseID, ConstraintSet.BOTTOM);
+            } else {
+                newSet.connect(houseIV.getId(), ConstraintSet.TOP, propID, ConstraintSet.TOP);
+            }
+            // horizontal bias constrains houses to stay within the colored stripe of the property
+            if (posBoardSide == VisualAssetManager.BoardSide.LEFT) {
+                newSet.setHorizontalBias(houseIV.getId(), 0.95f);
+            } else {
+                newSet.setHorizontalBias(houseIV.getId(), 0.05f);
+            }
         }
 
-        // FINALLY, apply new constraints & display new house
+        // Apply new constraints to layout & display new house
         newSet.applyTo(boardPanelCL);
         houseIV.setVisibility(View.VISIBLE);
 
-        // store this new house in the rightmost position against all previous houses in the ID cache
-        int numExistingHouses = 0;
-        if (existingHouseIDs != null) { numExistingHouses = existingHouseIDs.length; }
+        // append the ID of this new house in the house cache for this property
+        int numExistingHouses = existingHouseIDs.length;
         int[] newHouseIDCache = new int[numExistingHouses+1];
         for (int i=0; i<numExistingHouses; i++) {
             newHouseIDCache[i] = existingHouseIDs[i];
