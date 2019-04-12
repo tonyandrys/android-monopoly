@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="10px" height="10px" viewBox="0 0 10 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>House@1x</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="10" height="5"></rect>
+        <rect id="path-2" x="0" y="5" width="10" height="5"></rect>
+    </defs>
+    <g id="Mobile" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-330.000000, -100.000000)">
+        <g id="House" transform="translate(330.000000, 100.000000)">
+            <g id="Group-4" stroke-width="1">
+                <g id="Rectangle">
+                    <use fill="#007A53" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    <rect stroke="#006747" stroke-width="0.25" x="0.125" y="0.125" width="9.75" height="4.75"></rect>
+                </g>
+                <g id="Rectangle">
+                    <use fill="#00965E" fill-rule="evenodd" xlink:href="#path-2"></use>
+                    <rect stroke="#006747" stroke-width="0.25" x="0.125" y="5.125" width="9.75" height="4.75"></rect>
+                </g>
+            </g>
+            <circle id="Oval-3" stroke="#115740" stroke-width="0.25" fill="#006747" cx="5" cy="5" r="1"></circle>
+        </g>
+    </g>
+</svg>

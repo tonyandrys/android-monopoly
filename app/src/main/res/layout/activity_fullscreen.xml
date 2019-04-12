@@ -141,8 +141,6 @@
                 android:id="@+id/tile_go_iv"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:tint="@color/player1_trans"
-                android:tintMode="src_over"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="@+id/tile_go_to_jail_iv"
@@ -489,6 +487,57 @@
                 app:layout_constraintTop_toBottomOf="@+id/tile_luxury_tax_iv"
                 app:srcCompat="@drawable/tile_boardwalk" />
 
+            <ImageView
+                android:id="@+id/house1"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginStart="1dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tile_medit_avenue_iv"
+                app:layout_constraintStart_toStartOf="@+id/tile_medit_avenue_iv"
+                app:layout_constraintTop_toTopOf="@+id/tile_medit_avenue_iv"
+                app:layout_constraintVertical_bias="0.05"
+                app:srcCompat="@drawable/house4x" />
+
+            <ImageView
+                android:id="@+id/house2"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tile_medit_avenue_iv"
+                app:layout_constraintStart_toEndOf="@id/house1"
+                app:layout_constraintTop_toTopOf="@+id/tile_medit_avenue_iv"
+                app:layout_constraintVertical_bias="0.05"
+                app:srcCompat="@drawable/house4x" />
+
+            <ImageView
+                android:id="@+id/house3"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tile_medit_avenue_iv"
+                app:layout_constraintStart_toEndOf="@+id/house2"
+                app:layout_constraintTop_toTopOf="@+id/tile_medit_avenue_iv"
+                app:layout_constraintVertical_bias="0.05"
+                app:srcCompat="@drawable/house4x" />
+
+            <ImageView
+                android:id="@+id/house4"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tile_medit_avenue_iv"
+                app:layout_constraintStart_toEndOf="@+id/house3"
+                app:layout_constraintTop_toTopOf="@+id/tile_medit_avenue_iv"
+                app:layout_constraintVertical_bias="0.05"
+                app:srcCompat="@drawable/house4x" />
+
+            <ImageView
+                android:id="@+id/hotel"
+                android:layout_width="14dp"
+                android:layout_height="7dp"
+                android:layout_marginTop="2dp"
+                app:layout_constraintEnd_toEndOf="@+id/title_baltic_avenue_iv"
+                app:layout_constraintStart_toStartOf="@+id/title_baltic_avenue_iv"
+                app:layout_constraintTop_toTopOf="@+id/title_baltic_avenue_iv"
+                app:srcCompat="@drawable/hotel4x" />
+
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
@@ -498,7 +547,8 @@
             android:background="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
 
             <ImageView
                 android:id="@+id/die_1_iv"
@@ -527,6 +577,50 @@
                 android:text="Roll"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
+
+            <Button
+                android:id="@+id/debugButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/light_green"
+                android:text="Build"
+                app:layout_constraintBottom_toTopOf="@+id/roll_dice_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.99" />
+
+            <EditText
+                android:id="@+id/debugField"
+                android:layout_width="111dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="104dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Position"
+                app:layout_constraintBottom_toTopOf="@+id/debugButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.506"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/removeButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="#d22630"
+                android:text="Remove"
+                app:layout_constraintBottom_toTopOf="@+id/debugButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>

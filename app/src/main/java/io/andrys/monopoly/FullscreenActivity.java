@@ -14,10 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.transition.TransitionManager;
 import android.util.Log;
+import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import org.json.JSONArray;
@@ -46,6 +48,9 @@ public class FullscreenActivity extends AppCompatActivity {
     // Maps tokenIDs to their ImageViews that display their position on the board.
     private SparseIntArray tokenIVMap;
 
+    // Maps board positions to drawables of houses/hotels drawn on top of them
+    private SparseArray<int[]> positionDevIDMap;
+
 
     private View mContentView;
     private ConstraintLayout boardPanelCL;
@@ -68,9 +73,31 @@ public class FullscreenActivity extends AppCompatActivity {
         // initialize singleton rendering objects
         visualAssetManager = new VisualAssetManager(this);
 
-        // init layout references
+        // init layout references and data structures
         boardPanelCL = findViewById(R.id.board_panel_cl);
         tokenIVMap = new SparseIntArray();
+        positionDevIDMap = new SparseArray<>();
+
+        // configure dumb debug button & teardown button
+        Button debugButton = findViewById(R.id.debugButton);
+        Button teardownButton = findViewById(R.id.removeButton);
+        final EditText debugText = findViewById(R.id.debugField);
+        debugButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos = Integer.parseInt(debugText.getText().toString());
+                Log.v(TAG, "trying to draw house on position " + pos);
+                drawHouseAtPosition(pos);
+            }
+        });
+        teardownButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos = Integer.parseInt(debugText.getText().toString());
+                Log.v(TAG, "trying to remove house on position " + pos);
+                removeHouseAtPosition(pos);
+            }
+        });
 
         // start the game engine
         startGameEngine();
@@ -274,6 +301,98 @@ public class FullscreenActivity extends AppCompatActivity {
 
         // present the dialog
         dialogFragment.show(ft, "propertyActionDialog");
+    }
+
+    /**
+     * Displays a new house drawable at a position on the board.
+     * @param position position in [0,39]
+     */
+    public void drawHouseAtPosition(int position) {
+        // don't do anything if there are already four houses on this property
+        if (positionDevIDMap.get(position, new int[1]).length == 4) {
+            throw new IllegalStateException(String.format("Position '%d' has the maximum amount of houses! Build a hotel instead!", position));
+        }
+
+        // construct a new ImageView w/ a house image
+        ImageView houseIV = new ImageView(this);
+        houseIV.setId(View.generateViewId());
+        houseIV.setTag("h");  // how about this means "house"?
+        houseIV.setImageDrawable(this.getDrawable(R.drawable.house4x));
+        houseIV.setVisibility(View.INVISIBLE);
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7, this.getResources().getDisplayMetrics());
+        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7, this.getResources().getDisplayMetrics());
+        ConstraintLayout.LayoutParams lp = new ConstraintLayout.LayoutParams(width, height);
+
+        // add start margin if this is the first house to go on the property
+        int[] existingHouseIDs = positionDevIDMap.get(position, null);
+        if (existingHouseIDs == null) {
+            lp.setMarginStart((int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, this.getResources().getDisplayMetrics()));
+        }
+        houseIV.setLayoutParams(new ConstraintLayout.LayoutParams(width, height));
+
+        // add the new house to the view & clone the existing layout
+        boardPanelCL.addView(houseIV);
+        ConstraintSet newSet = new ConstraintSet();
+        newSet.clone(boardPanelCL);
+
+        // all houses will be constrained within the property they're supposed to stand on
+        int propID = visualAssetManager.getIVForBoardPosition(position).getId();
+        newSet.connect(houseIV.getId(), ConstraintSet.BOTTOM, propID, ConstraintSet.BOTTOM);        // house bottom -> property bottom
+        newSet.connect(houseIV.getId(), ConstraintSet.TOP, propID, ConstraintSet.TOP);              // house top -> property top
+        newSet.setVerticalBias(houseIV.getId(), 0.05f);                                       // align the house vertically within the top 5% of the property
+
+        // left align the first house on this property with the start-line of the property
+        if (existingHouseIDs == null) {
+            newSet.connect(houseIV.getId(), ConstraintSet.START, propID, ConstraintSet.START);
+        }
+        // left align subsequent houses against the rightmost house
+        else {
+            int rhsHouseID = existingHouseIDs[existingHouseIDs.length-1];
+            newSet.connect(houseIV.getId(), ConstraintSet.START, rhsHouseID, ConstraintSet.END);
+        }
+
+        // FINALLY, apply new constraints & display new house
+        newSet.applyTo(boardPanelCL);
+        houseIV.setVisibility(View.VISIBLE);
+
+        // store this new house in the rightmost position against all previous houses in the ID cache
+        int numExistingHouses = 0;
+        if (existingHouseIDs != null) { numExistingHouses = existingHouseIDs.length; }
+        int[] newHouseIDCache = new int[numExistingHouses+1];
+        for (int i=0; i<numExistingHouses; i++) {
+            newHouseIDCache[i] = existingHouseIDs[i];
+        }
+        newHouseIDCache[newHouseIDCache.length-1] = houseIV.getId();
+        positionDevIDMap.put(position, newHouseIDCache);
+    }
+
+    /**
+     * Removes a house drawable from a position on the board
+     * @param position position in [0,39]
+     */
+    public void removeHouseAtPosition(int position) {
+        int[] existingHouses = positionDevIDMap.get(position, null);
+        if (existingHouses != null) {
+            // get a reference to the rightmost house so we can remove it
+            int rhsHouseID = existingHouses[existingHouses.length-1];
+            boardPanelCL.removeView(findViewById(rhsHouseID));
+            Log.v(TAG, String.format("Removed a house drawable at position '%d'.", position));
+
+            // store the remaining house IDs back in the cache if there are any.
+            int remainingHouseCount = existingHouses.length - 1;
+            if (remainingHouseCount > 0) {
+                int[] newHouseIDCache = new int[remainingHouseCount];
+                for (int i=0; i<remainingHouseCount; i++) {
+                    newHouseIDCache[i] = existingHouses[i];
+                }
+                positionDevIDMap.put(position, newHouseIDCache);
+            } else {
+                // wipe out the cache for this property if we've removed all the houses
+                positionDevIDMap.delete(position);
+            }
+        } else {
+            throw new IllegalArgumentException(String.format("Position '%d' has no house drawables that can be removed!", position));
+        }
     }
 
     /**
