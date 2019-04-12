@@ -332,9 +332,11 @@ public class FullscreenActivity extends AppCompatActivity {
         if (positionDevIDMap.get(position, new int[0]).length == 4) {
             throw new IllegalStateException(String.format("Position '%d' has the maximum amount of houses! Build a hotel instead!", position));
         }
+        // get important building objects
+        ViewBuilder vb = ViewBuilder.getInstance();
+        ConstraintGenerator cg = ConstraintGenerator.getInstance();
 
         // construct a new house IV for this side of the board this position is on
-        ViewBuilder vb = ViewBuilder.getInstance();
         int[] existingHouseIDs = positionDevIDMap.get(position, new int[0]);
         boolean propHasExistingHouses = !(existingHouseIDs.length == 0);
         VisualAssetManager.BoardSide posBoardSide = visualAssetManager.getBoardSideForPosition(position);
@@ -345,54 +347,13 @@ public class FullscreenActivity extends AppCompatActivity {
         ConstraintSet newSet = new ConstraintSet();
         newSet.clone(boardPanelCL);
 
+        // calculate & apply new constraints for this house
         int propID = visualAssetManager.getIVForBoardPosition(position).getId();
-
-        // houses on top and bottom will have identical constraints (i think??)
-        if ((posBoardSide == VisualAssetManager.BoardSide.BOTTOM) || (posBoardSide == VisualAssetManager.BoardSide.TOP)) {
-            // add constraints to keep this house within the property it stands on
-            newSet.connect(houseIV.getId(), ConstraintSet.BOTTOM, propID, ConstraintSet.BOTTOM);        // house bottom -> property bottom
-            newSet.connect(houseIV.getId(), ConstraintSet.TOP, propID, ConstraintSet.TOP);              // house top -> property top
-            // determine which other View the house should be anchored against
-            if (propHasExistingHouses) {
-                // anchor this house against the most recently drawn house
-                int anchorHouseID = existingHouseIDs[existingHouseIDs.length-1];
-                newSet.connect(houseIV.getId(), ConstraintSet.START, anchorHouseID, ConstraintSet.END);
-            } else {
-                // anchor house against starting edge of property
-                newSet.connect(houseIV.getId(), ConstraintSet.START, propID, ConstraintSet.START);
-            }
-            // vertical bias constrains houses to stay within the colored stripe of the property
-            if (posBoardSide == VisualAssetManager.BoardSide.BOTTOM) {
-                newSet.setVerticalBias(houseIV.getId(), 0.05f);                                    // vertical align within the top 5% of the property
-            } else {
-                newSet.setVerticalBias(houseIV.getId(), 0.95f);                                    // vertical align within the bottom 5% of the property
-            }
-        }
-
-        // houses on left and right side of board will have identical constraints (I think???)
-        else if ((posBoardSide == VisualAssetManager.BoardSide.LEFT) || (posBoardSide == VisualAssetManager.BoardSide.RIGHT)) {
-            newSet.connect(houseIV.getId(), ConstraintSet.START, propID, ConstraintSet.START);
-            newSet.connect(houseIV.getId(), ConstraintSet.END, propID, ConstraintSet.END);
-            if (propHasExistingHouses) {
-                // anchor this house against the most recently drawn house
-                int anchorHouseID = existingHouseIDs[existingHouseIDs.length-1];
-                newSet.connect(houseIV.getId(), ConstraintSet.TOP, anchorHouseID, ConstraintSet.BOTTOM);
-            } else {
-                newSet.connect(houseIV.getId(), ConstraintSet.TOP, propID, ConstraintSet.TOP);
-            }
-            // horizontal bias constrains houses to stay within the colored stripe of the property
-            if (posBoardSide == VisualAssetManager.BoardSide.LEFT) {
-                newSet.setHorizontalBias(houseIV.getId(), 0.95f);
-            } else {
-                newSet.setHorizontalBias(houseIV.getId(), 0.05f);
-            }
-        }
-
-        // Apply new constraints to layout & display new house
+        newSet = cg.calculateHouseConstraints(houseIV.getId(), existingHouseIDs, propID, posBoardSide, newSet);
         newSet.applyTo(boardPanelCL);
         houseIV.setVisibility(View.VISIBLE);
 
-        // append the ID of this new house in the house cache for this property
+        // Add the ID of the new house to this property's house cache
         int numExistingHouses = existingHouseIDs.length;
         int[] newHouseIDCache = new int[numExistingHouses+1];
         for (int i=0; i<numExistingHouses; i++) {
@@ -407,19 +368,19 @@ public class FullscreenActivity extends AppCompatActivity {
      * @param position position in [0,39]
      */
     public void removeHouseAtPosition(int position) {
-        int[] existingHouses = positionDevIDMap.get(position, null);
-        if (existingHouses != null) {
-            // get a reference to the rightmost house so we can remove it
-            int rhsHouseID = existingHouses[existingHouses.length-1];
+        int[] existingHouseIDs = positionDevIDMap.get(position, new int[0]);
+        if (existingHouseIDs.length > 0) {
+            // get a reference to the last-built house so we can remove it
+            int rhsHouseID = existingHouseIDs[existingHouseIDs.length-1];
             boardPanelCL.removeView(findViewById(rhsHouseID));
             Log.v(TAG, String.format("Removed a house drawable at position '%d'.", position));
 
             // store the remaining house IDs back in the cache if there are any.
-            int remainingHouseCount = existingHouses.length - 1;
+            int remainingHouseCount = existingHouseIDs.length-1;
             if (remainingHouseCount > 0) {
                 int[] newHouseIDCache = new int[remainingHouseCount];
                 for (int i=0; i<remainingHouseCount; i++) {
-                    newHouseIDCache[i] = existingHouses[i];
+                    newHouseIDCache[i] = existingHouseIDs[i];
                 }
                 positionDevIDMap.put(position, newHouseIDCache);
             } else {
