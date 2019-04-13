@@ -79,46 +79,6 @@ public class FullscreenActivity extends AppCompatActivity {
         tokenIVMap = new SparseIntArray();
         positionDevIDMap = new SparseArray<>();
 
-        // configure dumb debug button & teardown button
-        Button debugButton = findViewById(R.id.debugButton);
-        Button teardownButton = findViewById(R.id.removeButton);
-        SeekBar debugSeekbar = findViewById(R.id.debugSeekbar);
-        debugSeekbar.setMax(39);
-        final EditText debugText = findViewById(R.id.debugField);
-        debugSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String t = Integer.toString(progress);
-                debugText.setText(t);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-        debugButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int pos = Integer.parseInt(debugText.getText().toString());
-                Log.v(TAG, "trying to draw house on position " + pos);
-                drawHouseAtPosition(pos);
-            }
-        });
-        teardownButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int pos = Integer.parseInt(debugText.getText().toString());
-                Log.v(TAG, "trying to remove house on position " + pos);
-                removeHouseAtPosition(pos);
-            }
-        });
-
         // start the game engine
         startGameEngine();
 
