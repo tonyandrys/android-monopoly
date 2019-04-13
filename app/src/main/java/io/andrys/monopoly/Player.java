@@ -6,6 +6,8 @@ package io.andrys.monopoly;
  * Copyright 2019 - All rights reserved
  */
 
+import android.graphics.Color;
+
 /**
  * A Player is a participant in a game controlled by either a human or AI.
  */
@@ -14,16 +16,25 @@ public class Player {
     private String name;    // Name to be displayed in the score panel
     private int balance;    // Cash on hand in dollars
     private int token;      // uid of the token used to represent this player's position on the board.
-    // To implement: list of owned properties & collectibles like get out of jail free cards
+    private int color;      // color int used next to player on scoreboard, tint owned properties, etc.
+
+    /**
+     *
+     * @param name
+     *
+     */
 
     /**
      * Creates a new player that starts w/ $1500 (rulebook standard amount for a new player).
-     * @param name Display name for this new player
+     * @param name      Display name for this new player
+     * @param token     ID of the token assigned to this user
+     * @param colorStr  color selected by this player as a "#AARRBBGG" string
      */
-    public Player(String name, int token) {
+    public Player(String name, int token, String colorStr) {
         this.name = name;
         this.balance = 1500;
         this.token = token;
+        this.color = Color.parseColor(colorStr);
     }
 
     public String getName() {
@@ -32,6 +43,19 @@ public class Player {
 
     public int getBalance() {
         return balance;
+    }
+
+    public int getOpaqueColor() {
+        return color;
+    }
+
+    /**
+     * Transparent color is just the Player's selected color w/ alpha channel
+     * at approx 30% (75 in decimal)
+     * @return transparent color variation as a color int
+     */
+    public int getTransparentColor() {
+        return Color.argb(75, Color.red(color), Color.green(color), Color.blue(color));
     }
 
     /**

@@ -1,17 +1,12 @@
 package io.andrys.monopoly.states;
 
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
 import java.util.Iterator;
 
-import io.andrys.monopoly.Board;
-import io.andrys.monopoly.Game;
 import io.andrys.monopoly.GameContext;
 import io.andrys.monopoly.GameEngine;
 import io.andrys.monopoly.Player;
-import io.andrys.monopoly.R;
 
 /**
  * NewGameState.java // Monopoly
@@ -23,7 +18,7 @@ import io.andrys.monopoly.R;
  * Starts a new game from scratch
  */
 public class NewGameState extends GameState {
-    private final String TAG = this.getClass().getSimpleName();
+    private final String TAG = String.format("%s[%s]", this.getClass().getSimpleName(), this.getShortCode());
 
     public NewGameState(GameEngine engine, GameContext gameContext) {
         super(engine, gameContext);
@@ -50,6 +45,9 @@ public class NewGameState extends GameState {
         render();
 
         // set the first player in the list as the active player; move to the dice roll phase.
+        Player activePlayer = gc.players.getFirst();
+        GameContext next = new GameContext(new int[]{1,1}, activePlayer, gc.players, gc.board, gc.pm);
+        changeState(new RollDiceState(engine, next));
 
     }
 
@@ -66,7 +64,7 @@ public class NewGameState extends GameState {
         Iterator<Player> itr = gc.players.iterator();
         while (itr.hasNext()) {
             Player p = itr.next();
-            engine.getParentActivity().drawTokenOntoBoard(p.getToken());
+            engine.getActivity().drawTokenOntoBoard(p.getToken());
         }
 
     }

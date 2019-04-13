@@ -29,6 +29,38 @@ public class VisualAssetManager {
     }
 
     /**
+     * There are four sides of a Monopoly board, and every non-corner space exists on
+     * exactly one side of the board. Corner spaces, being in the corner of the monopoly board,
+     * have two sides.
+     */
+    enum BoardSide {
+        BOTTOM,
+        TOP,
+        LEFT,
+        RIGHT
+    }
+
+    /**
+     * Returns the side of the board that a space on the board is on.
+     * @param position A valid board position in [0,39]
+     * @return BoardSide
+     */
+    public BoardSide getBoardSideForPosition(int position) {
+        if ((position >= 0) && (position <= 10)) {
+            return BoardSide.BOTTOM;
+        } else if ((position >= 11) && (position <= 20)) {
+            return BoardSide.LEFT;
+        } else if ((position >= 21) && (position <= 30)) {
+            return BoardSide.TOP;
+        } else if ((position >= 31) && (position <= 39)) {
+            return BoardSide.RIGHT;
+        } else {
+            throw new IllegalArgumentException(String.format("Can't get BoardSide for position '%d'; argument out of bounds!", position));
+        }
+    }
+
+
+    /**
      * Returns the Drawable of the face on a die associated with the passed value.
      * @param value An integer in [1,6].
      * @return

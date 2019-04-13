@@ -79,7 +79,7 @@ public class GameEngine {
             assert stateStack.peek() != null;
             // transition out of the current state
             stateStack.peek().onStateExit();
-            GameState currentState = stateStack.pop();  // made a local variable so you can extract the gameContext out of this if you want
+            stateStack.pop();
 
             // if there is a state below this, resume it by transitioning into it
             if (stateStack.peek() != null) {
@@ -105,8 +105,6 @@ public class GameEngine {
             popState();
         }
         pushState(s);
-        stateStack.peek().onStateEnter();
-        stateStack.peek().execute();
     }
 
     /**
@@ -127,11 +125,11 @@ public class GameEngine {
     }
 
     /**
-     * Returns an instance of the activity that holds the game views.
+     * Returns the Activity instance that holds the game views.
      * Right now, that's a Fullscreen activity.
      * @return FullscreenActivity
      */
-    public FullscreenActivity getParentActivity() {
+    public FullscreenActivity getActivity() {
         return this.activity;
     }
 }

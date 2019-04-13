@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
@@ -12,18 +14,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.transition.TransitionManager;
 import android.util.Log;
+import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Array;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import io.andrys.monopoly.states.NewGameState;
+import io.andrys.monopoly.states.UnownedPropertyState;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -33,10 +43,14 @@ public class FullscreenActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getSimpleName();
 
     private Board board;
-    private VisualAssetManager visualAssetManager;
+    public VisualAssetManager visualAssetManager;
+    private GameEngine engine;
 
     // Maps tokenIDs to their ImageViews that display their position on the board.
     private SparseIntArray tokenIVMap;
+
+    // Maps board positions to drawables of houses/hotels drawn on top of them
+    private SparseArray<int[]> positionDevIDMap;
 
 
     private View mContentView;
@@ -60,10 +74,13 @@ public class FullscreenActivity extends AppCompatActivity {
         // initialize singleton rendering objects
         visualAssetManager = new VisualAssetManager(this);
 
-        // init layout references
+        // init layout references and data structures
         boardPanelCL = findViewById(R.id.board_panel_cl);
         tokenIVMap = new SparseIntArray();
-        startNewGame();
+        positionDevIDMap = new SparseArray<>();
+
+        // start the game engine
+        startGameEngine();
 
     }
 
@@ -107,9 +124,33 @@ public class FullscreenActivity extends AppCompatActivity {
     }
 
     /**
+     * Builds the core game objects from scratch, creates a set of players (just me for now),
+     * and starts the game engine.
+     */
+    protected void startGameEngine() {
+        Log.v(TAG, "Starting the game engine now...");
+
+        // build core objects
+        Board b = new Board();
+        PropertyManager pm = new PropertyManager(this);
+
+        // build players and player list
+        ArrayDeque<Player> players = new ArrayDeque<>();
+        String p1_color = "#FFB8E986";
+        Player me = new Player("Tony", 1, p1_color);
+        players.add(me);
+
+        // build the game engine and construct the initial game context state
+        engine = new GameEngine(this);
+        GameContext next = new GameContext(null, null, players, b, pm);
+        engine.changeState(new NewGameState(engine, next));
+
+    }
+
+    /**
      * Build (or re-build) all game and state objects from scratch to start a new game.
      */
-    protected void startNewGame() {
+    /*protected void startNewGame() {
         Log.v(TAG, "A new game is starting now...");
         this.board = new Board();
 
@@ -128,10 +169,9 @@ public class FullscreenActivity extends AppCompatActivity {
                 rollDice();
             }
         });
+    }*/
 
 
-
-    }
 
     private void jsonExperiment() {
         ArrayList<Property> properties = PropertyBuilder.loadProperties(this);
@@ -166,10 +206,10 @@ public class FullscreenActivity extends AppCompatActivity {
         int position = board.getTokenPosition(1);
 
         // check if position is a property space; if it is show a popup
-        if (board.getSpaceTypeForPosition(position) == SpaceType.PROPERTY) {
+        if (board.getSpaceTypeForPosition(position) == Board.SpaceType.PROPERTY) {
             // get ID reference to the property card graphic for this space on the board; pass it to the dialog
             int propDrawableID = visualAssetManager.getPropertyCardDrawableID(position);
-            showPropertyActionModal(propDrawableID);
+            //showPropertyActionModal(propDrawableID, 1);
         } else {
             Log.v(TAG, String.format("position '%d' isn't a property space, so we're not going to do anything yet!", position));
         }
@@ -195,10 +235,31 @@ public class FullscreenActivity extends AppCompatActivity {
     }
 
     /**
-     * Displays the modal with Buy/Auction/Manage command buttons for a specific property.
-     * @param propertyDrawableID the Drawable with this ID will be displayed in the center of this popup window.
+     * Updates the visual representation of a Property space on the board by
+     * tinting it with the owner's color and re-drawing the number of houses/hotels on it.
+     * @param position              Board position of the space to update
+     * @param owner                 Player that owns the property
+     * @param levelOfDevelopment    Level of development to render (pass 0 if not a street property!)
      */
-    public void showPropertyActionModal(int propertyDrawableID) {
+    public void redrawPropertyAtPosition(int position, Player owner, int levelOfDevelopment) {
+        ImageView propertyIV = visualAssetManager.getIVForBoardPosition(position);
+        propertyIV.setColorFilter(owner.getTransparentColor(), PorterDuff.Mode.SRC_OVER);
+    }
+
+    /**
+     * Displays the modal with Buy/Auction/Manage command buttons for a specific property.
+     * @param caller UnownedPropertyState instance that requested that we display this modal
+     * @param position Board position of the property the player is currently on
+     * @param shouldEnableBuyButton state of the buy button in the modal
+     */
+    public void showPropertyActionModal(UnownedPropertyState caller, int position, boolean shouldEnableBuyButton) {
+        if (BuildConfig.DEBUG && ((position < 0) || (position >= 40))) {
+            throw new AssertionError(String.format("showPropertyActionModal got an invalid position -> %d", position));
+        }
+
+        // get the ID of the picture of the property card, use it to inflate the modal
+        int propertyDrawableID = visualAssetManager.getPropertyCardDrawableID(position);
+
         // try to show a dialog fragment
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("propertyDialog");
@@ -207,14 +268,88 @@ public class FullscreenActivity extends AppCompatActivity {
         }
         ft.addToBackStack(null);
 
-        // pass the property card's drawable id to the dialog fragment we're building
+        // pass the property card's drawable id and position to the dialog fragment we're building
         Bundle b = new Bundle();
         b.putInt(PropertyActionDialogFragment.KEY_PROPERTY_DRAWABLE_ID, propertyDrawableID);
-        DialogFragment dialogFragment = new PropertyActionDialogFragment();
+        b.putInt(PropertyActionDialogFragment.KEY_PROPERTY_POSITION, position);
+        b.putBoolean(PropertyActionDialogFragment.KEY_BUY_BUTTON_STATE, shouldEnableBuyButton);
+        PropertyActionDialogFragment dialogFragment = new PropertyActionDialogFragment();
         dialogFragment.setArguments(b);
+
+        // the state that called this method should be sent click events
+        dialogFragment.setButtonListener(caller);
 
         // present the dialog
         dialogFragment.show(ft, "propertyActionDialog");
+    }
+
+    /**
+     * Displays a new house drawable at a position on the board.
+     * @param position position in [0,39]
+     */
+    public void drawHouseAtPosition(int position) {
+        // don't do anything if there are already four houses on this property
+        if (positionDevIDMap.get(position, new int[0]).length == 4) {
+            throw new IllegalStateException(String.format("Position '%d' has the maximum amount of houses! Build a hotel instead!", position));
+        }
+        // get important building objects
+        ViewBuilder vb = ViewBuilder.getInstance();
+        ConstraintGenerator cg = ConstraintGenerator.getInstance();
+
+        // construct a new house IV for this side of the board this position is on
+        int[] existingHouseIDs = positionDevIDMap.get(position, new int[0]);
+        boolean propHasExistingHouses = !(existingHouseIDs.length == 0);
+        VisualAssetManager.BoardSide posBoardSide = visualAssetManager.getBoardSideForPosition(position);
+        ImageView houseIV = vb.buildHouseIV(this, posBoardSide, propHasExistingHouses);
+
+        // add the new house to the view & clone the existing layout
+        boardPanelCL.addView(houseIV);
+        ConstraintSet newSet = new ConstraintSet();
+        newSet.clone(boardPanelCL);
+
+        // calculate & apply new constraints for this house
+        int propID = visualAssetManager.getIVForBoardPosition(position).getId();
+        newSet = cg.calculateHouseConstraints(houseIV.getId(), existingHouseIDs, propID, posBoardSide, newSet);
+        newSet.applyTo(boardPanelCL);
+        houseIV.setVisibility(View.VISIBLE);
+
+        // Add the ID of the new house to this property's house cache
+        int numExistingHouses = existingHouseIDs.length;
+        int[] newHouseIDCache = new int[numExistingHouses+1];
+        for (int i=0; i<numExistingHouses; i++) {
+            newHouseIDCache[i] = existingHouseIDs[i];
+        }
+        newHouseIDCache[newHouseIDCache.length-1] = houseIV.getId();
+        positionDevIDMap.put(position, newHouseIDCache);
+    }
+
+    /**
+     * Removes a house drawable from a position on the board
+     * @param position position in [0,39]
+     */
+    public void removeHouseAtPosition(int position) {
+        int[] existingHouseIDs = positionDevIDMap.get(position, new int[0]);
+        if (existingHouseIDs.length > 0) {
+            // get a reference to the last-built house so we can remove it
+            int rhsHouseID = existingHouseIDs[existingHouseIDs.length-1];
+            boardPanelCL.removeView(findViewById(rhsHouseID));
+            Log.v(TAG, String.format("Removed a house drawable at position '%d'.", position));
+
+            // store the remaining house IDs back in the cache if there are any.
+            int remainingHouseCount = existingHouseIDs.length-1;
+            if (remainingHouseCount > 0) {
+                int[] newHouseIDCache = new int[remainingHouseCount];
+                for (int i=0; i<remainingHouseCount; i++) {
+                    newHouseIDCache[i] = existingHouseIDs[i];
+                }
+                positionDevIDMap.put(position, newHouseIDCache);
+            } else {
+                // wipe out the cache for this property if we've removed all the houses
+                positionDevIDMap.delete(position);
+            }
+        } else {
+            throw new IllegalArgumentException(String.format("Position '%d' has no house drawables that can be removed!", position));
+        }
     }
 
     /**
