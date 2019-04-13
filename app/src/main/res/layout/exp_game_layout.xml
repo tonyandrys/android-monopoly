@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_cl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/top_board_row_gl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <ImageView
+        android:id="@+id/tile_go_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="3:3"
+        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/tile_medit_avenue_iv2"
+        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
+        app:layout_constraintVertical_weight="1"
+        app:srcCompat="@drawable/tile_go" />
+
+    <ImageView
+        android:id="@+id/tile_medit_avenue_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/tile_go_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tile_cchest_bottom_iv2"
+        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
+        app:layout_constraintVertical_weight="1"
+        app:srcCompat="@drawable/tile_mediterranean_avenue" />
+
+    <ImageView
+        android:id="@+id/tile_cchest_bottom_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/tile_medit_avenue_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/title_baltic_avenue_iv2"
+        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
+        app:layout_constraintVertical_weight="1"
+        app:srcCompat="@drawable/tile_cchest_bottom_side" />
+
+    <ImageView
+        android:id="@+id/title_baltic_avenue_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/tile_cchest_bottom_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/title_income_tax_iv2"
+        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
+        app:layout_constraintVertical_weight="1"
+        app:srcCompat="@drawable/tile_baltic_avenue" />
+
+    <ImageView
+        android:id="@+id/title_income_tax_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/title_baltic_avenue_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tile_reading_rr_iv2"
+        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
+        app:layout_constraintVertical_weight="1"
+        app:srcCompat="@drawable/tile_income_tax" />
+
+    <ImageView
+        android:id="@+id/tile_reading_rr_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/title_income_tax_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tile_oriental_avenue_iv2"
+        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
+        app:layout_constraintVertical_weight="1"
+        app:srcCompat="@drawable/tile_reading_rr" />
+
+    <ImageView
+        android:id="@+id/tile_oriental_avenue_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/tile_reading_rr_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tile_chance_bottom_iv2"
+        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
+        app:layout_constraintVertical_weight="1"
+        app:srcCompat="@drawable/tile_oriental_avenue" />
+
+    <ImageView
+        android:id="@+id/tile_chance_bottom_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/tile_oriental_avenue_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tile_vermont_avenue_iv2"
+        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
+        app:layout_constraintVertical_weight="1"
+        app:srcCompat="@drawable/tile_chance_bottom_side" />
+
+    <ImageView
+        android:id="@+id/tile_vermont_avenue_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/tile_chance_bottom_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tile_connecticut_avenue_iv2"
+        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
+        app:layout_constraintVertical_weight="1"
+        app:srcCompat="@drawable/tile_vermont_avenue" />
+
+    <ImageView
+        android:id="@+id/tile_connecticut_avenue_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/tile_vermont_avenue_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tile_jail_iv2"
+        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
+        app:layout_constraintVertical_weight="1"
+        app:srcCompat="@drawable/tile_connecticut_avenue" />
+
+    <ImageView
+        android:id="@+id/tile_jail_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/tile_connecticut_avenue_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="@+id/left_board_gl"
+        app:layout_constraintVertical_weight="1"
+        app:srcCompat="@drawable/tile_jail" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/left_board_gl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/right_board_gl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
+
+</android.support.constraint.ConstraintLayout>
