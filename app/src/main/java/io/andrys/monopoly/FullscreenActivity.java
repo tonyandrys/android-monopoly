@@ -1,5 +1,6 @@
 package io.andrys.monopoly;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -17,6 +18,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -27,7 +35,7 @@ public class FullscreenActivity extends AppCompatActivity {
     private Board board;
     private VisualAssetManager visualAssetManager;
 
-    // tokenID -> ImageView that represents the position of the player using that token
+    // Maps tokenIDs to their ImageViews that display their position on the board.
     private SparseIntArray tokenIVMap;
 
 
@@ -105,6 +113,10 @@ public class FullscreenActivity extends AppCompatActivity {
         Log.v(TAG, "A new game is starting now...");
         this.board = new Board();
 
+        // initialize the property manager; this loads all properties from disk and provides
+        // an interface to assign them to players
+        PropertyManager pm = new PropertyManager(this);
+
         // add tokens to board
         board.addPlayerToken(1);        // data model
         drawTokenOntoBoard(1);          // visual manifestation of data model
@@ -117,6 +129,29 @@ public class FullscreenActivity extends AppCompatActivity {
             }
         });
 
+
+
+    }
+
+    private void jsonExperiment() {
+        ArrayList<Property> properties = PropertyBuilder.loadProperties(this);
+        Log.v(TAG, String.format("Loaded '%d' properties from JSON", properties.size()));
+        for (int i=0; i<properties.size(); i++) {
+            if (properties.get(i) instanceof StreetProperty) {
+                StreetProperty p = (StreetProperty) properties.get(i);
+                @SuppressLint("DefaultLocale") String s = String.format("'%s' => StreetProperty[%s] / pos: '%d', price: '%d', max rent: '%d'", p.getName(), p.getColorGroup(), p.getPosition(), p.getPrice(), p.calculateRentPayment(5));
+                Log.v(TAG, s);
+            } else if (properties.get(i) instanceof RailroadProperty) {
+                RailroadProperty p = (RailroadProperty) properties.get(i);
+                @SuppressLint("DefaultLocale") String s = String.format("'%s' => RailroadProperty / pos: '%d', price: '%d', max rent: '%d'", p.getName(), p.getPosition(), p.getPrice(), p.calculateRentPayment(4));
+                Log.v(TAG, s);
+            } else if (properties.get(i) instanceof UtilityProperty) {
+                UtilityProperty p = (UtilityProperty) properties.get(i);
+                @SuppressLint("DefaultLocale") String s = String.format("'%s' => UtilityProperty / pos: '%d', price: '%d', max rent: '%d'", p.getName(), p.getPosition(), p.getPrice(), p.calculateRentPayment(2, 12));
+                Log.v(TAG, s);
+            }
+        }
+        Log.v(TAG, "Done!");
     }
 
     /**
@@ -146,7 +181,7 @@ public class FullscreenActivity extends AppCompatActivity {
     /**
      * Call to repaint the game's state to the screen.
      */
-    private void render() {
+    public void render() {
         // Repaint dice values
         ImageView die1 = findViewById(R.id.die_1_iv);
         ImageView die2 = findViewById(R.id.die_2_iv);
@@ -163,7 +198,7 @@ public class FullscreenActivity extends AppCompatActivity {
      * Displays the modal with Buy/Auction/Manage command buttons for a specific property.
      * @param propertyDrawableID the Drawable with this ID will be displayed in the center of this popup window.
      */
-    private void showPropertyActionModal(int propertyDrawableID) {
+    public void showPropertyActionModal(int propertyDrawableID) {
         // try to show a dialog fragment
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("propertyDialog");
@@ -186,7 +221,7 @@ public class FullscreenActivity extends AppCompatActivity {
      * Initializes an ImageView for a token and places it on Go.
      * @param tokenID
      */
-    private void drawTokenOntoBoard(int tokenID) {
+    public void drawTokenOntoBoard(int tokenID) {
         // create the new token
         ImageView tokenIV = new ImageView(this);
         tokenIV.setId(View.generateViewId());
@@ -214,7 +249,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
     }
 
-    private void drawTokenAtPosition(int tokenID, int p) {
+    public void drawTokenAtPosition(int tokenID, int p) {
         // get a reference to the ImageView to re-locate
         int viewID = tokenIVMap.get(tokenID);
         ImageView tokenIV = findViewById(viewID);
