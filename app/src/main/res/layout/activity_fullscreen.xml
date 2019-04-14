@@ -398,6 +398,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/tile_pacific_avenue_iv"
                 app:layout_constraintStart_toEndOf="@+id/tile_marvin_gardens_iv"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="spread_inside"
                 app:srcCompat="@drawable/tile_go_to_jail" />
 
             <ImageView

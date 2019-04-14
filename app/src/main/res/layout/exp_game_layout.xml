@@ -372,6 +372,94 @@
         app:layout_constraintVertical_weight="1"
         app:srcCompat="@drawable/tile_connecticut_avenue" />
 
+    <ImageView
+        android:id="@+id/tile_pacific_avenue_iv2"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
+        app:srcCompat="@drawable/tile_pacific_avenue"
+        tools:layout_editor_absoluteY="64dp" />
+
+    <ImageView
+        android:id="@+id/tile_north_carolina_avenue_iv2"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        app:srcCompat="@drawable/tile_north_carolina_avenue"
+        tools:layout_editor_absoluteX="475dp"
+        tools:layout_editor_absoluteY="139dp" />
+
+    <ImageView
+        android:id="@+id/tile_cchest_right_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tile_pennsylvania_avenue_iv2"
+        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
+        app:layout_constraintLeft_toLeftOf="@+id/tile_go_iv2"
+        app:layout_constraintTop_toTopOf="@+id/tile_cchest_left_iv2"
+        app:srcCompat="@drawable/tile_cchest_right_side" />
+
+    <ImageView
+        android:id="@+id/tile_pennsylvania_avenue_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tile_short_line_rr_iv2"
+        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
+        app:layout_constraintLeft_toLeftOf="@+id/tile_go_iv2"
+        app:layout_constraintStart_toStartOf="@+id/tile_go_iv2"
+        app:layout_constraintTop_toTopOf="@+id/tile_st_james_place_iv2"
+        app:srcCompat="@drawable/tile_pennsylvania_avenue" />
+
+    <ImageView
+        android:id="@+id/tile_short_line_rr_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tile_chance_right_iv2"
+        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
+        app:layout_constraintLeft_toLeftOf="@+id/tile_go_iv2"
+        app:layout_constraintStart_toStartOf="@+id/tile_go_iv2"
+        app:layout_constraintTop_toTopOf="@+id/tile_pennsylvania_rr_iv2"
+        app:srcCompat="@drawable/tile_short_line_rr" />
+
+    <ImageView
+        android:id="@+id/tile_chance_right_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tile_park_place_iv2"
+        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
+        app:layout_constraintStart_toStartOf="@+id/tile_go_iv2"
+        app:layout_constraintTop_toTopOf="@+id/tile_states_avenue_iv2"
+        app:srcCompat="@drawable/tile_chance_right_side" />
+
+    <ImageView
+        android:id="@+id/tile_park_place_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tile_luxury_tax_iv2"
+        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
+        app:layout_constraintStart_toStartOf="@+id/tile_go_iv2"
+        app:layout_constraintTop_toTopOf="@+id/tile_virginia_avenue_iv2"
+        app:srcCompat="@drawable/tile_park_place" />
+
+    <ImageView
+        android:id="@+id/tile_luxury_tax_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tile_boardwalk_iv2"
+        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
+        app:layout_constraintStart_toStartOf="@+id/tile_go_iv2"
+        app:layout_constraintTop_toTopOf="@+id/tile_electric_company_iv2"
+        app:srcCompat="@drawable/tile_luxury_tax" />
+
+    <ImageView
+        android:id="@+id/tile_boardwalk_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tile_go_iv2"
+        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
+        app:layout_constraintStart_toStartOf="@+id/tile_go_iv2"
+        app:layout_constraintTop_toTopOf="@+id/tile_st_charles_place_iv2"
+        app:srcCompat="@drawable/tile_boardwalk" />
+
     <android.support.constraint.Guideline
         android:id="@+id/left_board_gl"
         android:layout_width="wrap_content"
