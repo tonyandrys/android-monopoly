@@ -270,6 +270,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tile_free_parking_iv"
+                app:layout_constraintVertical_chainStyle="spread_inside"
                 app:srcCompat="@drawable/tile_new_york_avenue" />
 
             <ImageView
