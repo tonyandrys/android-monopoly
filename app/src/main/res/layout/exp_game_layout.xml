@@ -8,230 +8,83 @@
     android:background="@color/colorPrimary">
 
     <ImageView
-        android:id="@+id/tile_marvin_gardens_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tile_free_parking_iv2"
-        app:layout_constraintEnd_toEndOf="@+id/tile_medit_avenue_iv2"
-        app:layout_constraintStart_toEndOf="@+id/tile_water_works_iv2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tile_marvin_gardens" />
-
-    <ImageView
-        android:id="@+id/tile_water_works_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tile_free_parking_iv2"
-        app:layout_constraintEnd_toEndOf="@+id/tile_cchest_bottom_iv2"
-        app:layout_constraintStart_toEndOf="@+id/tile_ventnor_avenue_iv2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tile_water_works" />
-
-    <ImageView
-        android:id="@+id/tile_ventnor_avenue_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tile_free_parking_iv2"
-        app:layout_constraintEnd_toEndOf="@+id/title_baltic_avenue_iv2"
-        app:layout_constraintStart_toEndOf="@+id/tile_atlantic_avenue_iv2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tile_ventnor_avenue" />
-
-    <ImageView
-        android:id="@+id/tile_atlantic_avenue_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tile_free_parking_iv2"
-        app:layout_constraintEnd_toEndOf="@+id/title_income_tax_iv2"
-        app:layout_constraintStart_toEndOf="@+id/tile_bando_rr_iv2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tile_atlantic_avenue" />
-
-    <ImageView
-        android:id="@+id/tile_bando_rr_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tile_free_parking_iv2"
-        app:layout_constraintEnd_toEndOf="@+id/tile_reading_rr_iv2"
-        app:layout_constraintStart_toEndOf="@+id/tile_illinois_avenue_iv2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tile_bando_rr" />
-
-    <ImageView
-        android:id="@+id/tile_illinois_avenue_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tile_free_parking_iv2"
-        app:layout_constraintEnd_toEndOf="@+id/tile_oriental_avenue_iv2"
-        app:layout_constraintStart_toEndOf="@+id/tile_indiana_avenue_iv2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tile_illinois_avenue" />
-
-    <ImageView
-        android:id="@+id/tile_indiana_avenue_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tile_free_parking_iv2"
-        app:layout_constraintEnd_toEndOf="@+id/tile_chance_bottom_iv2"
-        app:layout_constraintStart_toEndOf="@+id/tile_chance_top_iv2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tile_indiana_avenue" />
-
-    <ImageView
-        android:id="@+id/tile_chance_top_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tile_free_parking_iv2"
-        app:layout_constraintBottom_toTopOf="@+id/tile_new_york_avenue_iv2"
-        app:layout_constraintEnd_toEndOf="@+id/tile_vermont_avenue_iv2"
-        app:layout_constraintStart_toEndOf="@+id/tile_kentucky_avenue_iv2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tile_chance_top_side" />
-
-    <ImageView
-        android:id="@+id/tile_kentucky_avenue_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tile_free_parking_iv2"
-        app:layout_constraintEnd_toEndOf="@+id/tile_connecticut_avenue_iv2"
-        app:layout_constraintStart_toEndOf="@+id/tile_free_parking_iv2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tile_kentucky_avenue" />
-
-    <ImageView
-        android:id="@+id/tile_go_to_jail_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tile_free_parking_iv2"
-        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
-        app:layout_constraintStart_toEndOf="@+id/tile_medit_avenue_iv2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tile_go_to_jail" />
-
-    <ImageView
-        android:id="@+id/tile_free_parking_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="3:3"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="@+id/left_board_gl"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_weight="1"
-        app:srcCompat="@drawable/tile_free_parking" />
-
-    <ImageView
         android:id="@+id/tile_new_york_avenue_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tile_tennessee_avenue_iv2"
-        app:layout_constraintDimensionRatio="5:3"
-        app:layout_constraintEnd_toEndOf="@+id/tile_jail_iv2"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="@+id/left_board_gl"
-        app:layout_constraintTop_toBottomOf="@+id/tile_free_parking_iv2"
-        app:srcCompat="@drawable/tile_new_york_avenue" />
+        android:layout_width="61dp"
+        android:layout_height="36dp"
+        app:srcCompat="@drawable/tile_new_york_avenue"
+        tools:layout_editor_absoluteX="81dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <ImageView
         android:id="@+id/tile_tennessee_avenue_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tile_cchest_left_iv2"
-        app:layout_constraintDimensionRatio="5:3"
-        app:layout_constraintEnd_toEndOf="@+id/tile_jail_iv2"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="@+id/left_board_gl"
-        app:layout_constraintTop_toBottomOf="@+id/tile_new_york_avenue_iv2"
-        app:srcCompat="@drawable/tile_tennessee_avenue" />
+        android:layout_width="61dp"
+        android:layout_height="36dp"
+        app:srcCompat="@drawable/tile_tennessee_avenue"
+        tools:layout_editor_absoluteX="119dp"
+        tools:layout_editor_absoluteY="103dp" />
 
     <ImageView
         android:id="@+id/tile_cchest_left_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tile_st_james_place_iv2"
-        app:layout_constraintDimensionRatio="5:3"
-        app:layout_constraintEnd_toEndOf="@+id/tile_jail_iv2"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="@+id/left_board_gl"
-        app:layout_constraintTop_toBottomOf="@+id/tile_tennessee_avenue_iv2"
-        app:srcCompat="@drawable/tile_cchest_left_side" />
+        android:layout_width="61dp"
+        android:layout_height="36dp"
+        app:srcCompat="@drawable/tile_cchest_left_side"
+        tools:layout_editor_absoluteX="58dp"
+        tools:layout_editor_absoluteY="86dp" />
 
     <ImageView
         android:id="@+id/tile_st_james_place_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tile_pennsylvania_rr_iv2"
-        app:layout_constraintDimensionRatio="5:3"
-        app:layout_constraintEnd_toEndOf="@+id/tile_jail_iv2"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="@+id/left_board_gl"
-        app:layout_constraintTop_toBottomOf="@+id/tile_cchest_left_iv2"
-        app:srcCompat="@drawable/tile_st_james_place" />
+        android:layout_width="61dp"
+        android:layout_height="36dp"
+        app:srcCompat="@drawable/tile_st_james_place"
+        tools:layout_editor_absoluteX="58dp"
+        tools:layout_editor_absoluteY="124dp" />
 
     <ImageView
         android:id="@+id/tile_pennsylvania_rr_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tile_states_avenue_iv2"
-        app:layout_constraintDimensionRatio="5:3"
-        app:layout_constraintEnd_toEndOf="@+id/tile_jail_iv2"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="@+id/left_board_gl"
-        app:layout_constraintTop_toBottomOf="@+id/tile_st_james_place_iv2"
-        app:srcCompat="@drawable/tile_pennsylvania_rr" />
+        android:layout_width="61dp"
+        android:layout_height="36dp"
+        app:srcCompat="@drawable/tile_pennsylvania_rr"
+        tools:layout_editor_absoluteX="58dp"
+        tools:layout_editor_absoluteY="164dp" />
 
     <ImageView
         android:id="@+id/tile_virginia_avenue_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tile_electric_company_iv2"
-        app:layout_constraintDimensionRatio="5:3"
-        app:layout_constraintEnd_toEndOf="@+id/tile_jail_iv2"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="@+id/left_board_gl"
-        app:layout_constraintTop_toBottomOf="@+id/tile_states_avenue_iv2"
-        app:srcCompat="@drawable/tile_virginia_avenue" />
+        android:layout_width="61dp"
+        android:layout_height="36dp"
+        app:srcCompat="@drawable/tile_virginia_avenue"
+        tools:layout_editor_absoluteX="58dp"
+        tools:layout_editor_absoluteY="233dp" />
 
     <ImageView
         android:id="@+id/tile_states_avenue_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tile_virginia_avenue_iv2"
-        app:layout_constraintDimensionRatio="5:3"
-        app:layout_constraintEnd_toEndOf="@+id/tile_jail_iv2"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="@+id/left_board_gl"
-        app:layout_constraintTop_toBottomOf="@+id/tile_pennsylvania_rr_iv2"
-        app:srcCompat="@drawable/tile_states_avenue" />
+        android:layout_width="61dp"
+        android:layout_height="36dp"
+        app:srcCompat="@drawable/tile_states_avenue"
+        tools:layout_editor_absoluteX="58dp"
+        tools:layout_editor_absoluteY="197dp" />
 
     <ImageView
         android:id="@+id/tile_electric_company_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tile_st_charles_place_iv2"
-        app:layout_constraintEnd_toEndOf="@+id/tile_jail_iv2"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="@+id/left_board_gl"
-        app:layout_constraintTop_toBottomOf="@+id/tile_virginia_avenue_iv2"
-        app:srcCompat="@drawable/tile_electric_company" />
+        android:layout_width="61dp"
+        android:layout_height="36dp"
+        app:srcCompat="@drawable/tile_electric_company"
+        tools:layout_editor_absoluteX="58dp"
+        tools:layout_editor_absoluteY="267dp" />
 
     <ImageView
         android:id="@+id/tile_st_charles_place_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tile_jail_iv2"
-        app:layout_constraintDimensionRatio="5:3"
-        app:layout_constraintEnd_toEndOf="@+id/tile_jail_iv2"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="@+id/left_board_gl"
-        app:layout_constraintTop_toBottomOf="@+id/tile_electric_company_iv2"
-        app:srcCompat="@drawable/tile_st_charles_place" />
+        android:layout_width="61dp"
+        android:layout_height="36dp"
+        app:srcCompat="@drawable/tile_st_charles_place"
+        tools:layout_editor_absoluteX="58dp"
+        tools:layout_editor_absoluteY="300dp" />
 
     <ImageView
         android:id="@+id/tile_jail_iv2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="3:3"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/tile_connecticut_avenue_iv2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -245,12 +98,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="3:3"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toEndOf="@+id/tile_medit_avenue_iv2"
-        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
         app:layout_constraintVertical_weight="1"
         app:srcCompat="@drawable/tile_go" />
 
@@ -262,9 +113,8 @@
         app:layout_constraintDimensionRatio="3:5"
         app:layout_constraintEnd_toStartOf="@+id/tile_go_iv2"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
         app:layout_constraintStart_toEndOf="@+id/tile_cchest_bottom_iv2"
-        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
-        app:layout_constraintVertical_weight="1"
         app:srcCompat="@drawable/tile_mediterranean_avenue" />
 
     <ImageView
@@ -275,9 +125,8 @@
         app:layout_constraintDimensionRatio="3:5"
         app:layout_constraintEnd_toStartOf="@+id/tile_medit_avenue_iv2"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
         app:layout_constraintStart_toEndOf="@+id/title_baltic_avenue_iv2"
-        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
-        app:layout_constraintVertical_weight="1"
         app:srcCompat="@drawable/tile_cchest_bottom_side" />
 
     <ImageView
@@ -288,9 +137,8 @@
         app:layout_constraintDimensionRatio="3:5"
         app:layout_constraintEnd_toStartOf="@+id/tile_cchest_bottom_iv2"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
         app:layout_constraintStart_toEndOf="@+id/title_income_tax_iv2"
-        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
-        app:layout_constraintVertical_weight="1"
         app:srcCompat="@drawable/tile_baltic_avenue" />
 
     <ImageView
@@ -301,9 +149,8 @@
         app:layout_constraintDimensionRatio="3:5"
         app:layout_constraintEnd_toStartOf="@+id/title_baltic_avenue_iv2"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
         app:layout_constraintStart_toEndOf="@+id/tile_reading_rr_iv2"
-        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
-        app:layout_constraintVertical_weight="1"
         app:srcCompat="@drawable/tile_income_tax" />
 
     <ImageView
@@ -314,9 +161,8 @@
         app:layout_constraintDimensionRatio="3:5"
         app:layout_constraintEnd_toStartOf="@+id/title_income_tax_iv2"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
         app:layout_constraintStart_toEndOf="@+id/tile_oriental_avenue_iv2"
-        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
-        app:layout_constraintVertical_weight="1"
         app:srcCompat="@drawable/tile_reading_rr" />
 
     <ImageView
@@ -327,9 +173,8 @@
         app:layout_constraintDimensionRatio="3:5"
         app:layout_constraintEnd_toStartOf="@+id/tile_reading_rr_iv2"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
         app:layout_constraintStart_toEndOf="@+id/tile_chance_bottom_iv2"
-        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
-        app:layout_constraintVertical_weight="1"
         app:srcCompat="@drawable/tile_oriental_avenue" />
 
     <ImageView
@@ -340,9 +185,8 @@
         app:layout_constraintDimensionRatio="3:5"
         app:layout_constraintEnd_toStartOf="@+id/tile_oriental_avenue_iv2"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
         app:layout_constraintStart_toEndOf="@+id/tile_vermont_avenue_iv2"
-        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
-        app:layout_constraintVertical_weight="1"
         app:srcCompat="@drawable/tile_chance_bottom_side" />
 
     <ImageView
@@ -353,9 +197,8 @@
         app:layout_constraintDimensionRatio="3:5"
         app:layout_constraintEnd_toStartOf="@+id/tile_chance_bottom_iv2"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
         app:layout_constraintStart_toEndOf="@+id/tile_connecticut_avenue_iv2"
-        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
-        app:layout_constraintVertical_weight="1"
         app:srcCompat="@drawable/tile_vermont_avenue" />
 
     <ImageView
@@ -367,98 +210,216 @@
         app:layout_constraintDimensionRatio="3:5"
         app:layout_constraintEnd_toStartOf="@+id/tile_vermont_avenue_iv2"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
         app:layout_constraintStart_toEndOf="@+id/tile_jail_iv2"
-        app:layout_constraintTop_toTopOf="@+id/tile_jail_iv2"
-        app:layout_constraintVertical_weight="1"
         app:srcCompat="@drawable/tile_connecticut_avenue" />
+
+    <ImageView
+        android:id="@+id/tile_free_parking_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/tile_kentucky_avenue_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="@+id/left_board_gl"
+        app:srcCompat="@drawable/tile_free_parking"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:id="@+id/tile_kentucky_avenue_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/tile_chance_top_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
+        app:layout_constraintStart_toEndOf="@+id/tile_free_parking_iv2"
+        app:srcCompat="@drawable/tile_kentucky_avenue"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:id="@+id/tile_chance_top_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/tile_indiana_avenue_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
+        app:layout_constraintStart_toEndOf="@+id/tile_kentucky_avenue_iv2"
+        app:srcCompat="@drawable/tile_chance_top_side"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:id="@+id/tile_indiana_avenue_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/tile_illinois_avenue_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
+        app:layout_constraintStart_toEndOf="@+id/tile_chance_top_iv2"
+        app:srcCompat="@drawable/tile_indiana_avenue"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:id="@+id/tile_illinois_avenue_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/tile_bando_rr_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
+        app:layout_constraintStart_toEndOf="@+id/tile_indiana_avenue_iv2"
+        app:srcCompat="@drawable/tile_illinois_avenue"
+        tools:layout_editor_absoluteY="0dp" />
+
+
+    <ImageView
+        android:id="@+id/tile_bando_rr_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/tile_atlantic_avenue_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
+        app:layout_constraintStart_toEndOf="@+id/tile_illinois_avenue_iv2"
+        app:srcCompat="@drawable/tile_bando_rr"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:id="@+id/tile_atlantic_avenue_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/tile_ventnor_avenue_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
+        app:layout_constraintStart_toEndOf="@+id/tile_bando_rr_iv2"
+        app:srcCompat="@drawable/tile_atlantic_avenue"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:id="@+id/tile_ventnor_avenue_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/tile_water_works_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
+        app:layout_constraintStart_toEndOf="@+id/tile_atlantic_avenue_iv2"
+        app:srcCompat="@drawable/tile_ventnor_avenue"
+        tools:layout_editor_absoluteY="0dp" />
+
+
+    <ImageView
+        android:id="@+id/tile_water_works_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/tile_marvin_gardens_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
+        app:layout_constraintStart_toEndOf="@+id/tile_ventnor_avenue_iv2"
+        app:srcCompat="@drawable/tile_water_works"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:id="@+id/tile_marvin_gardens_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="3:5"
+        app:layout_constraintEnd_toStartOf="@+id/tile_go_to_jail_iv2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tile_water_works_iv2"
+        app:srcCompat="@drawable/tile_marvin_gardens"
+        tools:layout_editor_absoluteY="0dp"
+        app:layout_constraintHorizontal_weight="0.6" />
+
+    <ImageView
+        android:id="@+id/tile_go_to_jail_iv2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/tile_marvin_gardens_iv2"
+        app:srcCompat="@drawable/tile_go_to_jail"
+        tools:layout_editor_absoluteY="0dp" />
 
     <ImageView
         android:id="@+id/tile_pacific_avenue_iv2"
         android:layout_width="40dp"
         android:layout_height="25dp"
-        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
         app:srcCompat="@drawable/tile_pacific_avenue"
-        tools:layout_editor_absoluteY="64dp" />
+        tools:layout_editor_absoluteX="767dp"
+        tools:layout_editor_absoluteY="81dp" />
 
     <ImageView
         android:id="@+id/tile_north_carolina_avenue_iv2"
         android:layout_width="40dp"
         android:layout_height="25dp"
         app:srcCompat="@drawable/tile_north_carolina_avenue"
-        tools:layout_editor_absoluteX="475dp"
-        tools:layout_editor_absoluteY="139dp" />
+        tools:layout_editor_absoluteX="758dp"
+        tools:layout_editor_absoluteY="114dp" />
 
     <ImageView
         android:id="@+id/tile_cchest_right_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tile_pennsylvania_avenue_iv2"
-        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
-        app:layout_constraintLeft_toLeftOf="@+id/tile_go_iv2"
-        app:layout_constraintTop_toTopOf="@+id/tile_cchest_left_iv2"
-        app:srcCompat="@drawable/tile_cchest_right_side" />
+        android:layout_width="56dp"
+        android:layout_height="33dp"
+        app:srcCompat="@drawable/tile_cchest_right_side"
+        tools:layout_editor_absoluteX="750dp"
+        tools:layout_editor_absoluteY="139dp" />
 
     <ImageView
         android:id="@+id/tile_pennsylvania_avenue_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tile_short_line_rr_iv2"
-        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
-        app:layout_constraintLeft_toLeftOf="@+id/tile_go_iv2"
-        app:layout_constraintStart_toStartOf="@+id/tile_go_iv2"
-        app:layout_constraintTop_toTopOf="@+id/tile_st_james_place_iv2"
-        app:srcCompat="@drawable/tile_pennsylvania_avenue" />
+        android:layout_width="56dp"
+        android:layout_height="33dp"
+        app:srcCompat="@drawable/tile_pennsylvania_avenue"
+        tools:layout_editor_absoluteX="750dp"
+        tools:layout_editor_absoluteY="167dp" />
 
     <ImageView
         android:id="@+id/tile_short_line_rr_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tile_chance_right_iv2"
-        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
-        app:layout_constraintLeft_toLeftOf="@+id/tile_go_iv2"
-        app:layout_constraintStart_toStartOf="@+id/tile_go_iv2"
-        app:layout_constraintTop_toTopOf="@+id/tile_pennsylvania_rr_iv2"
-        app:srcCompat="@drawable/tile_short_line_rr" />
+        android:layout_width="56dp"
+        android:layout_height="33dp"
+        app:srcCompat="@drawable/tile_short_line_rr"
+        tools:layout_editor_absoluteX="750dp"
+        tools:layout_editor_absoluteY="200dp" />
 
     <ImageView
         android:id="@+id/tile_chance_right_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tile_park_place_iv2"
-        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
-        app:layout_constraintStart_toStartOf="@+id/tile_go_iv2"
-        app:layout_constraintTop_toTopOf="@+id/tile_states_avenue_iv2"
-        app:srcCompat="@drawable/tile_chance_right_side" />
+        android:layout_width="56dp"
+        android:layout_height="33dp"
+        app:srcCompat="@drawable/tile_chance_right_side"
+        tools:layout_editor_absoluteX="750dp"
+        tools:layout_editor_absoluteY="233dp" />
 
     <ImageView
         android:id="@+id/tile_park_place_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tile_luxury_tax_iv2"
-        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
-        app:layout_constraintStart_toStartOf="@+id/tile_go_iv2"
-        app:layout_constraintTop_toTopOf="@+id/tile_virginia_avenue_iv2"
-        app:srcCompat="@drawable/tile_park_place" />
+        android:layout_width="56dp"
+        android:layout_height="33dp"
+        app:srcCompat="@drawable/tile_park_place"
+        tools:layout_editor_absoluteX="750dp"
+        tools:layout_editor_absoluteY="267dp" />
 
     <ImageView
         android:id="@+id/tile_luxury_tax_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tile_boardwalk_iv2"
-        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
-        app:layout_constraintStart_toStartOf="@+id/tile_go_iv2"
-        app:layout_constraintTop_toTopOf="@+id/tile_electric_company_iv2"
-        app:srcCompat="@drawable/tile_luxury_tax" />
+        android:layout_width="56dp"
+        android:layout_height="33dp"
+        app:srcCompat="@drawable/tile_luxury_tax"
+        tools:layout_editor_absoluteX="750dp"
+        tools:layout_editor_absoluteY="300dp" />
 
     <ImageView
         android:id="@+id/tile_boardwalk_iv2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tile_go_iv2"
-        app:layout_constraintEnd_toStartOf="@+id/right_board_gl"
-        app:layout_constraintStart_toStartOf="@+id/tile_go_iv2"
-        app:layout_constraintTop_toTopOf="@+id/tile_st_charles_place_iv2"
-        app:srcCompat="@drawable/tile_boardwalk" />
+        android:layout_width="56dp"
+        android:layout_height="33dp"
+        app:srcCompat="@drawable/tile_boardwalk"
+        tools:layout_editor_absoluteX="750dp"
+        tools:layout_editor_absoluteY="334dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/left_board_gl"
