@@ -62,8 +62,8 @@ public class FullscreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // create board activity as a full screen activity
-        setContentView(R.layout.activity_fullscreen);
-        mContentView = findViewById(R.id.fullscreen_content);
+        setContentView(R.layout.exp_game_layout);
+        mContentView = findViewById(R.id.root_cl);
         mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -75,7 +75,7 @@ public class FullscreenActivity extends AppCompatActivity {
         visualAssetManager = new VisualAssetManager(this);
 
         // init layout references and data structures
-        boardPanelCL = findViewById(R.id.board_panel_cl);
+        boardPanelCL = findViewById(R.id.root_cl);
         tokenIVMap = new SparseIntArray();
         positionDevIDMap = new SparseArray<>();
 
