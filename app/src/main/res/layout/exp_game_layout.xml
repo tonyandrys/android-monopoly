@@ -9,75 +9,94 @@
 
     <ImageView
         android:id="@+id/tile_new_york_avenue_iv2"
-        android:layout_width="61dp"
-        android:layout_height="36dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tile_tennessee_avenue_iv2"
+        app:layout_constraintDimensionRatio="5:3"
+        app:layout_constraintTop_toBottomOf="@+id/tile_free_parking_iv2"
+        app:layout_constraintVertical_chainStyle="packed"
         app:srcCompat="@drawable/tile_new_york_avenue"
-        tools:layout_editor_absoluteX="81dp"
-        tools:layout_editor_absoluteY="0dp" />
+        tools:layout_editor_absoluteX="180dp" />
 
     <ImageView
         android:id="@+id/tile_tennessee_avenue_iv2"
-        android:layout_width="61dp"
-        android:layout_height="36dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tile_cchest_left_iv2"
+        app:layout_constraintDimensionRatio="5:3"
+        app:layout_constraintTop_toBottomOf="@+id/tile_new_york_avenue_iv2"
         app:srcCompat="@drawable/tile_tennessee_avenue"
-        tools:layout_editor_absoluteX="119dp"
-        tools:layout_editor_absoluteY="103dp" />
+        tools:layout_editor_absoluteX="180dp" />
 
     <ImageView
         android:id="@+id/tile_cchest_left_iv2"
-        android:layout_width="61dp"
-        android:layout_height="36dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tile_st_james_place_iv2"
+        app:layout_constraintDimensionRatio="5:3"
+        app:layout_constraintTop_toBottomOf="@+id/tile_tennessee_avenue_iv2"
         app:srcCompat="@drawable/tile_cchest_left_side"
-        tools:layout_editor_absoluteX="58dp"
-        tools:layout_editor_absoluteY="86dp" />
+        tools:layout_editor_absoluteX="180dp" />
 
     <ImageView
         android:id="@+id/tile_st_james_place_iv2"
-        android:layout_width="61dp"
-        android:layout_height="36dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tile_pennsylvania_rr_iv2"
+        app:layout_constraintDimensionRatio="5:3"
+        app:layout_constraintTop_toBottomOf="@+id/tile_cchest_left_iv2"
         app:srcCompat="@drawable/tile_st_james_place"
-        tools:layout_editor_absoluteX="58dp"
-        tools:layout_editor_absoluteY="124dp" />
+        tools:layout_editor_absoluteX="180dp" />
 
     <ImageView
         android:id="@+id/tile_pennsylvania_rr_iv2"
-        android:layout_width="61dp"
-        android:layout_height="36dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tile_virginia_avenue_iv2"
+        app:layout_constraintDimensionRatio="5:3"
+        app:layout_constraintTop_toBottomOf="@+id/tile_st_james_place_iv2"
         app:srcCompat="@drawable/tile_pennsylvania_rr"
-        tools:layout_editor_absoluteX="58dp"
-        tools:layout_editor_absoluteY="164dp" />
+        tools:layout_editor_absoluteX="180dp" />
 
     <ImageView
         android:id="@+id/tile_virginia_avenue_iv2"
-        android:layout_width="61dp"
-        android:layout_height="36dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tile_states_avenue_iv2"
+        app:layout_constraintDimensionRatio="5:3"
+        app:layout_constraintTop_toBottomOf="@+id/tile_pennsylvania_rr_iv2"
         app:srcCompat="@drawable/tile_virginia_avenue"
-        tools:layout_editor_absoluteX="58dp"
-        tools:layout_editor_absoluteY="233dp" />
+        tools:layout_editor_absoluteX="180dp" />
 
     <ImageView
         android:id="@+id/tile_states_avenue_iv2"
-        android:layout_width="61dp"
-        android:layout_height="36dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tile_electric_company_iv2"
+        app:layout_constraintDimensionRatio="5:3"
+        app:layout_constraintTop_toBottomOf="@+id/tile_virginia_avenue_iv2"
         app:srcCompat="@drawable/tile_states_avenue"
-        tools:layout_editor_absoluteX="58dp"
-        tools:layout_editor_absoluteY="197dp" />
+        tools:layout_editor_absoluteX="180dp" />
 
     <ImageView
         android:id="@+id/tile_electric_company_iv2"
-        android:layout_width="61dp"
-        android:layout_height="36dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tile_st_charles_place_iv2"
+        app:layout_constraintDimensionRatio="5:3"
+        app:layout_constraintTop_toBottomOf="@+id/tile_states_avenue_iv2"
         app:srcCompat="@drawable/tile_electric_company"
-        tools:layout_editor_absoluteX="58dp"
-        tools:layout_editor_absoluteY="267dp" />
+        tools:layout_editor_absoluteX="180dp" />
 
     <ImageView
         android:id="@+id/tile_st_charles_place_iv2"
-        android:layout_width="61dp"
-        android:layout_height="36dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tile_jail_iv2"
+        app:layout_constraintDimensionRatio="5:3"
+        app:layout_constraintTop_toBottomOf="@+id/tile_electric_company_iv2"
         app:srcCompat="@drawable/tile_st_charles_place"
-        tools:layout_editor_absoluteX="58dp"
-        tools:layout_editor_absoluteY="300dp" />
+        tools:layout_editor_absoluteX="180dp" />
 
     <ImageView
         android:id="@+id/tile_jail_iv2"
@@ -332,10 +351,10 @@
         app:layout_constraintDimensionRatio="3:5"
         app:layout_constraintEnd_toStartOf="@+id/tile_go_to_jail_iv2"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="0.6"
         app:layout_constraintStart_toEndOf="@+id/tile_water_works_iv2"
         app:srcCompat="@drawable/tile_marvin_gardens"
-        tools:layout_editor_absoluteY="0dp"
-        app:layout_constraintHorizontal_weight="0.6" />
+        tools:layout_editor_absoluteY="0dp" />
 
     <ImageView
         android:id="@+id/tile_go_to_jail_iv2"
