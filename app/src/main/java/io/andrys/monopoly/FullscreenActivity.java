@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.TableLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,8 +54,10 @@ public class FullscreenActivity extends AppCompatActivity {
     private SparseArray<int[]> positionDevIDMap;
 
 
+    // View references
     private View mContentView;
     private ConstraintLayout boardPanelCL;
+    private ScoreTableLayout scoreTableTL;
 
 
     @Override
@@ -76,6 +79,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
         // init layout references and data structures
         boardPanelCL = findViewById(R.id.root_cl);
+        scoreTableTL = findViewById(R.id.score_table_tl);
         tokenIVMap = new SparseIntArray();
         positionDevIDMap = new SparseArray<>();
 
@@ -140,11 +144,22 @@ public class FullscreenActivity extends AppCompatActivity {
         Player me = new Player("Tony", 1, p1_color);
         players.add(me);
 
+        // test score table layout
+        scoreTableTL.addPlayerRow(me);
+
+
         // build the game engine and construct the initial game context state
         engine = new GameEngine(this);
         GameContext next = new GameContext(null, null, players, b, pm);
         engine.changeState(new NewGameState(engine, next));
 
+    }
+
+    private void buildScoreTable(Player[] players) {
+        for (int i=0; i<players.length; i++) {
+            Player p = players[i];
+
+        }
     }
 
     /**

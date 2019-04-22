@@ -17,6 +17,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <io.andrys.monopoly.ScoreTableLayout
+            android:id="@+id/score_table_tl"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
