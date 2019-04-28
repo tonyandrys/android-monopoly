@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.TableLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,8 +54,10 @@ public class FullscreenActivity extends AppCompatActivity {
     private SparseArray<int[]> positionDevIDMap;
 
 
+    // View references
     private View mContentView;
     private ConstraintLayout boardPanelCL;
+    private ScoreTableLayout scoreTableTL;
 
 
     @Override
@@ -76,6 +79,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
         // init layout references and data structures
         boardPanelCL = findViewById(R.id.root_cl);
+        scoreTableTL = findViewById(R.id.score_table_tl);
         tokenIVMap = new SparseIntArray();
         positionDevIDMap = new SparseArray<>();
 
@@ -139,6 +143,21 @@ public class FullscreenActivity extends AppCompatActivity {
         String p1_color = "#FFB8E986";
         Player me = new Player("Tony", 1, p1_color);
         players.add(me);
+        String p2_color = "#FF006497";
+        Player player2 = new Player("Alice", 2, p2_color);
+        players.add(player2);
+        String p3_color = "#FFD22630";
+        Player player3 = new Player("Bob", 3, p3_color);
+        players.add(player3);
+        String p4_color = "#FF8B6A8B";
+        Player player4 = new Player("Eve", 4, p4_color);
+        players.add(player4);
+
+        // add players to the score table layout
+        scoreTableTL.addPlayerRow(me);
+        scoreTableTL.addPlayerRow(player2);
+        scoreTableTL.addPlayerRow(player3);
+        scoreTableTL.addPlayerRow(player4);
 
         // build the game engine and construct the initial game context state
         engine = new GameEngine(this);
