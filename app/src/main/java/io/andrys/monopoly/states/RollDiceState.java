@@ -1,5 +1,6 @@
 package io.andrys.monopoly.states;
 
+import android.transition.Transition;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +25,7 @@ import io.andrys.monopoly.ScoreTableLayout;
  * Rolls the dice for the active player, lands on a space, constructs the next state based on the
  * type of space we land on and the context of the game.
  */
-public class RollDiceState extends GameState {
+public class RollDiceState extends GameState implements Transition.TransitionListener {
     private final String TAG = String.format("%s[%s]", this.getClass().getSimpleName(), this.getShortCode());
 
     private ScoreTableLayout scoreTable;
@@ -84,7 +85,7 @@ public class RollDiceState extends GameState {
         die2.setImageDrawable(engine.getActivity().visualAssetManager.getDieFace(r[1]));
 
         // move the active player's token forward along the board
-        engine.getActivity().drawTokenAtPosition(gc.activePlayer.getToken(), gc.board.getTokenPosition(gc.activePlayer.getToken()));
+        engine.getActivity().drawTokenAtPosition(gc.activePlayer.getToken(), gc.board.getTokenPosition(gc.activePlayer.getToken()), this);
     }
 
 
@@ -95,26 +96,77 @@ public class RollDiceState extends GameState {
         int[] r = gc.board.getDiceValues();
         gc.board.incrementTokenPosition(gc.activePlayer.getToken(), r[0]+r[1]);
         render();
+    }
 
-        // the type of the property we landed on determines the next state
-        int p = gc.board.getTokenPosition(gc.activePlayer.getToken());
-        Board.SpaceType sType = gc.board.getSpaceTypeForPosition(p);
+    // Returns the next state based on the type of space the player is standing on.
+    private GameState buildNextStateForPosition(int position, Board.SpaceType sType) {
+        GameState newState;
         GameContext next;
         switch (sType) {
             case PROPERTY:
-                // show the unowned property modal
-                next = new GameContext(r, gc.activePlayer, gc.players, gc.board, gc.pm);
-                changeState(new UnownedPropertyState(engine, next));
-                break;
+                // i) if this is an unowned property, show the purchasing modal
+                if (!gc.pm.isPropertyOwned(position)) {
+                    next = new GameContext(gc.board.getDiceValues(), gc.activePlayer, gc.players, gc.board, gc.pm);
+                    newState = new UnownedPropertyState(engine, next);
+                    break;
+                } else {
+                    // ii) if this property is owned by the current player, end turn.
+                    int ownerTokenID = gc.pm.getPropertyOwner(position);
+                    if (ownerTokenID == gc.activePlayer.getToken()) {
+                        // end this turn
+                        next = new GameContext(gc.board.getDiceValues(), gc.activePlayer, gc.players, gc.board, gc.pm);
+                        newState = new EndTurnState(engine, next);
+                        break;
+                    } else {
+                        // iii) if property is owned by someone else, pay them their rent.
+                        next = new GameContext(gc.board.getDiceValues(), gc.activePlayer, gc.players, gc.board, gc.pm);
+                        newState = new PayRentState(engine, next);
+                        break;
+                    }
+
+                }
+
             default:
                 // end this turn
-                next = new GameContext(r, gc.activePlayer, gc.players, gc.board, gc.pm);
-                changeState(new EndTurnState(engine, next));
+                next = new GameContext(gc.board.getDiceValues(), gc.activePlayer, gc.players, gc.board, gc.pm);
+                newState = new EndTurnState(engine, next);
                 break;
         }
+        return newState;
+    }
 
-        // advance to the next state (now is an emptystate, should fire property modal when I get back)
+    /**
+     * Once the token movement animation is over, determine & build the next appropriate state
+     * based on the space we've landed on, then transition to it.
+     * @param transition
+     */
+    @Override
+    public void onTransitionEnd(Transition transition) {
+        // the type of the property we landed on determines the next state
+        int p = gc.board.getTokenPosition(gc.activePlayer.getToken());
+        Board.SpaceType sType = gc.board.getSpaceTypeForPosition(p);
+        changeState(buildNextStateForPosition(p, sType));
+    }
 
+    @Override
+    public void onTransitionStart(Transition transition) {
+
+    }
+
+
+
+    @Override
+    public void onTransitionCancel(Transition transition) {
+
+    }
+
+    @Override
+    public void onTransitionPause(Transition transition) {
+
+    }
+
+    @Override
+    public void onTransitionResume(Transition transition) {
 
     }
 }

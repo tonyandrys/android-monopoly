@@ -14,7 +14,7 @@ import java.util.Iterator;
 
 /**
  * Provides information about all purchasable properties on the board, keeps track of property
- * ownership, and keeps track of each property's development level.
+ * ownership, and maintains each property's current development level.
  */
 public class PropertyManager {
     private final String TAG = this.getClass().getSimpleName();
@@ -46,6 +46,17 @@ public class PropertyManager {
         return m;
     }
 
+    // True if p is a valid board position with purchasable property
+    private boolean isPositionValid(int p) {
+        if ((p < 0) || (p > 39)) {
+            throw new IllegalArgumentException(String.format("Invalid board position '%d'!", p));
+        } else if (positionPropertyMap.get(p) == null) {
+            throw new IllegalArgumentException(String.format("No purchasable Property at position '%d'!", p));
+        } else {
+            return true;
+        }
+    }
+
     /**
      * Returns the Property at a specific position on the board.
      * @param p A board position with purchasable property
@@ -67,12 +78,10 @@ public class PropertyManager {
      * @return true if owned, false if the bank owns it
      */
     public boolean isPropertyOwned(int p) {
-        if ((p < 0) || (p > 39)) {
-            throw new IllegalArgumentException(String.format("Invalid board position '%d'!", p));
-        } else if (positionPropertyMap.get(p) == null) {
-            throw new IllegalArgumentException(String.format("No purchasable Property at position '%d'!", p));
-        } else {
+        if (positionPropertyMap.indexOfKey(p) >= 0) {
             return positionPropertyMap.get(p).hasOwner();
+        } else {
+            return false;
         }
     }
 

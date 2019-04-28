@@ -12,6 +12,8 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.AutoTransition;
+import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.util.Log;
 import android.util.SparseArray;
@@ -219,7 +221,6 @@ public class FullscreenActivity extends AppCompatActivity {
     protected void rollDice() {
         // roll & retrieve new values for both dice
         board.rollDice();
-        render();
 
         // show property action popup if we're on the right kind of a space
         int position = board.getTokenPosition(1);
@@ -235,22 +236,6 @@ public class FullscreenActivity extends AppCompatActivity {
 
 
 
-    }
-
-    /**
-     * Call to repaint the game's state to the screen.
-     */
-    public void render() {
-        // Repaint dice values
-        ImageView die1 = findViewById(R.id.die_1_iv);
-        ImageView die2 = findViewById(R.id.die_2_iv);
-        int[] r = board.getDiceValues();
-        die1.setImageDrawable(visualAssetManager.getDieFace(r[0]));
-        die2.setImageDrawable(visualAssetManager.getDieFace(r[1]));
-
-        // move our single token along the board
-        board.incrementTokenPosition(1, r[0]+r[1]);
-        drawTokenAtPosition(1, board.getTokenPosition(1));
     }
 
     /**
@@ -403,7 +388,14 @@ public class FullscreenActivity extends AppCompatActivity {
 
     }
 
-    public void drawTokenAtPosition(int tokenID, int p) {
+    // TODO: Now this method would make more sense semantically if it were called something like "moveTokenPosition" or "updateTokenPosition"
+    /**
+     * Moves a token's ImageView to a specific position on the board.
+     * @param tokenID
+     * @param p
+     * @param listener a TransitionListener that should receive transition status notifications
+     */
+    public void drawTokenAtPosition(int tokenID, int p, Transition.TransitionListener listener) {
         // get a reference to the ImageView to re-locate
         int viewID = tokenIVMap.get(tokenID);
         ImageView tokenIV = findViewById(viewID);
@@ -422,8 +414,10 @@ public class FullscreenActivity extends AppCompatActivity {
         newSet.centerVertically(viewID, newTileIV.getId());
         newSet.centerHorizontally(viewID, newTileIV.getId());
 
-        // apply
-        TransitionManager.beginDelayedTransition(boardPanelCL);
+        // apply & animate changes
+        Transition t = new AutoTransition();
+        t.addListener(listener);
+        TransitionManager.beginDelayedTransition(boardPanelCL, t);
         newSet.applyTo(boardPanelCL);
         tokenIV.setVisibility(View.VISIBLE);
     }
