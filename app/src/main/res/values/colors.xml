@@ -4,14 +4,19 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="black_overlay">#66000000</color>
+    <color name="transparent">#00000000</color>
 
+    <color name="black_overlay">#66000000</color>
     <color name="black">#000000</color>
+
+
     <color name="light_green">#13A55B</color>
     <color name="transp_light_green">#4B13A55B</color>
 
     <!-- Player-specific colors; these will eventually end up in Player instances and not here -->
     <color name="player1_opaque">#B8E986</color>
     <color name="player1_trans">#4BB8E986</color> <!-- decimal(#4B) == 75 -->
+
+    <color name="score_row_highlighted">#FBD03B</color>
 
 </resources>

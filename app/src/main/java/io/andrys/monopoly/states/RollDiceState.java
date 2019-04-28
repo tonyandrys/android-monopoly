@@ -5,10 +5,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.util.ArrayDeque;
+
 import io.andrys.monopoly.Board;
 import io.andrys.monopoly.GameContext;
 import io.andrys.monopoly.GameEngine;
+import io.andrys.monopoly.Player;
 import io.andrys.monopoly.R;
+import io.andrys.monopoly.ScoreTableLayout;
 
 /**
  * RollDiceState.java // Monopoly
@@ -23,6 +27,8 @@ import io.andrys.monopoly.R;
 public class RollDiceState extends GameState {
     private final String TAG = String.format("%s[%s]", this.getClass().getSimpleName(), this.getShortCode());
 
+    private ScoreTableLayout scoreTable;
+
     // reference to the "Roll" button in the parent activity
     private Button rollButton;
 
@@ -33,6 +39,8 @@ public class RollDiceState extends GameState {
     @Override
     public void onStateEnter() {
         Log.v(TAG, "onStateEnter()");
+        scoreTable = engine.getActivity().findViewById(R.id.score_table_tl);
+
 
         // let the roll dice button accept clicks
         rollButton = engine.getActivity().findViewById(R.id.roll_dice_btn);
@@ -45,6 +53,9 @@ public class RollDiceState extends GameState {
             }
         });
         rollButton.setEnabled(true);
+
+        // highlight the player who is about to roll the dice in the score table
+        scoreTable.setActivePlayer(gc.activePlayer);
     }
 
     @Override
@@ -73,9 +84,11 @@ public class RollDiceState extends GameState {
         die2.setImageDrawable(engine.getActivity().visualAssetManager.getDieFace(r[1]));
 
         // move the active player's token forward along the board
-        engine.getActivity().drawTokenAtPosition(gc.activePlayer.getToken(), gc.board.getTokenPosition(1));
+        engine.getActivity().drawTokenAtPosition(gc.activePlayer.getToken(), gc.board.getTokenPosition(gc.activePlayer.getToken()));
     }
 
+
+     // Fired when the "Roll" UI button is touched
     private void rollDiceButtonPressed() {
         // roll the dice, increment the position of the active player
         gc.board.rollDice();
@@ -94,9 +107,9 @@ public class RollDiceState extends GameState {
                 changeState(new UnownedPropertyState(engine, next));
                 break;
             default:
-                // roll again
+                // end this turn
                 next = new GameContext(r, gc.activePlayer, gc.players, gc.board, gc.pm);
-                changeState(new RollDiceState(engine, next));
+                changeState(new EndTurnState(engine, next));
                 break;
         }
 

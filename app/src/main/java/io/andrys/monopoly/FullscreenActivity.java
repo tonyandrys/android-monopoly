@@ -143,23 +143,27 @@ public class FullscreenActivity extends AppCompatActivity {
         String p1_color = "#FFB8E986";
         Player me = new Player("Tony", 1, p1_color);
         players.add(me);
+        String p2_color = "#FF006497";
+        Player player2 = new Player("Alice", 2, p2_color);
+        players.add(player2);
+        String p3_color = "#FFD22630";
+        Player player3 = new Player("Bob", 3, p3_color);
+        players.add(player3);
+        String p4_color = "#FF8B6A8B";
+        Player player4 = new Player("Eve", 4, p4_color);
+        players.add(player4);
 
-        // test score table layout
+        // add players to the score table layout
         scoreTableTL.addPlayerRow(me);
-
+        scoreTableTL.addPlayerRow(player2);
+        scoreTableTL.addPlayerRow(player3);
+        scoreTableTL.addPlayerRow(player4);
 
         // build the game engine and construct the initial game context state
         engine = new GameEngine(this);
         GameContext next = new GameContext(null, null, players, b, pm);
         engine.changeState(new NewGameState(engine, next));
 
-    }
-
-    private void buildScoreTable(Player[] players) {
-        for (int i=0; i<players.length; i++) {
-            Player p = players[i];
-
-        }
     }
 
     /**

@@ -45,7 +45,7 @@ public class NewGameState extends GameState {
         render();
 
         // set the first player in the list as the active player; move to the dice roll phase.
-        Player activePlayer = gc.players.getFirst();
+        Player activePlayer = gc.players.pollFirst();
         GameContext next = new GameContext(new int[]{1,1}, activePlayer, gc.players, gc.board, gc.pm);
         changeState(new RollDiceState(engine, next));
 

@@ -1,6 +1,7 @@
 package io.andrys.monopoly;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
@@ -12,6 +13,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.Locale;
+
+// TODO: This should be just called "ScoreTable" & doesn't need to be called a layout (since it's entirely self-contained and controlled by itself)
 
 /**
  * ScoreTableLayout.java // Monopoly
@@ -30,18 +33,23 @@ public class ScoreTableLayout extends TableLayout {
     private final int INDEX_PLAYER_ICON = 0;
     private final int INDEX_PLAYER_NAME = 1;
     private final int INDEX_PLAYER_BALANCE = 2;
+    private final int INDEX_PLAYER_ROW = 3;
 
     // Maps Players to the Views associated with them in this table
     private SparseArray<int[]> viewIDMap;
 
+    private int rowCount;
+
     public ScoreTableLayout(Context context) {
         super(context);
         viewIDMap = new SparseArray<>();
+        rowCount = 0;
     }
 
     public ScoreTableLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         viewIDMap = new SparseArray<>();
+        rowCount = 0;
     }
 
     /**
@@ -82,7 +90,8 @@ public class ScoreTableLayout extends TableLayout {
         this.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT));
 
         // store references to these views in this instance
-        writeViewsToModel(p, iconIV, nameTV, balanceTV);
+        writeViewsToModel(p, iconIV, nameTV, balanceTV, rowCount);
+        rowCount++;
     }
 
     /**
@@ -91,10 +100,11 @@ public class ScoreTableLayout extends TableLayout {
      * @param iconIV ImageView of Player's icon
      * @param nameTV TextView that displays the player's name
      * @param balanceTV TextView that displays the player's balance
+     * @param rowIndex Index of the row these elements were added to
      */
-    private void writeViewsToModel(Player player, ImageView iconIV, TextView nameTV, TextView balanceTV) {
+    private void writeViewsToModel(Player player, ImageView iconIV, TextView nameTV, TextView balanceTV, int rowIndex) {
         if (viewIDMap.get(player.getToken(), null) == null) {
-            int[] views = new int[]{iconIV.getId(), nameTV.getId(), balanceTV.getId()};
+            int[] views = new int[]{iconIV.getId(), nameTV.getId(), balanceTV.getId(), rowIndex};
             viewIDMap.put(player.getToken(), views);
         } else {
             throw new IllegalStateException(String.format(Locale.US, "ScoreTable views for Player w/ token='%d' have already been created! This method should only be called once per Player.", player.getToken()));
@@ -116,7 +126,37 @@ public class ScoreTableLayout extends TableLayout {
         } else {
             throw new IllegalStateException(String.format(Locale.US, "No views stored in ScoreTable for player w/ token='%d'! writeViewsToModel() must be called before modifying display data on a ScoreTableLayout!", player.getToken()));
         }
-
-
     }
+
+    /**
+     * Highlights a Player's row in this score table.
+     * @param player
+     */
+    public void setActivePlayer(Player player) {
+        int[] views = viewIDMap.get(player.getToken(), new int[0]);
+        if (views.length != 0) {
+            int rowIndex = views[INDEX_PLAYER_ROW];
+            highlightRow(rowIndex);
+        } else {
+            throw new IllegalStateException(String.format(Locale.US, "No views stored in ScoreTable for player w/ token='%d'! writeViewsToModel() must be called before modifying display data on a ScoreTableLayout!", player.getToken()));
+        }
+    }
+
+    /**
+     * Changes the background color of a row in the table to yellow & resets the background color of all other rows.
+     * @param idx zero-based index of the row to highlight
+     */
+    private void highlightRow(int idx) {
+        int rowCount = this.getChildCount();
+        for (int i=0; i<rowCount; i++) {
+            TableRow row = (TableRow)this.getChildAt(i);
+            if (i == idx) {
+                row.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.score_row_highlighted));
+            } else {
+                row.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.transparent));
+            }
+
+        }
+    }
+
 }

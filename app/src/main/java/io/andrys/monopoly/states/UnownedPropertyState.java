@@ -81,9 +81,9 @@ public class UnownedPropertyState extends GameState implements PropertyActionDia
         render();
         df.dismiss();
 
-        // for now, just throw the dice again after a property is bought
-        GameContext next = new GameContext(gc.board.getDiceValues(), gc.activePlayer, gc.players,  gc.board, gc.pm);
-        changeState(new RollDiceState(engine, next));
+        // end this turn
+        GameContext next = new GameContext(gc.board.getDiceValues(), gc.activePlayer, gc.players, gc.board, gc.pm);
+        changeState(new EndTurnState(engine, next));
     }
 
     @Override

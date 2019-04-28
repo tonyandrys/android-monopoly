@@ -298,7 +298,6 @@ public class VisualAssetManager {
     }
 
 
-
     /**
      * Returns the drawable representing a player token mapped to the token ID value provided.
      * @param tokenID
@@ -309,6 +308,15 @@ public class VisualAssetManager {
         switch(tokenID) {
             case 1:
                 token = context.getDrawable(R.drawable.green_oval);
+                break;
+            case 2:
+                token = context.getDrawable(R.drawable.blue_oval);
+                break;
+            case 3:
+                token = context.getDrawable(R.drawable.red_oval);
+                break;
+            case 4:
+                token = context.getDrawable(R.drawable.purple_oval);
                 break;
             default:
                 throw new IllegalArgumentException(String.format("No drawable exists for the player token id '%d'!", tokenID));

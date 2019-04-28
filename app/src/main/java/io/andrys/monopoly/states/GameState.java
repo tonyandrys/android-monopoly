@@ -19,7 +19,8 @@ public abstract class GameState {
     private final String TAG = String.format("%s[%s]", this.getClass().getSimpleName(), this.getShortCode());
 
     GameEngine engine;
-    /** Game Context object, also known as 'gc' from here on out.*/
+
+    /** Game Context object, also known as 'gc' from here on out. */
     GameContext gc;
 
     public GameState(GameEngine gameEngine, GameContext gameContext) {
