@@ -7,12 +7,15 @@ package io.andrys.monopoly;
  */
 
 import android.graphics.Color;
+import android.util.Log;
 
 /**
  * A Player is a participant in a game controlled by either a human or AI.
  */
 
 public class Player {
+    private final String TAG = this.getClass().getSimpleName();
+
     private String name;    // Name to be displayed in the score panel
     private int balance;    // Cash on hand in dollars
     private int token;      // uid of the token used to represent this player's position on the board.
@@ -63,7 +66,10 @@ public class Player {
      * @param addVal a positive value to add to the player's current balance.
      */
     public void addToBalance(int addVal) {
+        int balanceBefore = this.balance;
         this.balance += addVal;
+        Log.v(TAG, String.format("incremented %s's balance from %d -> %d", this.name, balanceBefore, this.balance));
+
     }
 
     /**
@@ -71,7 +77,9 @@ public class Player {
      * @param deductVal a positive value to subtract from the player's current balance.
      */
     public void deductFromBalance(int deductVal) {
+        int balanceBefore = this.balance;
         this.balance -= deductVal;
+        Log.v(TAG, String.format("decremented %s's balance from %d -> %d", this.name, balanceBefore, this.balance));
     }
 
     /**

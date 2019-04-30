@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import io.andrys.monopoly.Board;
 import io.andrys.monopoly.GameContext;
 import io.andrys.monopoly.GameEngine;
+import io.andrys.monopoly.Player;
 import io.andrys.monopoly.Property;
 import io.andrys.monopoly.R;
 import io.andrys.monopoly.RailroadProperty;
@@ -41,7 +42,7 @@ public class PayRentState extends GameState {
         int currLevel = gc.pm.getDevelopmentLevelAtPosition(position);
         if (currLevel > 0) {
             // pay the price dictated by # of houses and/or hotel
-            rentPayment = gc.pm.getDevelopmentLevelAtPosition(position);
+            rentPayment = prop.calculateRentPayment(gc.pm.getDevelopmentLevelAtPosition(position));
         } else {
             // TODO: if needed again, this logic should be moved into PropertyManager in a isPropertyAMonopoly(position)-type method
             // determine whether this is an undeveloped monopoly or not.
@@ -58,7 +59,7 @@ public class PayRentState extends GameState {
                 rentPayment = prop.calculateRentPayment(0) * 2;
             } else {
                 // pay basic rent
-                rentPayment = prop.calculateRentPayment(0) * 2;
+                rentPayment = prop.calculateRentPayment(0);
             }
         }
         return rentPayment;
@@ -74,7 +75,34 @@ public class PayRentState extends GameState {
 
     // Attempts to transfer 'totalPayment' dollars to a different Player designated by their token id.
     private int payRentToPlayer(int totalPayment, int payeeTokenID) {
+        Player owner = null;
+        int ownerPlayerIndex = -1; // position of the owner's Player object in the players list
 
+        for(Player p: gc.players) {
+            if (p.getToken() == payeeTokenID) {
+                owner = p;
+            }
+            ownerPlayerIndex++;
+        }
+
+        if (owner != null) {
+            // if the current player can afford this payment, make the transfer
+            if (gc.activePlayer.getBalance() >= totalPayment) {
+                // modify both balances
+                gc.activePlayer.deductFromBalance(totalPayment);
+                owner.addToBalance(totalPayment);
+                // TODO: START HERE vvv
+                // write the updated owner object back into the players list.
+                // TODO: ^^^ This is going to be annoying because 'players' is a deque and not a list, so we can't do list.set(idx, newVal) to update an object in place...
+            }
+            // otherwise, the current player needs to raise money somehow or go bankrupt
+            // ...but for now, we're just going to complain to the console...
+            else {
+                Log.e(TAG, String.format("Can't process rent payment of %d from %s -> %s; %s has insufficient funds (balance=$%d)!", totalPayment, gc.activePlayer.getName(), owner.getName(), gc.activePlayer.getName(), gc.activePlayer.getBalance()));
+            }
+        } else {
+            throw new IllegalStateException(String.format("Can't process rent payment of $%d to token ID '%d'; can't find Player with token ID in the current game!", totalPayment, payeeTokenID));
+        }
     }
 
 
