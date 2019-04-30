@@ -2,6 +2,8 @@ package io.andrys.monopoly.states;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import io.andrys.monopoly.Board;
 import io.andrys.monopoly.GameContext;
 import io.andrys.monopoly.GameEngine;
@@ -32,16 +34,47 @@ public class PayRentState extends GameState {
         super(engine, gameContext);
     }
 
-    private void payStreetRent(StreetProperty prop) {
-        throw new NotYetImplementedException("Implement street property rent calculation!");
+    private int calculateStreetRent(int ownerTokenID, StreetProperty prop) {
+        // figure out how much rent the active player owes to the owner
+        int rentPayment = 0;
+        int position = prop.getPosition();
+        int currLevel = gc.pm.getDevelopmentLevelAtPosition(position);
+        if (currLevel > 0) {
+            // pay the price dictated by # of houses and/or hotel
+            rentPayment = gc.pm.getDevelopmentLevelAtPosition(position);
+        } else {
+            // TODO: if needed again, this logic should be moved into PropertyManager in a isPropertyAMonopoly(position)-type method
+            // determine whether this is an undeveloped monopoly or not.
+            ArrayList<StreetProperty> assocProperties = gc.pm.inspectPropertiesInColorGroup(prop.getColorGroup());
+            assocProperties.remove(prop);
+            boolean isMonopoly = true;
+            for(StreetProperty p: assocProperties) {
+                if (gc.pm.getPropertyOwner(position) != ownerTokenID) {
+                    isMonopoly = false;
+                }
+            }
+            if (isMonopoly) {
+                // pay double the basic rent
+                rentPayment = prop.calculateRentPayment(0) * 2;
+            } else {
+                // pay basic rent
+                rentPayment = prop.calculateRentPayment(0) * 2;
+            }
+        }
+        return rentPayment;
     }
 
-    private void payRailroadRent(RailroadProperty prop) {
+    private int calculateRailroadRent(int ownerTokenID, RailroadProperty prop) {
         throw new NotYetImplementedException("Implement railroad rent calculation!");
     }
 
-    private void payUtilityRent(UtilityProperty prop) {
+    private int calculateUtilityRent(int ownerTokenID, UtilityProperty prop) {
         throw new NotYetImplementedException("Implement utility rent calculation!");
+    }
+
+    // Attempts to transfer 'totalPayment' dollars to a different Player designated by their token id.
+    private int payRentToPlayer(int totalPayment, int payeeTokenID) {
+
     }
 
 
@@ -57,15 +90,18 @@ public class PayRentState extends GameState {
         int position = gc.board.getTokenPosition(gc.activePlayer.getToken());
         Board.SpaceType spaceType = gc.board.getSpaceTypeForPosition(position);
         Property prop = gc.pm.inspectProperty(position);
+        int propertyOwnerID = gc.pm.getPropertyOwner(prop.getPosition());
 
         // property type dictates the way we should calculate rent owed
+        int rentPayment = 0;
         if (prop instanceof StreetProperty) {
-            payStreetRent((StreetProperty) prop);
+            rentPayment = calculateStreetRent(propertyOwnerID, (StreetProperty) prop);
         } else if (prop instanceof RailroadProperty) {
-            payRailroadRent((RailroadProperty) prop);
+            rentPayment = calculateRailroadRent(propertyOwnerID, (RailroadProperty) prop);
         } else if (prop instanceof UtilityProperty) {
-            payUtilityRent((UtilityProperty) prop);
+            rentPayment = calculateUtilityRent(propertyOwnerID, (UtilityProperty) prop);
         }
+
 
     }
 

@@ -4,6 +4,9 @@ import android.content.Context;
 import android.util.Log;
 import android.util.SparseArray;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.Iterator;
 
 /**
@@ -18,11 +21,15 @@ import java.util.Iterator;
  */
 public class PropertyManager {
     private final String TAG = this.getClass().getSimpleName();
+
     private SparseArray<PropertyAssignment> positionPropertyMap;
+    // associates color groups w/ their associated street properties
+    private EnumMap<StreetProperty.ColorGroup, ArrayList<StreetProperty>> colorPropertyMap;
 
     public PropertyManager(Context context) {
         ArrayList<Property> properties = PropertyBuilder.loadProperties(context);
         this.positionPropertyMap = buildPositionPropertyMap(properties);
+        this.colorPropertyMap = buildColorPropertyMap(properties);
     }
 
     /**
@@ -44,6 +51,33 @@ public class PropertyManager {
             m.put(p.getPosition(), new PropertyAssignment(p));
         }
         return m;
+    }
+
+    // Builds a mapping of each StreetProperty ColorGroup to its associated StreetProperties
+    private EnumMap<StreetProperty.ColorGroup, ArrayList<StreetProperty>> buildColorPropertyMap(ArrayList<Property> properties) {
+        StreetProperty.ColorGroup[] groups = StreetProperty.ColorGroup.values();
+        EnumMap<StreetProperty.ColorGroup, ArrayList<StreetProperty>> map = new EnumMap<>(StreetProperty.ColorGroup.class);
+
+        // initialize empty lists for every color group in our mapping
+        for (int i=0; i<groups.length; i++) {
+            StreetProperty.ColorGroup cg = groups[i];
+            if (!map.containsKey(cg)) {
+                map.put(cg, new ArrayList<StreetProperty>(3));    // no color group contains more than 3 properties
+            }
+        }
+
+        // assign each street property to its color group
+        Iterator<Property> itr = properties.iterator();
+        while (itr.hasNext()) {
+            Property p = itr.next();
+            if (p instanceof StreetProperty) {
+                StreetProperty sp = (StreetProperty)p;
+                ArrayList<StreetProperty> props = map.get(sp.getColorGroup());
+                props.add(sp);
+                map.put(sp.getColorGroup(), props);
+            }
+        }
+        return map;
     }
 
     // True if p is a valid board position with purchasable property
@@ -70,6 +104,14 @@ public class PropertyManager {
         } else {
             return positionPropertyMap.get(p).getProperty();
         }
+    }
+
+    /**
+     * Returns a list of all StreetProperties in a given ColorGroup.
+     * @return ArrayList<StreetProperty>
+     */
+    public ArrayList<StreetProperty> inspectPropertiesInColorGroup(StreetProperty.ColorGroup group) {
+        return colorPropertyMap.get(group);
     }
 
     /**
