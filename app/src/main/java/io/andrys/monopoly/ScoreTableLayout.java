@@ -12,6 +12,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.robinhood.ticker.TickerView;
+
 import java.util.Locale;
 
 // TODO: This should be just called "ScoreTable" & doesn't need to be called a layout (since it's entirely self-contained and controlled by itself)

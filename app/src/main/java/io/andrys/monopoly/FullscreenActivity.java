@@ -25,6 +25,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
+import android.widget.TextView;
+
+import com.robinhood.ticker.TickerUtils;
+import com.robinhood.ticker.TickerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +38,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 import io.andrys.monopoly.states.NewGameState;
 import io.andrys.monopoly.states.UnownedPropertyState;
@@ -87,6 +92,61 @@ public class FullscreenActivity extends AppCompatActivity {
 
         // start the game engine
         startGameEngine();
+
+        // testing tickerview
+        Button testTickerButton = findViewById(R.id.testTickerButton);
+        final TickerView tickerView = findViewById(R.id.tickerView);
+        tickerView.setCharacterLists(TickerUtils.provideNumberList());
+        tickerView.setText("12345");
+
+        testTickerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // generate a 6 digit random number
+                Random rand = new Random();
+                int newValue = rand.nextInt(999999);
+                String inputString = String.valueOf(newValue);
+                String paddedString = "";
+                int length = 6; // digits
+
+                if (inputString.length() >= length) {
+                    paddedString = inputString;
+                }
+                StringBuilder sb = new StringBuilder();
+                while (sb.length() < length - inputString.length()) {
+                    sb.append('0');
+                }
+                sb.append(inputString);
+                paddedString = sb.toString();
+
+                tickerView.setText(paddedString);
+
+            }
+        });
+
+        // START TESTING GARBAGE
+        SeekBar seekBar = findViewById(R.id.seekBar);
+        seekBar.setMax(9999);
+        final TextView seekBarTV = findViewById(R.id.seek_bar_tv);
+        seekBar.setProgress((int)tickerView.getAnimationDuration());
+        seekBarTV.setText(String.valueOf(tickerView.getAnimationDuration()));
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                seekBarTV.setText(String.valueOf(progress));
+                tickerView.setAnimationDuration(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
     }
 
