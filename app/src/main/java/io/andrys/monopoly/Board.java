@@ -26,11 +26,13 @@ public class Board {
     private final String TAG = this.getClass().getSimpleName();
 
     /** There are 40 different spaces on a Monopoly board that a player can land on. */
-    private final int NUM_BOARD_POSITIONS = 40;
-    private final int[] POSITIONS_CHANCE = {7,22,36};
-    private final int[] POSITIONS_CCHEST = {2,17,33,36};
-    private final int[] POSITIONS_TAX = {4,38};
-    private final int[] POSITIONS_CORNER = {0,10,20,30};
+    public final int NUM_BOARD_POSITIONS = 40;
+    public final int[] POSITIONS_CHANCE = {7,22,36};
+    public final int[] POSITIONS_CCHEST = {2,17,33,36};
+    public final int[] POSITIONS_TAX = {4,38};
+    public final int[] POSITIONS_CORNER = {0,10,20,30};
+    public final int[] POSITIONS_RAILROADS = {5,15,25,35};
+    public final int[] POSITIONS_UTILITIES = {12,28};
 
     /** Keeps track of each token's position on the board by its tokenID. */
     private SparseIntArray tokenPositionMap;
@@ -157,6 +159,15 @@ public class Board {
 
     public int[] getDiceValues() {
         return new int[]{d1.getValue(), d2.getValue()};
+    }
+
+    /**
+     * Returns the sum of the values currently shown on each die.
+     * @return int
+     */
+    public int getDiceSum() {
+        int[] diceVals = this.getDiceValues();
+        return (diceVals[0] + diceVals[1]);
     }
 
 

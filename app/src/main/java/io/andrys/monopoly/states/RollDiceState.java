@@ -14,6 +14,7 @@ import io.andrys.monopoly.GameEngine;
 import io.andrys.monopoly.Player;
 import io.andrys.monopoly.R;
 import io.andrys.monopoly.ScoreTableLayout;
+import io.andrys.monopoly.exceptions.UnownedPropertyException;
 
 /**
  * RollDiceState.java // Monopoly
@@ -39,7 +40,6 @@ public class RollDiceState extends GameState implements Transition.TransitionLis
 
     @Override
     public void onStateEnter() {
-        Log.v(TAG, "onStateEnter()");
         scoreTable = engine.getActivity().findViewById(R.id.score_table_tl);
 
 
@@ -61,22 +61,17 @@ public class RollDiceState extends GameState implements Transition.TransitionLis
 
     @Override
     public void execute() {
-        Log.v(TAG, "execute()");
         Log.v(TAG, String.format("waiting for the active player ('%s', token '%d') to roll the dice...", gc.activePlayer.getName(), gc.activePlayer.getToken()));
     }
 
     @Override
     public void onStateExit() {
-        Log.v(TAG, "onStateExit()");
-
         // silence roll button events
         rollButton.setOnClickListener(null);
     }
 
     @Override
     protected void render() {
-        Log.v(TAG, "render()");
-
         // Repaint dice values
         ImageView die1 = engine.getActivity().findViewById(R.id.die_1_iv);
         ImageView die2 = engine.getActivity().findViewById(R.id.die_2_iv);
@@ -111,19 +106,22 @@ public class RollDiceState extends GameState implements Transition.TransitionLis
                     break;
                 } else {
                     // ii) if this property is owned by the current player, end turn.
-                    int ownerTokenID = gc.pm.getPropertyOwner(position);
-                    if (ownerTokenID == gc.activePlayer.getToken()) {
-                        // end this turn
-                        next = new GameContext(gc.board.getDiceValues(), gc.activePlayer, gc.players, gc.board, gc.pm);
-                        newState = new EndTurnState(engine, next);
-                        break;
-                    } else {
-                        // iii) if property is owned by someone else, pay them their rent.
-                        next = new GameContext(gc.board.getDiceValues(), gc.activePlayer, gc.players, gc.board, gc.pm);
-                        newState = new PayRentState(engine, next);
-                        break;
+                    try {
+                        int ownerTokenID = gc.pm.getPropertyOwner(position);
+                        if (ownerTokenID == gc.activePlayer.getToken()) {
+                            // end this turn
+                            next = new GameContext(gc.board.getDiceValues(), gc.activePlayer, gc.players, gc.board, gc.pm);
+                            newState = new EndTurnState(engine, next);
+                            break;
+                        } else {
+                            // iii) if property is owned by someone else, pay them their rent.
+                            next = new GameContext(gc.board.getDiceValues(), gc.activePlayer, gc.players, gc.board, gc.pm);
+                            newState = new PayRentState(engine, next);
+                            break;
+                        }
+                    } catch (UnownedPropertyException e) {
+                        throw new IllegalStateException("Inconsistent state!");
                     }
-
                 }
 
             default:

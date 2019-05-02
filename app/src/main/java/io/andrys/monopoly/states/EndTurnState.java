@@ -26,12 +26,11 @@ public class EndTurnState extends GameState {
 
     @Override
     public void onStateEnter() {
-        Log.v(TAG, "onStateEnter()");
+
     }
 
     @Override
     public void execute() {
-        Log.v(TAG, "execute()");
         gc.players.addLast(gc.activePlayer);
         Player nextPlayer = gc.players.pollFirst();
         Log.v(TAG, String.format("Ending %s's turn; '%s' is up next.", gc.activePlayer.getName(), nextPlayer.getName()));
@@ -41,11 +40,11 @@ public class EndTurnState extends GameState {
 
     @Override
     public void onStateExit() {
-        Log.v(TAG, "onStateExit()");
+
     }
 
     @Override
     protected void render() {
-        Log.v(TAG, "render()");
+
     }
 }

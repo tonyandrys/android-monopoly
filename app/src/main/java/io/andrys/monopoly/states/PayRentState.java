@@ -2,7 +2,9 @@ package io.andrys.monopoly.states;
 
 import android.util.Log;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import io.andrys.monopoly.Board;
 import io.andrys.monopoly.GameContext;
@@ -15,6 +17,7 @@ import io.andrys.monopoly.ScoreTableLayout;
 import io.andrys.monopoly.StreetProperty;
 import io.andrys.monopoly.UtilityProperty;
 import io.andrys.monopoly.exceptions.NotYetImplementedException;
+import io.andrys.monopoly.exceptions.UnownedPropertyException;
 
 /**
  * PayRentState.java // Monopoly
@@ -50,8 +53,13 @@ public class PayRentState extends GameState {
             assocProperties.remove(prop);
             boolean isMonopoly = true;
             for(StreetProperty p: assocProperties) {
-                if (gc.pm.getPropertyOwner(position) != ownerTokenID) {
-                    isMonopoly = false;
+                try {
+                    if (gc.pm.getPropertyOwner(p.getPosition()) != ownerTokenID) {
+                        isMonopoly = false;
+                    }
+                } catch (UnownedPropertyException e) {
+                    // an unowned associated property is a guarantee that the owner has no monopoly here.
+                    break;
                 }
             }
             if (isMonopoly) {
@@ -62,43 +70,93 @@ public class PayRentState extends GameState {
                 rentPayment = prop.calculateRentPayment(0);
             }
         }
+        Log.v(TAG, String.format("%s owes %s $%d for landing on %s.", gc.activePlayer.getName(), ownerTokenID, rentPayment, prop.getName()));
         return rentPayment;
     }
 
     private int calculateRailroadRent(int ownerTokenID, RailroadProperty prop) {
-        throw new NotYetImplementedException("Implement railroad rent calculation!");
+        int ownerRailroadCount = 0;
+
+        // figure out how many railroads the payee owns
+        for (int i=0; i<gc.board.POSITIONS_RAILROADS.length; i++) {
+            int rp = gc.board.POSITIONS_RAILROADS[i];
+            try {
+                if ((gc.pm.isPropertyOwned(rp)) && (gc.pm.getPropertyOwner(rp) == ownerTokenID)) {
+                    ownerRailroadCount++;
+                }
+            } catch (UnownedPropertyException e) {
+                // an unowned railroad is the same as a railroad owned by someone else; don't increment the count here.
+                continue;
+            }
+        }
+
+        // calculate railroad rent payment
+        int rentPayment = prop.calculateRentPayment(ownerRailroadCount);
+        Log.v(TAG, String.format("%s owes %s $%d for landing on %s (owns %d railroads total).", gc.activePlayer.getName(), ownerTokenID, rentPayment, prop.getName(), ownerRailroadCount));
+        return rentPayment;
     }
 
     private int calculateUtilityRent(int ownerTokenID, UtilityProperty prop) {
-        throw new NotYetImplementedException("Implement utility rent calculation!");
+        int ownerUtilityCount = 0;
+
+        // figure out how many utilities the payee owns
+        for (int i=0; i<gc.board.POSITIONS_UTILITIES.length; i++) {
+            int up = gc.board.POSITIONS_UTILITIES[i];
+            try {
+                if ((gc.pm.isPropertyOwned(up)) && (gc.pm.getPropertyOwner(up) == ownerTokenID)) {
+                    ownerUtilityCount++;
+                }
+            } catch (UnownedPropertyException e) {
+                // an unowned utility is the same as a utility owned by someone else; don't increment the count here.
+                continue;
+            }
+
+        }
+        int diceTotal = gc.board.getDiceSum();
+        int rentPayment = prop.calculateRentPayment(ownerUtilityCount, diceTotal);
+        Log.v(TAG, String.format("%s owes %s $%d for landing on %s (%s owns %d utilities; dice sum=%d).", gc.activePlayer.getName(), ownerTokenID, rentPayment, prop.getName(), ownerTokenID, ownerUtilityCount, gc.board.getDiceSum()));
+        return rentPayment;
     }
 
-    // Attempts to transfer 'totalPayment' dollars to a different Player designated by their token id.
-    private int payRentToPlayer(int totalPayment, int payeeTokenID) {
-        Player owner = null;
-        int ownerPlayerIndex = -1; // position of the owner's Player object in the players list
+    // Transfers 'totalPayment' dollars to a different Player designated by their token id.
+    private void payRentToPlayer(int totalPayment, int payeeTokenID) {
+        Player[] players = gc.players.toArray(new Player[]{});
 
-        for(Player p: gc.players) {
+        // get a reference to the Player object of the payee; keep track of its position in the list for updating it later.
+        Player payee = null;
+        int payeePlayerIndex = -1; // position of the owner's Player object in the players list
+        for (int i=0; i<players.length; i++) {
+            Player p = players[i];
             if (p.getToken() == payeeTokenID) {
-                owner = p;
+                payee = p;
             }
-            ownerPlayerIndex++;
+            payeePlayerIndex++;
         }
 
-        if (owner != null) {
+        if (payee != null) {
             // if the current player can afford this payment, make the transfer
             if (gc.activePlayer.getBalance() >= totalPayment) {
                 // modify both balances
                 gc.activePlayer.deductFromBalance(totalPayment);
-                owner.addToBalance(totalPayment);
-                // TODO: START HERE vvv
-                // write the updated owner object back into the players list.
-                // TODO: ^^^ This is going to be annoying because 'players' is a deque and not a list, so we can't do list.set(idx, newVal) to update an object in place...
+                payee.addToBalance(totalPayment);
+
+
+                // Update the score table to reflect the changed balances of both players involved in this transaction
+                scoreTable.updatePlayerBalance(gc.activePlayer, gc.activePlayer.getBalance());
+                scoreTable.updatePlayerBalance(payee, payee.getBalance());
+
+                // generate an updated deque of Players including the updated payee Player object
+                players[payeePlayerIndex] = payee;
+                ArrayDeque<Player> updatedPlayers = new ArrayDeque<>(Arrays.asList(players));
+
+                // end the player's turn
+                GameContext next = new GameContext(gc.board.getDiceValues(), gc.activePlayer, updatedPlayers, gc.board, gc.pm);
+                changeState(new EndTurnState(engine, next));
             }
             // otherwise, the current player needs to raise money somehow or go bankrupt
             // ...but for now, we're just going to complain to the console...
             else {
-                Log.e(TAG, String.format("Can't process rent payment of %d from %s -> %s; %s has insufficient funds (balance=$%d)!", totalPayment, gc.activePlayer.getName(), owner.getName(), gc.activePlayer.getName(), gc.activePlayer.getBalance()));
+                Log.e(TAG, String.format("Can't process rent payment of %d from %s -> %s; %s has insufficient funds (balance=$%d)!", totalPayment, gc.activePlayer.getName(), payee.getName(), gc.activePlayer.getName(), gc.activePlayer.getBalance()));
             }
         } else {
             throw new IllegalStateException(String.format("Can't process rent payment of $%d to token ID '%d'; can't find Player with token ID in the current game!", totalPayment, payeeTokenID));
@@ -108,17 +166,20 @@ public class PayRentState extends GameState {
 
     @Override
     public void onStateEnter() {
-        Log.v(TAG, "onStateEnter()");
         scoreTable = engine.getActivity().findViewById(R.id.score_table_tl);
     }
 
     @Override
     public void execute() {
-        Log.v(TAG, "execute()");
         int position = gc.board.getTokenPosition(gc.activePlayer.getToken());
         Board.SpaceType spaceType = gc.board.getSpaceTypeForPosition(position);
         Property prop = gc.pm.inspectProperty(position);
-        int propertyOwnerID = gc.pm.getPropertyOwner(prop.getPosition());
+        int propertyOwnerID;
+        try {
+            propertyOwnerID = gc.pm.getPropertyOwner(prop.getPosition());
+        } catch (UnownedPropertyException e) {
+            throw new IllegalStateException("Can't calculate rent for unowned property!");
+        }
 
         // property type dictates the way we should calculate rent owed
         int rentPayment = 0;
@@ -129,19 +190,18 @@ public class PayRentState extends GameState {
         } else if (prop instanceof UtilityProperty) {
             rentPayment = calculateUtilityRent(propertyOwnerID, (UtilityProperty) prop);
         }
+        payRentToPlayer(rentPayment, propertyOwnerID);
 
 
     }
 
     @Override
     public void onStateExit() {
-        Log.v(TAG, "onStateExit()");
 
     }
 
     @Override
     protected void render() {
-        Log.v(TAG, "render()");
 
     }
 }

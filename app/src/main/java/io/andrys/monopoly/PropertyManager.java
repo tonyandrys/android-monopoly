@@ -9,6 +9,8 @@ import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Iterator;
 
+import io.andrys.monopoly.exceptions.UnownedPropertyException;
+
 /**
  * PropertyManager.java // Android Monopoly
  * Tony Andrys (tony@andrys.io)
@@ -131,15 +133,17 @@ public class PropertyManager {
      * Retrieves the token of the Player that owns the property at a specific position on the board.
      * @param p A board position with purchasable property
      * @return tokenID of the owner
+     * @throws UnownedPropertyException if property is unowned
      */
-    public int getPropertyOwner(int p) {
+    public int getPropertyOwner(int p) throws UnownedPropertyException {
         int tokenID;
         if ((p < 0) || (p > 39)) {
             throw new IllegalArgumentException(String.format("Invalid board position '%d'!", p));
         } else if (positionPropertyMap.get(p) == null) {
             throw new IllegalArgumentException(String.format("No purchasable Property at position '%d'!", p));
         } else if (positionPropertyMap.get(p).getOwnerToken() == PropertyAssignment.NO_OWNER) {
-            throw new IllegalArgumentException(String.format("Bank owns property at position '%d'!", p));
+            throw new UnownedPropertyException(String.format("Bank owns property at position '%d'!", p));
+            //throw new IllegalArgumentException(String.format("Bank owns property at position '%d'!", p));
         } else {
             tokenID = positionPropertyMap.get(p).getOwnerToken();
         }

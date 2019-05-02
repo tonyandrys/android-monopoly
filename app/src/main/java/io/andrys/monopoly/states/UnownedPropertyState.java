@@ -35,7 +35,6 @@ public class UnownedPropertyState extends GameState implements PropertyActionDia
 
     @Override
     public void onStateEnter() {
-        Log.v(TAG, "onStateEnter()");
         scoreTable = engine.getActivity().findViewById(R.id.score_table_tl);
 
         // cache the Property the player has landed on
@@ -45,8 +44,6 @@ public class UnownedPropertyState extends GameState implements PropertyActionDia
 
     @Override
     public void execute() {
-        Log.v(TAG, "execute()");
-
         // can the active player afford to buy what they landed on?
         boolean hasSufficientFunds = gc.activePlayer.getBalance() > prop.getPrice();
 
@@ -57,13 +54,11 @@ public class UnownedPropertyState extends GameState implements PropertyActionDia
 
     @Override
     public void onStateExit() {
-        Log.v(TAG, "onStateExit()");
 
     }
 
     @Override
     protected void render() {
-        Log.v(TAG, "render()");
         // color the property that was just purchased & update the buying player's balance
         engine.getActivity().redrawPropertyAtPosition(prop.getPosition(), gc.activePlayer, gc.pm.getDevelopmentLevelAtPosition(prop.getPosition()));
         scoreTable.updatePlayerBalance(gc.activePlayer, gc.activePlayer.getBalance());
