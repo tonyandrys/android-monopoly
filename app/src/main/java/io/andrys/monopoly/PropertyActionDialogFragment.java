@@ -44,7 +44,9 @@ public class PropertyActionDialogFragment extends DialogFragment implements View
             this.propertyPosition = b.getInt(KEY_PROPERTY_POSITION);
             this.buyButtonState = b.getBoolean(KEY_BUY_BUTTON_STATE);
         }
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,6 +71,13 @@ public class PropertyActionDialogFragment extends DialogFragment implements View
             manageBtn.setOnClickListener(this);
         } else {
             throw new IllegalStateException("Fragment shown before being assigned an OnClickListener! Call .setOnClickListener() first!");
+        }
+
+        // When this modal is on-screen, back button presses and touches outside of the modal should be ignored
+        // (i.e. they should not dismiss the dialog).
+        setCancelable(false);
+        if (this.getDialog() != null) {
+            this.getDialog().setCanceledOnTouchOutside(false);
         }
         return v;
     }

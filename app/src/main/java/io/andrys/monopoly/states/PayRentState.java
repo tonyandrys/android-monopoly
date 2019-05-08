@@ -126,11 +126,12 @@ public class PayRentState extends GameState {
         Player payee = null;
         int payeePlayerIndex = -1; // position of the owner's Player object in the players list
         for (int i=0; i<players.length; i++) {
+            payeePlayerIndex = i;
             Player p = players[i];
             if (p.getToken() == payeeTokenID) {
                 payee = p;
+                break;
             }
-            payeePlayerIndex++;
         }
 
         if (payee != null) {
@@ -146,6 +147,7 @@ public class PayRentState extends GameState {
                 scoreTable.updatePlayerBalance(payee, payee.getBalance());
 
                 // generate an updated deque of Players including the updated payee Player object
+                Log.v(TAG, String.format("players[%d]=%s <- %s", payeePlayerIndex, players[payeePlayerIndex].toString(), payee.toString()));
                 players[payeePlayerIndex] = payee;
                 ArrayDeque<Player> updatedPlayers = new ArrayDeque<>(Arrays.asList(players));
 

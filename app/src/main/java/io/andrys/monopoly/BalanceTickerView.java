@@ -106,10 +106,8 @@ public class BalanceTickerView extends TickerView implements Animator.AnimatorLi
         if (shouldColorAnimate) {
             if (colorAnimateDirection == COLOR_ANIMATE_DIRECTION_INC) {
                 setTextColor(incrementColor);
-                Log.v(TAG, String.format("animation starting; setting text color to %h", incrementColor));
             } else if (colorAnimateDirection == COLOR_ANIMATE_DIRECTION_DEC) {
                 setTextColor(decrementColor);
-                Log.v(TAG, String.format("animation starting; setting text color to %h", decrementColor));
             }
         }
 
@@ -117,9 +115,8 @@ public class BalanceTickerView extends TickerView implements Animator.AnimatorLi
 
     @Override
     public void onAnimationEnd(Animator animation) {
-        Log.v(TAG, "animation done; setting text color back to normal");
-        this.setTextColor(this.defaultColor);
         if (shouldColorAnimate) {
+            this.setTextColor(this.defaultColor);
             shouldColorAnimate = false;
         }
     }

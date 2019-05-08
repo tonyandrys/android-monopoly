@@ -163,7 +163,7 @@ public class PropertyManager {
         } else {
             PropertyAssignment pa = positionPropertyMap.get(p);
             pa.updateOwner(tokenID);
-            Log.v(TAG, String.format("+ '%s' is now owned by token '%d'.", pa.getProperty().getName(), pa.getOwnerToken()));
+            Log.v(TAG, String.format("NEW ASSIGN: '%s' is now owned by token '%d'.", pa.getProperty().getName(), pa.getOwnerToken()));
         }
     }
 

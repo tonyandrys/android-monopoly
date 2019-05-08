@@ -7,11 +7,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import java.util.ArrayDeque;
+import java.util.Locale;
 
 import io.andrys.monopoly.Board;
 import io.andrys.monopoly.GameContext;
 import io.andrys.monopoly.GameEngine;
 import io.andrys.monopoly.Player;
+import io.andrys.monopoly.Property;
 import io.andrys.monopoly.R;
 import io.andrys.monopoly.ScoreTableLayout;
 import io.andrys.monopoly.exceptions.UnownedPropertyException;
@@ -42,7 +44,6 @@ public class RollDiceState extends GameState implements Transition.TransitionLis
     public void onStateEnter() {
         scoreTable = engine.getActivity().findViewById(R.id.score_table_tl);
 
-
         // let the roll dice button accept clicks
         rollButton = engine.getActivity().findViewById(R.id.roll_dice_btn);
         rollButton.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +55,9 @@ public class RollDiceState extends GameState implements Transition.TransitionLis
             }
         });
         rollButton.setEnabled(true);
+
+        // increment the on-screen turn counter
+        engine.getActivity().incrementTurnCount();
 
         // highlight the player who is about to roll the dice in the score table
         scoreTable.setActivePlayer(gc.activePlayer);
@@ -108,8 +112,10 @@ public class RollDiceState extends GameState implements Transition.TransitionLis
                     // ii) if this property is owned by the current player, end turn.
                     try {
                         int ownerTokenID = gc.pm.getPropertyOwner(position);
+                        Property prop = gc.pm.inspectProperty(position);
                         if (ownerTokenID == gc.activePlayer.getToken()) {
                             // end this turn
+                            Log.v(TAG, String.format(Locale.US, "%s owns %s; nothing happens.", gc.activePlayer.getName(), prop.getName()));
                             next = new GameContext(gc.board.getDiceValues(), gc.activePlayer, gc.players, gc.board, gc.pm);
                             newState = new EndTurnState(engine, next);
                             break;

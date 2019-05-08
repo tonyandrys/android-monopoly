@@ -38,6 +38,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Random;
 
 import io.andrys.monopoly.states.NewGameState;
@@ -60,11 +61,14 @@ public class FullscreenActivity extends AppCompatActivity {
     // Maps board positions to drawables of houses/hotels drawn on top of them
     private SparseArray<int[]> positionDevIDMap;
 
+    // turn counter
+    private int turnCount;
 
     // View references
     private View mContentView;
     private ConstraintLayout boardPanelCL;
     private ScoreTableLayout scoreTableTL;
+    private TextView turnCountTV;
 
 
     @Override
@@ -87,66 +91,16 @@ public class FullscreenActivity extends AppCompatActivity {
         // init layout references and data structures
         boardPanelCL = findViewById(R.id.root_cl);
         scoreTableTL = findViewById(R.id.score_table_tl);
+        turnCountTV = findViewById(R.id.turn_count_tv);
         tokenIVMap = new SparseIntArray();
         positionDevIDMap = new SparseArray<>();
 
+        // initialize turn counter & draw it on the screen
+        turnCount = 0;
+        repaintTurnCounter();
+
         // start the game engine
         startGameEngine();
-
-        // testing tickerview
-        Button testTickerButton = findViewById(R.id.testTickerButton);
-        final TickerView tickerView = findViewById(R.id.tickerView);
-        tickerView.setCharacterLists(TickerUtils.provideNumberList());
-        tickerView.setText("12345");
-
-        testTickerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // generate a 6 digit random number
-                Random rand = new Random();
-                int newValue = rand.nextInt(999999);
-                String inputString = String.valueOf(newValue);
-                String paddedString = "";
-                int length = 6; // digits
-
-                if (inputString.length() >= length) {
-                    paddedString = inputString;
-                }
-                StringBuilder sb = new StringBuilder();
-                while (sb.length() < length - inputString.length()) {
-                    sb.append('0');
-                }
-                sb.append(inputString);
-                paddedString = sb.toString();
-
-                tickerView.setText(paddedString);
-
-            }
-        });
-
-        // START TESTING GARBAGE
-        SeekBar seekBar = findViewById(R.id.seekBar);
-        seekBar.setMax(9999);
-        final TextView seekBarTV = findViewById(R.id.seek_bar_tv);
-        seekBar.setProgress((int)tickerView.getAnimationDuration());
-        seekBarTV.setText(String.valueOf(tickerView.getAnimationDuration()));
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                seekBarTV.setText(String.valueOf(progress));
-                tickerView.setAnimationDuration(progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
 
     }
 
@@ -213,13 +167,12 @@ public class FullscreenActivity extends AppCompatActivity {
         players.add(player3);
         String p4_color = "#FF8B6A8B";
         Player player4 = new Player("Eve", 4, p4_color);
-        players.add(player4);
+//        players.add(player4);
 
         // add players to the score table layout
-        scoreTableTL.addPlayerRow(me);
-        scoreTableTL.addPlayerRow(player2);
-        scoreTableTL.addPlayerRow(player3);
-        scoreTableTL.addPlayerRow(player4);
+        for (Player p: players) {
+            scoreTableTL.addPlayerRow(p);
+        }
 
         // build the game engine and construct the initial game context state
         engine = new GameEngine(this);
@@ -254,26 +207,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
 
 
-    private void jsonExperiment() {
-        ArrayList<Property> properties = PropertyBuilder.loadProperties(this);
-        Log.v(TAG, String.format("Loaded '%d' properties from JSON", properties.size()));
-        for (int i=0; i<properties.size(); i++) {
-            if (properties.get(i) instanceof StreetProperty) {
-                StreetProperty p = (StreetProperty) properties.get(i);
-                @SuppressLint("DefaultLocale") String s = String.format("'%s' => StreetProperty[%s] / pos: '%d', price: '%d', max rent: '%d'", p.getName(), p.getColorGroup(), p.getPosition(), p.getPrice(), p.calculateRentPayment(5));
-                Log.v(TAG, s);
-            } else if (properties.get(i) instanceof RailroadProperty) {
-                RailroadProperty p = (RailroadProperty) properties.get(i);
-                @SuppressLint("DefaultLocale") String s = String.format("'%s' => RailroadProperty / pos: '%d', price: '%d', max rent: '%d'", p.getName(), p.getPosition(), p.getPrice(), p.calculateRentPayment(4));
-                Log.v(TAG, s);
-            } else if (properties.get(i) instanceof UtilityProperty) {
-                UtilityProperty p = (UtilityProperty) properties.get(i);
-                @SuppressLint("DefaultLocale") String s = String.format("'%s' => UtilityProperty / pos: '%d', price: '%d', max rent: '%d'", p.getName(), p.getPosition(), p.getPrice(), p.calculateRentPayment(2, 12));
-                Log.v(TAG, s);
-            }
-        }
-        Log.v(TAG, "Done!");
-    }
+
 
     /**
      * When the "roll" button is pressed, generate two new dice values and update the images displayed on the dice
@@ -294,8 +228,16 @@ public class FullscreenActivity extends AppCompatActivity {
             Log.v(TAG, String.format("position '%d' isn't a property space, so we're not going to do anything yet!", position));
         }
 
+    }
 
+    private void repaintTurnCounter() {
+        String ts = String.format(Locale.US, "turn=%d", turnCount);
+        turnCountTV.setText(ts);
+    }
 
+    public void incrementTurnCount() {
+        turnCount++;
+        repaintTurnCounter();
     }
 
     /**

@@ -90,5 +90,13 @@ public class Player {
         return token;
     }
 
-
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", balance=" + balance +
+                ", token=" + token +
+                ", color=" + String.format("%h", color) +
+                '}';
+    }
 }
