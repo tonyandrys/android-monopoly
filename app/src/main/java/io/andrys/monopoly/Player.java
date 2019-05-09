@@ -16,16 +16,11 @@ import android.util.Log;
 public class Player {
     private final String TAG = this.getClass().getSimpleName();
 
-    private String name;    // Name to be displayed in the score panel
-    private int balance;    // Cash on hand in dollars
-    private int token;      // uid of the token used to represent this player's position on the board.
-    private int color;      // color int used next to player on scoreboard, tint owned properties, etc.
-
-    /**
-     *
-     * @param name
-     *
-     */
+    private String name;        // Name to be displayed in the score panel
+    private int balance;        // Cash on hand in dollars
+    private int token;          // uid of the token used to represent this player's position on the board.
+    private int color;          // color int used next to player on scoreboard, tint owned properties, etc.
+    private boolean isInJail;
 
     /**
      * Creates a new player that starts w/ $1500 (rulebook standard amount for a new player).
@@ -38,6 +33,7 @@ public class Player {
         this.balance = 1500;
         this.token = token;
         this.color = Color.parseColor(colorStr);
+        this.isInJail = false;
     }
 
     public String getName() {
@@ -90,13 +86,27 @@ public class Player {
         return token;
     }
 
+    public void setIsInJail(boolean isInJail) {
+        this.isInJail = isInJail;
+        if (this.isInJail) {
+            Log.v(TAG, String.format("%s has been thrown in jail.", this.name));
+        } else {
+            Log.v(TAG, String.format("%s has been released from jail!", this.name));
+        }
+    }
+
+    public boolean isInJail() {
+        return this.isInJail;
+    }
+
     @Override
     public String toString() {
         return "Player{" +
                 "name='" + name + '\'' +
                 ", balance=" + balance +
                 ", token=" + token +
-                ", color=" + String.format("%h", color) +
+                ", color=" + color +
+                ", isInJail=" + isInJail +
                 '}';
     }
 }

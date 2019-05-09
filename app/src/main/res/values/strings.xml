@@ -5,4 +5,10 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
     <string name="title_activity_testfullscreenactivity">testfullscreenactivity</string>
+
+    <string name="in_jail_modal_text_l1">You are in jail! You can leave jail immediately by paying a fine of $50, or you can try to free yourself at no cost by rolling doubles.</string>
+    <string name="in_jail_modal_text_l2">If you fail to roll doubles three times in a row, you will be forced to pay the fine.</string>
+    <string name="jail_roll_button">Roll</string>
+    <string name="jail_pay_button">Pay $50</string>
+
 </resources>

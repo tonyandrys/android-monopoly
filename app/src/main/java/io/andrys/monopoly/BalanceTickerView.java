@@ -18,8 +18,15 @@ import com.robinhood.ticker.TickerView;
  */
 
 /**
- * An attempt to have a TickerView animate w/ text colors
+ * A BalanceTickerView is a subclass of TickerView that we use to display Player balances in the
+ * score table.
+ *
+ * It inherits most of its animation behavior from TickerView, but adds the ability to change the
+ * font color of the view while the display value is changing. We use this to set a specific increment
+ * font color and decrement font color; the display text changes to this color depending on the direction
+ * of the animation.
  */
+
 public class BalanceTickerView extends TickerView implements Animator.AnimatorListener {
     private final String TAG = this.getClass().getSimpleName();
 
@@ -41,8 +48,8 @@ public class BalanceTickerView extends TickerView implements Animator.AnimatorLi
     /**
      * Allows adding colors to the increment/decrement animations of this ticker.
      * @param context
-     * @param incrementColor
-     * @param decrementColor
+     * @param incrementColor an Android int color
+     * @param decrementColor an Android int color
      */
     public BalanceTickerView(Context context, int incrementColor, int decrementColor) {
         super(context);
@@ -70,7 +77,18 @@ public class BalanceTickerView extends TickerView implements Animator.AnimatorLi
         init(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    // Animate with text colors maybe?
+    /**
+     * Set the display value of this view using this method to change the text color during the
+     * ticker change animation. Must call w/ colorAnimate=true, otherwise text color values will be ignored.
+     *
+     * The increment or decrement color is chosen depending on the difference between the new value
+     * and the existing one. If the new value is a larger number than the existing value, the increment
+     * color is chosen. If the new value is smaller than the existing value, the decrement color is chosen.
+     *
+     * @param text
+     * @param animate
+     * @param colorAnimate
+     */
     public void setText(String text, boolean animate, boolean colorAnimate) {
         if (colorAnimate) {
             shouldColorAnimate = true;
@@ -90,17 +108,17 @@ public class BalanceTickerView extends TickerView implements Animator.AnimatorLi
     }
 
     /**
-     * Returns the dollar value this BalanceTickerView currently displays as an integer.
+     * Returns the number that this BalanceTickerView is currently displaying as an integer.
      * Prefer this method over getText() to avoid having to manually strip out the dollar sign all the time.
-     * @return
+     * @return display value as an integer
      */
     public int getSimpleValue() {
-        String[] splitted = this.getText().split("\\$");
         String s = this.getText().split("\\$")[1];
         return Integer.parseInt(s);
     }
 
 
+    // Listen to TickerView's animation events to change the text color appropriately.
     @Override
     public void onAnimationStart(Animator animation) {
         if (shouldColorAnimate) {
@@ -113,6 +131,7 @@ public class BalanceTickerView extends TickerView implements Animator.AnimatorLi
 
     }
 
+    // Listen to TickerView's animation events to change the text color appropriately.
     @Override
     public void onAnimationEnd(Animator animation) {
         if (shouldColorAnimate) {

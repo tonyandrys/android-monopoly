@@ -91,13 +91,13 @@ public class FullscreenActivity extends AppCompatActivity {
         // init layout references and data structures
         boardPanelCL = findViewById(R.id.root_cl);
         scoreTableTL = findViewById(R.id.score_table_tl);
-        turnCountTV = findViewById(R.id.turn_count_tv);
         tokenIVMap = new SparseIntArray();
         positionDevIDMap = new SparseArray<>();
 
         // initialize turn counter & draw it on the screen
         turnCount = 0;
-        repaintTurnCounter();
+        //turnCountTV = findViewById(R.id.turn_count_tv);
+        //repaintTurnCounter();
 
         // start the game engine
         startGameEngine();
@@ -237,7 +237,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
     public void incrementTurnCount() {
         turnCount++;
-        repaintTurnCounter();
+        //repaintTurnCounter();
     }
 
     /**
