@@ -9,28 +9,42 @@
         android:id="@+id/jail_roll_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/jail_roll_button"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/jail_pay_button"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintBottom_toTopOf="@+id/jail_pay_button"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/in_jail_text_l2_tv"
-        app:layout_constraintWidth_percent="0.3" />
+        app:layout_constraintVertical_bias="0.05"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <Button
+        android:id="@+id/jail_get_out_free_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/jail_get_out_free_button"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/jail_pay_button" />
 
     <Button
         android:id="@+id/jail_pay_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/jail_pay_button"
         android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/jail_get_out_free_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/jail_roll_button"
-        app:layout_constraintTop_toBottomOf="@+id/in_jail_text_l2_tv"
-        app:layout_constraintWidth_percent="0.3" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/jail_roll_button" />
 
     <TextView
         android:id="@+id/in_jail_text_l1_tv"

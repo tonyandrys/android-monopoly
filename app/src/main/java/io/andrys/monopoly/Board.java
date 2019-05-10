@@ -49,7 +49,6 @@ public class Board {
         this.positionTypeMap = buildSpaceTypeMap();
     }
 
-    // TODO: When you get there, you'll probably need to add RAILROAD and UTILITY to this list of enums.
     public enum SpaceType {
         PROPERTY, CHANCE, COMMUNITY_CHEST, INCOME_TAX, LUXURY_TAX, GO, JAIL, FREE_PARKING, GO_TO_JAIL;
     }

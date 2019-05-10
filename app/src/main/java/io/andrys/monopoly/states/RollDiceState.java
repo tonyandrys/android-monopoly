@@ -102,6 +102,7 @@ public class RollDiceState extends GameState implements Transition.TransitionLis
         GameState newState;
         GameContext next;
         switch (sType) {
+
             case PROPERTY:
                 // i) if this is an unowned property, show the purchasing modal
                 if (!gc.pm.isPropertyOwned(position)) {
@@ -129,6 +130,11 @@ public class RollDiceState extends GameState implements Transition.TransitionLis
                         throw new IllegalStateException("Inconsistent state!");
                     }
                 }
+
+            case GO_TO_JAIL:
+                // send the active user to jail!
+                // TODO: START HERE NEXT TIME
+                break;
 
             default:
                 // end this turn

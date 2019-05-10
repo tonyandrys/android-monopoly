@@ -16,11 +16,12 @@ import android.util.Log;
 public class Player {
     private final String TAG = this.getClass().getSimpleName();
 
-    private String name;        // Name to be displayed in the score panel
-    private int balance;        // Cash on hand in dollars
-    private int token;          // uid of the token used to represent this player's position on the board.
-    private int color;          // color int used next to player on scoreboard, tint owned properties, etc.
+    private String name;                // Name to be displayed in the score panel
+    private int balance;                // Cash on hand in dollars
+    private int token;                  // uid of the token used to represent this player's position on the board.
+    private int color;                  // color int used next to player on scoreboard, tint owned properties, etc.
     private boolean isInJail;
+    private int getOutOfJailFreeCount;  // number of get out of jail free cards currently held
 
     /**
      * Creates a new player that starts w/ $1500 (rulebook standard amount for a new player).
@@ -34,6 +35,7 @@ public class Player {
         this.token = token;
         this.color = Color.parseColor(colorStr);
         this.isInJail = false;
+        this.getOutOfJailFreeCount = 0;
     }
 
     public String getName() {
@@ -97,6 +99,20 @@ public class Player {
 
     public boolean isInJail() {
         return this.isInJail;
+    }
+
+    public int getGetOutOfJailFreeCount() {
+        return this.getOutOfJailFreeCount;
+    }
+
+    public void addGetOutOfJailFree() {
+        this.getOutOfJailFreeCount++;
+        Log.v(TAG, String.format("%s gains a Get Out Of Jail Free Card! (total held=%d)", this.name, this.getOutOfJailFreeCount));
+    }
+
+    public void removeGetOutOfJailFree() {
+        this.getOutOfJailFreeCount--;
+        Log.v(TAG, String.format("%s loses a Get Out Of Jail Free Card. (total held=%d)", this.name, this.getOutOfJailFreeCount));
     }
 
     @Override

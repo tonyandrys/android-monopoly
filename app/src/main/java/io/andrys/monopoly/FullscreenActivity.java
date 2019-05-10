@@ -41,6 +41,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
 
+import io.andrys.monopoly.states.InJailState;
 import io.andrys.monopoly.states.NewGameState;
 import io.andrys.monopoly.states.UnownedPropertyState;
 
@@ -268,7 +269,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
         // try to show a dialog fragment
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("propertyDialog");
+        Fragment prev = getFragmentManager().findFragmentByTag("propertyActionDialog");
         if (prev != null) {
             ft.remove(prev);
         }
@@ -287,6 +288,32 @@ public class FullscreenActivity extends AppCompatActivity {
 
         // present the dialog
         dialogFragment.show(ft, "propertyActionDialog");
+    }
+
+    /**
+     * Displays the modal with Roll/Pay/Use card options to escape jail.
+     * @param caller InJailState instance that requested that we display this modal
+     * @param shouldEnableUseCardButton Should the "use get out of jail card" button be visible?
+     */
+    public void showInJailActionModal(InJailState caller, boolean shouldEnableUseCardButton) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("jailActionDialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // pass the use card button state to the jail dialog fragment; send caller click events.
+        Bundle b = new Bundle();
+        b.putBoolean(InJailActionDialogFragment.KEY_ENABLE_GET_OUT_OF_JAIL_FREE, shouldEnableUseCardButton);
+        InJailActionDialogFragment dialogFragment = new InJailActionDialogFragment();
+        dialogFragment.setArguments(b);
+
+        // the state that called this method should be sent click events
+        dialogFragment.setButtonListener(caller);
+
+        // present the dialog
+        dialogFragment.show(ft, "jailActionDialog");
     }
 
     /**
