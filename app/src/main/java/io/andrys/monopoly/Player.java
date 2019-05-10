@@ -31,7 +31,7 @@ public class Player {
      */
     public Player(String name, int token, String colorStr) {
         this.name = name;
-        this.balance = 1500;
+        this.balance = 2500;
         this.token = token;
         this.color = Color.parseColor(colorStr);
         this.isInJail = false;
@@ -91,7 +91,7 @@ public class Player {
     public void setIsInJail(boolean isInJail) {
         this.isInJail = isInJail;
         if (this.isInJail) {
-            Log.v(TAG, String.format("%s has been thrown in jail.", this.name));
+            Log.v(TAG, String.format("%s is now in jail.", this.name));
         } else {
             Log.v(TAG, String.format("%s has been released from jail!", this.name));
         }

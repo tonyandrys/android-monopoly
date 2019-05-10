@@ -1,5 +1,6 @@
 package io.andrys.monopoly.states;
 
+import android.media.MediaPlayer;
 import android.transition.Transition;
 import android.util.Log;
 import android.view.View;
@@ -31,8 +32,6 @@ import io.andrys.monopoly.exceptions.UnownedPropertyException;
 public class RollDiceState extends GameState implements Transition.TransitionListener {
     private final String TAG = String.format("%s[%s]", this.getClass().getSimpleName(), this.getShortCode());
 
-    private ScoreTableLayout scoreTable;
-
     // reference to the "Roll" button in the parent activity
     private Button rollButton;
 
@@ -42,7 +41,6 @@ public class RollDiceState extends GameState implements Transition.TransitionLis
 
     @Override
     public void onStateEnter() {
-        scoreTable = engine.getActivity().findViewById(R.id.score_table_tl);
 
         // let the roll dice button accept clicks
         rollButton = engine.getActivity().findViewById(R.id.roll_dice_btn);
@@ -59,8 +57,6 @@ public class RollDiceState extends GameState implements Transition.TransitionLis
         // increment the on-screen turn counter
         engine.getActivity().incrementTurnCount();
 
-        // highlight the player who is about to roll the dice in the score table
-        scoreTable.setActivePlayer(gc.activePlayer);
     }
 
     @Override
@@ -132,8 +128,20 @@ public class RollDiceState extends GameState implements Transition.TransitionLis
                 }
 
             case GO_TO_JAIL:
-                // send the active user to jail!
-                // TODO: START HERE NEXT TIME
+                // TODO: play the police siren sound effect
+                // send the player to jail!
+                int jailPosition = gc.board.POSITION_JAIL;
+                gc.board.setTokenPosition(gc.activePlayer.getToken(), jailPosition);
+                engine.getActivity().drawTokenAtPosition(gc.activePlayer.getToken(), jailPosition, null);
+                Log.v(TAG, String.format("%s has been sent to jail!", gc.activePlayer.getName()));
+
+                // update the active player's model to show that they're not just visiting
+                Player jailedPlayer = gc.activePlayer;
+                jailedPlayer.setIsInJail(true);
+
+                // end turn after moving the token to Jail
+                next = new GameContext(gc.board.getDiceValues(), jailedPlayer, gc.players, gc.board, gc.pm);
+                newState = new EndTurnState(engine, next);
                 break;
 
             default:

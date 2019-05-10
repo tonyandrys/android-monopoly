@@ -8,6 +8,7 @@ import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
@@ -293,9 +294,10 @@ public class FullscreenActivity extends AppCompatActivity {
     /**
      * Displays the modal with Roll/Pay/Use card options to escape jail.
      * @param caller InJailState instance that requested that we display this modal
+     * @param shouldEnableFineButton Should the "pay $50" button be enabled?
      * @param shouldEnableUseCardButton Should the "use get out of jail card" button be visible?
      */
-    public void showInJailActionModal(InJailState caller, boolean shouldEnableUseCardButton) {
+    public void showInJailActionModal(InJailState caller, boolean shouldEnableFineButton, boolean shouldEnableUseCardButton) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("jailActionDialog");
         if (prev != null) {
@@ -303,9 +305,10 @@ public class FullscreenActivity extends AppCompatActivity {
         }
         ft.addToBackStack(null);
 
-        // pass the use card button state to the jail dialog fragment; send caller click events.
+        // pass bundle arguments to fragment to set button states; send caller click events.
         Bundle b = new Bundle();
         b.putBoolean(InJailActionDialogFragment.KEY_ENABLE_GET_OUT_OF_JAIL_FREE, shouldEnableUseCardButton);
+        b.putBoolean(InJailActionDialogFragment.KEY_ENABLE_PAY_FINE, shouldEnableFineButton);
         InJailActionDialogFragment dialogFragment = new InJailActionDialogFragment();
         dialogFragment.setArguments(b);
 
@@ -422,9 +425,10 @@ public class FullscreenActivity extends AppCompatActivity {
      * Moves a token's ImageView to a specific position on the board.
      * @param tokenID
      * @param p
-     * @param listener a TransitionListener that should receive transition status notifications
+     * @param listener a TransitionListener that should receive transition status notifications.
+     *                 This can be set to null to ignore transition events.
      */
-    public void drawTokenAtPosition(int tokenID, int p, Transition.TransitionListener listener) {
+    public void drawTokenAtPosition(int tokenID, int p, @Nullable Transition.TransitionListener listener) {
         // get a reference to the ImageView to re-locate
         int viewID = tokenIVMap.get(tokenID);
         ImageView tokenIV = findViewById(viewID);
@@ -445,7 +449,9 @@ public class FullscreenActivity extends AppCompatActivity {
 
         // apply & animate changes
         Transition t = new AutoTransition();
-        t.addListener(listener);
+        if (listener != null) {
+            t.addListener(listener);
+        }
         TransitionManager.beginDelayedTransition(boardPanelCL, t);
         newSet.applyTo(boardPanelCL);
         tokenIV.setVisibility(View.VISIBLE);

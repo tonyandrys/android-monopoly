@@ -17,10 +17,12 @@ public class InJailActionDialogFragment extends DialogFragment implements View.O
     private final String TAG = this.getClass().getSimpleName();
 
     private boolean useCardButtonState;
+    private boolean payFineButtonState;
     private ButtonListener listener;
 
     // Bundle keys
     public static final String KEY_ENABLE_GET_OUT_OF_JAIL_FREE = "KEY_ENABLE_GET_OUT_OF_JAIL_FREE";
+    public static final String KEY_ENABLE_PAY_FINE = "KEY_ENABLE_PAY_FINE";
 
     /**
      * Classes can receive click events by implementing the ButtonListener interface. They can then be paseed as an argument to the {@link #setButtonListener} method.
@@ -47,9 +49,11 @@ public class InJailActionDialogFragment extends DialogFragment implements View.O
         Bundle b = this.getArguments();
         if (b != null) {
             this.useCardButtonState = b.getBoolean(KEY_ENABLE_GET_OUT_OF_JAIL_FREE, false);
+            this.payFineButtonState = b.getBoolean(KEY_ENABLE_PAY_FINE, false);
         } else {
             // if no bundle is sent on initialization, use default values for all instance variables
             this.useCardButtonState = false;
+            this.payFineButtonState = false;
         }
     }
 
@@ -57,11 +61,13 @@ public class InJailActionDialogFragment extends DialogFragment implements View.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.in_jail_action_modal, container, false);
 
-        // set state of get out of jail free card button appropriately, send button click events back to this instance
+        // set state of buttons appropriately, send button click events back to this instance
         Button rollDiceButton = v.findViewById(R.id.jail_roll_button);
-        Button payFineButton = v.findViewById(R.id.jail_pay_button);
-        Button useCardButton = v.findViewById(R.id.jail_get_out_free_button);
 
+        Button payFineButton = v.findViewById(R.id.jail_pay_button);
+        payFineButton.setEnabled(payFineButtonState);
+
+        Button useCardButton = v.findViewById(R.id.jail_get_out_free_button);
         if (useCardButtonState) {
             useCardButton.setVisibility(View.VISIBLE);
             useCardButton.setEnabled(true);

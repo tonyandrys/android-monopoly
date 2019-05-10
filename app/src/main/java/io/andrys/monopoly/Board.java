@@ -34,6 +34,11 @@ public class Board {
     public final int[] POSITIONS_RAILROADS = {5,15,25,35};
     public final int[] POSITIONS_UTILITIES = {12,28};
 
+    /** Quick reference for positions that need to be moved to directly */
+    public final int POSITION_GO = 0;
+    public final int POSITION_JAIL = 10;
+    public final int POSITION_BOARDWALK = 39;
+
     /** Keeps track of each token's position on the board by its tokenID. */
     private SparseIntArray tokenPositionMap;
     /** Mapping of each position on the board to its SpaceType. */
@@ -104,6 +109,9 @@ public class Board {
         }
         tokenPositionMap.append(tokenID, 0);
     }
+
+
+
     /**
      * Moves a player token forward a number of spaces on the board.
      * @param tokenID id of token to move
@@ -122,6 +130,24 @@ public class Board {
             }
         } else {
             throw new IllegalArgumentException("Cannot add a negative value to a token's position!");
+        }
+    }
+
+    /**
+     * Moves a player token directly to an absolute position on the board.
+     * @param tokenID id of token to move
+     * @param p board position to move token to.
+     */
+    public void setTokenPosition(int tokenID, int p) {
+        if ((p < 0) || (p > 39)) {
+            throw new IllegalArgumentException(String.format("'%d' is an invalid board position! A valid board position is in [0,39].", p));
+        } else {
+            int currentPos = tokenPositionMap.get(tokenID, -1);
+            if (currentPos != -1) {
+                tokenPositionMap.put(tokenID, p);
+            } else {
+                throw new IllegalArgumentException(String.format("TokenID '%d' does not exist on this board!", tokenID));
+            }
         }
     }
 
