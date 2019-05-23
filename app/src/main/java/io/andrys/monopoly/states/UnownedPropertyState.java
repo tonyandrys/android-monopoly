@@ -67,6 +67,9 @@ public class UnownedPropertyState extends GameState implements PropertyActionDia
 
     @Override
     public void onBuyButtonClicked(PropertyActionDialogFragment df, int position) {
+        // cha-ching!
+        engine.playAudio(R.raw.cash_register_single_ding);
+
         // deduct purchase price from their balance and assign them ownership
         gc.activePlayer.deductFromBalance(prop.getPrice());
         gc.pm.assignPropertyToOwner(position, gc.activePlayer.getToken());

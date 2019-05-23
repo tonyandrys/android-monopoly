@@ -65,6 +65,9 @@ public class InJailState extends GameState implements InJailActionDialogFragment
     // Removes player from jail & restarts their turn normally (i.e. allows them to roll dice, make trades, etc.)
     // Player should (obviously) be the active player
     private void freePlayerFromJail(Player player) {
+        // freedom sound!
+        engine.playAudio(R.raw.jail_freed);
+
         player.setIsInJail(false);
         GameContext next = new GameContext(gc.board.getDiceValues(), player, gc.players, gc.board, gc.pm);
         changeState(new RollDiceState(engine, next));

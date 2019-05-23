@@ -88,6 +88,7 @@ public class RollDiceState extends GameState implements Transition.TransitionLis
     private void rollDiceButtonPressed() {
         // roll the dice, increment the position of the active player
         gc.board.rollDice();
+        engine.playAudio(R.raw.diceroll);
         int[] r = gc.board.getDiceValues();
         gc.board.incrementTokenPosition(gc.activePlayer.getToken(), r[0]+r[1]);
         render();
@@ -128,7 +129,9 @@ public class RollDiceState extends GameState implements Transition.TransitionLis
                 }
 
             case GO_TO_JAIL:
-                // TODO: play the police siren sound effect
+                // play the police siren sound effect
+                engine.playAudio(R.raw.police_siren_short);
+
                 // send the player to jail!
                 int jailPosition = gc.board.POSITION_JAIL;
                 gc.board.setTokenPosition(gc.activePlayer.getToken(), jailPosition);

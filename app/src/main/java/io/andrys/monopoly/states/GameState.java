@@ -58,7 +58,6 @@ public abstract class GameState {
      */
     public int getShortCode() {
         return (this.hashCode() & 0xFF);
-
     }
 
     @Override
