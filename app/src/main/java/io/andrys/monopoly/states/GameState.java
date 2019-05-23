@@ -47,7 +47,7 @@ public abstract class GameState {
      * @param newState GameState to transition to
      */
     protected void changeState(GameState newState) {
-        Log.v(TAG, String.format("+ Trying to transition to new state %s...", newState.toString()));
+        Log.v(TAG, String.format("=> Trying to transition to new state %s... =>", newState.toString()));
         engine.changeState(newState);
     }
 
@@ -58,7 +58,6 @@ public abstract class GameState {
      */
     public int getShortCode() {
         return (this.hashCode() & 0xFF);
-
     }
 
     @Override

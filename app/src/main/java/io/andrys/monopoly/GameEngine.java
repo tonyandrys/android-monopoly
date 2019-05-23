@@ -8,14 +8,16 @@ package io.andrys.monopoly;
 
 /**
  * This will be the game engine that manages the current state, performs the actions in the state object, modifies the
- * game context (which I think will be Game.java) appropriately,
+ * game context appropriately,
  */
 
+import android.support.annotation.RawRes;
 import android.util.Log;
 
 import java.util.ArrayDeque;
 import java.util.EmptyStackException;
 
+import io.andrys.monopoly.audio.AudioEngine;
 import io.andrys.monopoly.states.GameState;
 
 /**
@@ -42,12 +44,19 @@ public class GameEngine {
     // state will be destroyed.
     // Pushing a new state onto the stack
     ArrayDeque<GameState> stateStack;
+    private AudioEngine audioEngine;
+
     boolean isRunning;
 
     public GameEngine(FullscreenActivity activity) {
         this.activity = activity;
         this.stateStack = new ArrayDeque<GameState>();
+        this.audioEngine = new AudioEngine(activity.getApplicationContext());
         this.isRunning = true;
+    }
+
+    public void playAudio(@RawRes int audioResourceID) {
+        this.audioEngine.enqueueAudio(audioResourceID);
     }
 
     /**

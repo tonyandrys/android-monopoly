@@ -7,22 +7,21 @@ package io.andrys.monopoly;
  */
 
 import android.graphics.Color;
+import android.util.Log;
 
 /**
  * A Player is a participant in a game controlled by either a human or AI.
  */
 
 public class Player {
-    private String name;    // Name to be displayed in the score panel
-    private int balance;    // Cash on hand in dollars
-    private int token;      // uid of the token used to represent this player's position on the board.
-    private int color;      // color int used next to player on scoreboard, tint owned properties, etc.
+    private final String TAG = this.getClass().getSimpleName();
 
-    /**
-     *
-     * @param name
-     *
-     */
+    private String name;                // Name to be displayed in the score panel
+    private int balance;                // Cash on hand in dollars
+    private int token;                  // uid of the token used to represent this player's position on the board.
+    private int color;                  // color int used next to player on scoreboard, tint owned properties, etc.
+    private boolean isInJail;
+    private int getOutOfJailFreeCount;  // number of get out of jail free cards currently held
 
     /**
      * Creates a new player that starts w/ $1500 (rulebook standard amount for a new player).
@@ -32,9 +31,11 @@ public class Player {
      */
     public Player(String name, int token, String colorStr) {
         this.name = name;
-        this.balance = 1500;
+        this.balance = 2500;
         this.token = token;
         this.color = Color.parseColor(colorStr);
+        this.isInJail = false;
+        this.getOutOfJailFreeCount = 0;
     }
 
     public String getName() {
@@ -63,7 +64,10 @@ public class Player {
      * @param addVal a positive value to add to the player's current balance.
      */
     public void addToBalance(int addVal) {
+        int balanceBefore = this.balance;
         this.balance += addVal;
+        Log.v(TAG, String.format("incremented %s's balance from %d -> %d", this.name, balanceBefore, this.balance));
+
     }
 
     /**
@@ -71,7 +75,9 @@ public class Player {
      * @param deductVal a positive value to subtract from the player's current balance.
      */
     public void deductFromBalance(int deductVal) {
+        int balanceBefore = this.balance;
         this.balance -= deductVal;
+        Log.v(TAG, String.format("decremented %s's balance from %d -> %d", this.name, balanceBefore, this.balance));
     }
 
     /**
@@ -82,5 +88,41 @@ public class Player {
         return token;
     }
 
+    public void setIsInJail(boolean isInJail) {
+        this.isInJail = isInJail;
+        if (this.isInJail) {
+            Log.v(TAG, String.format("%s is now in jail.", this.name));
+        } else {
+            Log.v(TAG, String.format("%s has been released from jail!", this.name));
+        }
+    }
 
+    public boolean isInJail() {
+        return this.isInJail;
+    }
+
+    public int getGetOutOfJailFreeCount() {
+        return this.getOutOfJailFreeCount;
+    }
+
+    public void addGetOutOfJailFree() {
+        this.getOutOfJailFreeCount++;
+        Log.v(TAG, String.format("%s gains a Get Out Of Jail Free Card! (total held=%d)", this.name, this.getOutOfJailFreeCount));
+    }
+
+    public void removeGetOutOfJailFree() {
+        this.getOutOfJailFreeCount--;
+        Log.v(TAG, String.format("%s loses a Get Out Of Jail Free Card. (total held=%d)", this.name, this.getOutOfJailFreeCount));
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", balance=" + balance +
+                ", token=" + token +
+                ", color=" + color +
+                ", isInJail=" + isInJail +
+                '}';
+    }
 }

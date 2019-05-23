@@ -1,16 +1,21 @@
 package io.andrys.monopoly;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.robinhood.ticker.TickerUtils;
+import com.robinhood.ticker.TickerView;
 
 import java.util.Locale;
 
@@ -77,7 +82,10 @@ public class ScoreTableLayout extends TableLayout {
         nameTV.setLayoutParams(nameLP);
 
         // create the balance label
-        TextView balanceTV = new TextView(getContext());
+        //TextView balanceTV = new TextView(getContext());
+        BalanceTickerView balanceTV = new BalanceTickerView(getContext(), Color.parseColor("#2DC55D"), Color.parseColor("#D22630"));
+        balanceTV.setCharacterLists(TickerUtils.provideNumberList());
+        balanceTV.setAnimationDuration(500);
         balanceTV.setId(View.generateViewId());
         balanceTV.setText(String.format(Locale.US, "$%d", p.getBalance()));
         TableRow.LayoutParams balanceLP = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, BALANCE_LAYOUT_WEIGHT);
@@ -102,7 +110,7 @@ public class ScoreTableLayout extends TableLayout {
      * @param balanceTV TextView that displays the player's balance
      * @param rowIndex Index of the row these elements were added to
      */
-    private void writeViewsToModel(Player player, ImageView iconIV, TextView nameTV, TextView balanceTV, int rowIndex) {
+    private void writeViewsToModel(Player player, ImageView iconIV, TextView nameTV, BalanceTickerView balanceTV, int rowIndex) {
         if (viewIDMap.get(player.getToken(), null) == null) {
             int[] views = new int[]{iconIV.getId(), nameTV.getId(), balanceTV.getId(), rowIndex};
             viewIDMap.put(player.getToken(), views);
@@ -120,8 +128,9 @@ public class ScoreTableLayout extends TableLayout {
         int[] views = viewIDMap.get(player.getToken(), new int[0]);
         if (views.length != 0) {
             int balanceTVID = views[INDEX_PLAYER_BALANCE];
-            TextView balanceTV = findViewById(balanceTVID);
-            balanceTV.setText(String.format(Locale.US, "$%d", newBalance));
+            //TextView balanceTV = findViewById(balanceTVID);
+            BalanceTickerView balanceTV = findViewById(balanceTVID);
+            balanceTV.setText(String.format(Locale.US, "$%d", newBalance), true, true);
             Log.v(TAG, String.format("%s's display balance updated to %s", player.getName(), balanceTV.getText()));
         } else {
             throw new IllegalStateException(String.format(Locale.US, "No views stored in ScoreTable for player w/ token='%d'! writeViewsToModel() must be called before modifying display data on a ScoreTableLayout!", player.getToken()));

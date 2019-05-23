@@ -4,7 +4,12 @@ import android.content.Context;
 import android.util.Log;
 import android.util.SparseArray;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.Iterator;
+
+import io.andrys.monopoly.exceptions.UnownedPropertyException;
 
 /**
  * PropertyManager.java // Android Monopoly
@@ -14,15 +19,19 @@ import java.util.Iterator;
 
 /**
  * Provides information about all purchasable properties on the board, keeps track of property
- * ownership, and keeps track of each property's development level.
+ * ownership, and maintains each property's current development level.
  */
 public class PropertyManager {
     private final String TAG = this.getClass().getSimpleName();
+
     private SparseArray<PropertyAssignment> positionPropertyMap;
+    // associates color groups w/ their associated street properties
+    private EnumMap<StreetProperty.ColorGroup, ArrayList<StreetProperty>> colorPropertyMap;
 
     public PropertyManager(Context context) {
         ArrayList<Property> properties = PropertyBuilder.loadProperties(context);
         this.positionPropertyMap = buildPositionPropertyMap(properties);
+        this.colorPropertyMap = buildColorPropertyMap(properties);
     }
 
     /**
@@ -46,6 +55,44 @@ public class PropertyManager {
         return m;
     }
 
+    // Builds a mapping of each StreetProperty ColorGroup to its associated StreetProperties
+    private EnumMap<StreetProperty.ColorGroup, ArrayList<StreetProperty>> buildColorPropertyMap(ArrayList<Property> properties) {
+        StreetProperty.ColorGroup[] groups = StreetProperty.ColorGroup.values();
+        EnumMap<StreetProperty.ColorGroup, ArrayList<StreetProperty>> map = new EnumMap<>(StreetProperty.ColorGroup.class);
+
+        // initialize empty lists for every color group in our mapping
+        for (int i=0; i<groups.length; i++) {
+            StreetProperty.ColorGroup cg = groups[i];
+            if (!map.containsKey(cg)) {
+                map.put(cg, new ArrayList<StreetProperty>(3));    // no color group contains more than 3 properties
+            }
+        }
+
+        // assign each street property to its color group
+        Iterator<Property> itr = properties.iterator();
+        while (itr.hasNext()) {
+            Property p = itr.next();
+            if (p instanceof StreetProperty) {
+                StreetProperty sp = (StreetProperty)p;
+                ArrayList<StreetProperty> props = map.get(sp.getColorGroup());
+                props.add(sp);
+                map.put(sp.getColorGroup(), props);
+            }
+        }
+        return map;
+    }
+
+    // True if p is a valid board position with purchasable property
+    private boolean isPositionValid(int p) {
+        if ((p < 0) || (p > 39)) {
+            throw new IllegalArgumentException(String.format("Invalid board position '%d'!", p));
+        } else if (positionPropertyMap.get(p) == null) {
+            throw new IllegalArgumentException(String.format("No purchasable Property at position '%d'!", p));
+        } else {
+            return true;
+        }
+    }
+
     /**
      * Returns the Property at a specific position on the board.
      * @param p A board position with purchasable property
@@ -62,17 +109,23 @@ public class PropertyManager {
     }
 
     /**
+     * Returns a list of all StreetProperties in a given ColorGroup.
+     * @return ArrayList<StreetProperty>
+     */
+    public ArrayList<StreetProperty> inspectPropertiesInColorGroup(StreetProperty.ColorGroup group) {
+        return colorPropertyMap.get(group);
+    }
+
+    /**
      * Interrogates ownership of the Property at a specific position on the board.
      * @param p A board position with purchasable property
      * @return true if owned, false if the bank owns it
      */
     public boolean isPropertyOwned(int p) {
-        if ((p < 0) || (p > 39)) {
-            throw new IllegalArgumentException(String.format("Invalid board position '%d'!", p));
-        } else if (positionPropertyMap.get(p) == null) {
-            throw new IllegalArgumentException(String.format("No purchasable Property at position '%d'!", p));
-        } else {
+        if (positionPropertyMap.indexOfKey(p) >= 0) {
             return positionPropertyMap.get(p).hasOwner();
+        } else {
+            return false;
         }
     }
 
@@ -80,15 +133,17 @@ public class PropertyManager {
      * Retrieves the token of the Player that owns the property at a specific position on the board.
      * @param p A board position with purchasable property
      * @return tokenID of the owner
+     * @throws UnownedPropertyException if property is unowned
      */
-    public int getPropertyOwner(int p) {
+    public int getPropertyOwner(int p) throws UnownedPropertyException {
         int tokenID;
         if ((p < 0) || (p > 39)) {
             throw new IllegalArgumentException(String.format("Invalid board position '%d'!", p));
         } else if (positionPropertyMap.get(p) == null) {
             throw new IllegalArgumentException(String.format("No purchasable Property at position '%d'!", p));
         } else if (positionPropertyMap.get(p).getOwnerToken() == PropertyAssignment.NO_OWNER) {
-            throw new IllegalArgumentException(String.format("Bank owns property at position '%d'!", p));
+            throw new UnownedPropertyException(String.format("Bank owns property at position '%d'!", p));
+            //throw new IllegalArgumentException(String.format("Bank owns property at position '%d'!", p));
         } else {
             tokenID = positionPropertyMap.get(p).getOwnerToken();
         }
@@ -108,7 +163,7 @@ public class PropertyManager {
         } else {
             PropertyAssignment pa = positionPropertyMap.get(p);
             pa.updateOwner(tokenID);
-            Log.v(TAG, String.format("+ '%s' is now owned by token '%d'.", pa.getProperty().getName(), pa.getOwnerToken()));
+            Log.v(TAG, String.format("NEW ASSIGN: '%s' is now owned by token '%d'.", pa.getProperty().getName(), pa.getOwnerToken()));
         }
     }
 

@@ -31,8 +31,6 @@ public class NewGameState extends GameState {
 
     @Override
     public void execute() {
-        Log.v(TAG, "execute()");
-
         // Add each player's token to the board
         Iterator<Player> itr = gc.players.iterator();
         while (itr.hasNext()) {
@@ -53,13 +51,11 @@ public class NewGameState extends GameState {
 
     @Override
     public void onStateExit() {
-        Log.v(TAG, "onStateExit()");
         // enable the UI controls, maybe do this in render
     }
 
     @Override
     protected void render() {
-        Log.v(TAG, "render()");
         // Draw each token we added to the game onto the board on Go
         Iterator<Player> itr = gc.players.iterator();
         while (itr.hasNext()) {

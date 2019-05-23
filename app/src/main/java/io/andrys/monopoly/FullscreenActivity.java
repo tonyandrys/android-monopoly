@@ -8,10 +8,13 @@ import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.AutoTransition;
+import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.util.Log;
 import android.util.SparseArray;
@@ -23,6 +26,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
+import android.widget.TextView;
+
+import com.robinhood.ticker.TickerUtils;
+import com.robinhood.ticker.TickerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +39,10 @@ import java.lang.reflect.Array;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
+import java.util.Random;
 
+import io.andrys.monopoly.states.InJailState;
 import io.andrys.monopoly.states.NewGameState;
 import io.andrys.monopoly.states.UnownedPropertyState;
 
@@ -53,11 +63,14 @@ public class FullscreenActivity extends AppCompatActivity {
     // Maps board positions to drawables of houses/hotels drawn on top of them
     private SparseArray<int[]> positionDevIDMap;
 
+    // turn counter
+    private int turnCount;
 
     // View references
     private View mContentView;
     private ConstraintLayout boardPanelCL;
     private ScoreTableLayout scoreTableTL;
+    private TextView turnCountTV;
 
 
     @Override
@@ -82,6 +95,11 @@ public class FullscreenActivity extends AppCompatActivity {
         scoreTableTL = findViewById(R.id.score_table_tl);
         tokenIVMap = new SparseIntArray();
         positionDevIDMap = new SparseArray<>();
+
+        // initialize turn counter & draw it on the screen
+        turnCount = 0;
+        //turnCountTV = findViewById(R.id.turn_count_tv);
+        //repaintTurnCounter();
 
         // start the game engine
         startGameEngine();
@@ -151,13 +169,12 @@ public class FullscreenActivity extends AppCompatActivity {
         players.add(player3);
         String p4_color = "#FF8B6A8B";
         Player player4 = new Player("Eve", 4, p4_color);
-        players.add(player4);
+//        players.add(player4);
 
         // add players to the score table layout
-        scoreTableTL.addPlayerRow(me);
-        scoreTableTL.addPlayerRow(player2);
-        scoreTableTL.addPlayerRow(player3);
-        scoreTableTL.addPlayerRow(player4);
+        for (Player p: players) {
+            scoreTableTL.addPlayerRow(p);
+        }
 
         // build the game engine and construct the initial game context state
         engine = new GameEngine(this);
@@ -192,26 +209,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
 
 
-    private void jsonExperiment() {
-        ArrayList<Property> properties = PropertyBuilder.loadProperties(this);
-        Log.v(TAG, String.format("Loaded '%d' properties from JSON", properties.size()));
-        for (int i=0; i<properties.size(); i++) {
-            if (properties.get(i) instanceof StreetProperty) {
-                StreetProperty p = (StreetProperty) properties.get(i);
-                @SuppressLint("DefaultLocale") String s = String.format("'%s' => StreetProperty[%s] / pos: '%d', price: '%d', max rent: '%d'", p.getName(), p.getColorGroup(), p.getPosition(), p.getPrice(), p.calculateRentPayment(5));
-                Log.v(TAG, s);
-            } else if (properties.get(i) instanceof RailroadProperty) {
-                RailroadProperty p = (RailroadProperty) properties.get(i);
-                @SuppressLint("DefaultLocale") String s = String.format("'%s' => RailroadProperty / pos: '%d', price: '%d', max rent: '%d'", p.getName(), p.getPosition(), p.getPrice(), p.calculateRentPayment(4));
-                Log.v(TAG, s);
-            } else if (properties.get(i) instanceof UtilityProperty) {
-                UtilityProperty p = (UtilityProperty) properties.get(i);
-                @SuppressLint("DefaultLocale") String s = String.format("'%s' => UtilityProperty / pos: '%d', price: '%d', max rent: '%d'", p.getName(), p.getPosition(), p.getPrice(), p.calculateRentPayment(2, 12));
-                Log.v(TAG, s);
-            }
-        }
-        Log.v(TAG, "Done!");
-    }
+
 
     /**
      * When the "roll" button is pressed, generate two new dice values and update the images displayed on the dice
@@ -219,7 +217,6 @@ public class FullscreenActivity extends AppCompatActivity {
     protected void rollDice() {
         // roll & retrieve new values for both dice
         board.rollDice();
-        render();
 
         // show property action popup if we're on the right kind of a space
         int position = board.getTokenPosition(1);
@@ -233,24 +230,16 @@ public class FullscreenActivity extends AppCompatActivity {
             Log.v(TAG, String.format("position '%d' isn't a property space, so we're not going to do anything yet!", position));
         }
 
-
-
     }
 
-    /**
-     * Call to repaint the game's state to the screen.
-     */
-    public void render() {
-        // Repaint dice values
-        ImageView die1 = findViewById(R.id.die_1_iv);
-        ImageView die2 = findViewById(R.id.die_2_iv);
-        int[] r = board.getDiceValues();
-        die1.setImageDrawable(visualAssetManager.getDieFace(r[0]));
-        die2.setImageDrawable(visualAssetManager.getDieFace(r[1]));
+    private void repaintTurnCounter() {
+        String ts = String.format(Locale.US, "turn=%d", turnCount);
+        turnCountTV.setText(ts);
+    }
 
-        // move our single token along the board
-        board.incrementTokenPosition(1, r[0]+r[1]);
-        drawTokenAtPosition(1, board.getTokenPosition(1));
+    public void incrementTurnCount() {
+        turnCount++;
+        //repaintTurnCounter();
     }
 
     /**
@@ -281,7 +270,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
         // try to show a dialog fragment
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("propertyDialog");
+        Fragment prev = getFragmentManager().findFragmentByTag("propertyActionDialog");
         if (prev != null) {
             ft.remove(prev);
         }
@@ -300,6 +289,34 @@ public class FullscreenActivity extends AppCompatActivity {
 
         // present the dialog
         dialogFragment.show(ft, "propertyActionDialog");
+    }
+
+    /**
+     * Displays the modal with Roll/Pay/Use card options to escape jail.
+     * @param caller InJailState instance that requested that we display this modal
+     * @param shouldEnableFineButton Should the "pay $50" button be enabled?
+     * @param shouldEnableUseCardButton Should the "use get out of jail card" button be visible?
+     */
+    public void showInJailActionModal(InJailState caller, boolean shouldEnableFineButton, boolean shouldEnableUseCardButton) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("jailActionDialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // pass bundle arguments to fragment to set button states; send caller click events.
+        Bundle b = new Bundle();
+        b.putBoolean(InJailActionDialogFragment.KEY_ENABLE_GET_OUT_OF_JAIL_FREE, shouldEnableUseCardButton);
+        b.putBoolean(InJailActionDialogFragment.KEY_ENABLE_PAY_FINE, shouldEnableFineButton);
+        InJailActionDialogFragment dialogFragment = new InJailActionDialogFragment();
+        dialogFragment.setArguments(b);
+
+        // the state that called this method should be sent click events
+        dialogFragment.setButtonListener(caller);
+
+        // present the dialog
+        dialogFragment.show(ft, "jailActionDialog");
     }
 
     /**
@@ -403,7 +420,15 @@ public class FullscreenActivity extends AppCompatActivity {
 
     }
 
-    public void drawTokenAtPosition(int tokenID, int p) {
+    // TODO: Now this method would make more sense semantically if it were called something like "moveTokenPosition" or "updateTokenPosition"
+    /**
+     * Moves a token's ImageView to a specific position on the board.
+     * @param tokenID
+     * @param p
+     * @param listener a TransitionListener that should receive transition status notifications.
+     *                 This can be set to null to ignore transition events.
+     */
+    public void drawTokenAtPosition(int tokenID, int p, @Nullable Transition.TransitionListener listener) {
         // get a reference to the ImageView to re-locate
         int viewID = tokenIVMap.get(tokenID);
         ImageView tokenIV = findViewById(viewID);
@@ -422,8 +447,12 @@ public class FullscreenActivity extends AppCompatActivity {
         newSet.centerVertically(viewID, newTileIV.getId());
         newSet.centerHorizontally(viewID, newTileIV.getId());
 
-        // apply
-        TransitionManager.beginDelayedTransition(boardPanelCL);
+        // apply & animate changes
+        Transition t = new AutoTransition();
+        if (listener != null) {
+            t.addListener(listener);
+        }
+        TransitionManager.beginDelayedTransition(boardPanelCL, t);
         newSet.applyTo(boardPanelCL);
         tokenIV.setVisibility(View.VISIBLE);
     }

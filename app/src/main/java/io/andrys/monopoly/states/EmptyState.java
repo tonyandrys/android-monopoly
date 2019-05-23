@@ -23,25 +23,21 @@ public class EmptyState extends GameState {
 
     @Override
     public void onStateEnter() {
-        Log.v(TAG, "onStateEnter()");
 
     }
 
     @Override
     public void execute() {
-        Log.v(TAG, "onStateEnter()");
         Log.v(TAG, "I'm waaaiittttiiinnggg to do something");
     }
 
     @Override
     public void onStateExit() {
-        Log.v(TAG, "onStateEnter()");
 
     }
 
     @Override
     protected void render() {
-        Log.v(TAG, "onStateEnter()");
 
     }
 }

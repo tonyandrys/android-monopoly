@@ -26,11 +26,18 @@ public class Board {
     private final String TAG = this.getClass().getSimpleName();
 
     /** There are 40 different spaces on a Monopoly board that a player can land on. */
-    private final int NUM_BOARD_POSITIONS = 40;
-    private final int[] POSITIONS_CHANCE = {7,22,36};
-    private final int[] POSITIONS_CCHEST = {2,17,33,36};
-    private final int[] POSITIONS_TAX = {4,38};
-    private final int[] POSITIONS_CORNER = {0,10,20,30};
+    public final int NUM_BOARD_POSITIONS = 40;
+    public final int[] POSITIONS_CHANCE = {7,22,36};
+    public final int[] POSITIONS_CCHEST = {2,17,33,36};
+    public final int[] POSITIONS_TAX = {4,38};
+    public final int[] POSITIONS_CORNER = {0,10,20,30};
+    public final int[] POSITIONS_RAILROADS = {5,15,25,35};
+    public final int[] POSITIONS_UTILITIES = {12,28};
+
+    /** Quick reference for positions that need to be moved to directly */
+    public final int POSITION_GO = 0;
+    public final int POSITION_JAIL = 10;
+    public final int POSITION_BOARDWALK = 39;
 
     /** Keeps track of each token's position on the board by its tokenID. */
     private SparseIntArray tokenPositionMap;
@@ -47,7 +54,6 @@ public class Board {
         this.positionTypeMap = buildSpaceTypeMap();
     }
 
-    // TODO: When you get there, you'll probably need to add RAILROAD and UTILITY to this list of enums.
     public enum SpaceType {
         PROPERTY, CHANCE, COMMUNITY_CHEST, INCOME_TAX, LUXURY_TAX, GO, JAIL, FREE_PARKING, GO_TO_JAIL;
     }
@@ -103,6 +109,9 @@ public class Board {
         }
         tokenPositionMap.append(tokenID, 0);
     }
+
+
+
     /**
      * Moves a player token forward a number of spaces on the board.
      * @param tokenID id of token to move
@@ -121,6 +130,24 @@ public class Board {
             }
         } else {
             throw new IllegalArgumentException("Cannot add a negative value to a token's position!");
+        }
+    }
+
+    /**
+     * Moves a player token directly to an absolute position on the board.
+     * @param tokenID id of token to move
+     * @param p board position to move token to.
+     */
+    public void setTokenPosition(int tokenID, int p) {
+        if ((p < 0) || (p > 39)) {
+            throw new IllegalArgumentException(String.format("'%d' is an invalid board position! A valid board position is in [0,39].", p));
+        } else {
+            int currentPos = tokenPositionMap.get(tokenID, -1);
+            if (currentPos != -1) {
+                tokenPositionMap.put(tokenID, p);
+            } else {
+                throw new IllegalArgumentException(String.format("TokenID '%d' does not exist on this board!", tokenID));
+            }
         }
     }
 
@@ -157,6 +184,15 @@ public class Board {
 
     public int[] getDiceValues() {
         return new int[]{d1.getValue(), d2.getValue()};
+    }
+
+    /**
+     * Returns the sum of the values currently shown on each die.
+     * @return int
+     */
+    public int getDiceSum() {
+        int[] diceVals = this.getDiceValues();
+        return (diceVals[0] + diceVals[1]);
     }
 
 
