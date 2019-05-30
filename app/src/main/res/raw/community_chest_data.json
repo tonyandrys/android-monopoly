@@ -1,0 +1,107 @@
+[
+	{
+		"Text": "You are assessed for street repairs. $40 per house, $115 per hotel.",
+		"imgResourceID": "cc_assessed_street_repairs",
+		"action": "PAY_PER_DEVELOPMENT",
+		"numberOfValues": 2,
+		"values": [40, 115]
+	},
+	{
+		"Text": "Bank error in your favor. Collect $200.",
+		"imgResourceID": "cc_bank_error",
+		"action": "COLLECT_FROM_BANK",
+		"numberOfValues": 1,
+		"values": [200]
+	},
+	{
+		"Text": "Doctor's fee. Pay $50.",
+		"imgResourceID": "cc_doctors_fee",
+		"action": "PAY_TO_BANK",
+		"numberOfValues": 1,
+		"values": [50]
+	},
+	{
+		"Text": "You have won first prize in a beauty contest. Collect $10",
+		"imgResourceID": "cc_beauty_contest",
+		"action": "COLLECT_FROM_BANK",
+		"numberOfValues": 1,
+		"values": [10]
+	},
+	{
+		"Text": "From sale of stock you get $45.",
+		"imgResourceID": "cc_from_sale_of_stock",
+		"action": "COLLECT_FROM_BANK",
+		"numberOfValues": 1,
+		"values": [45]
+	},
+	{
+		"Text": "Get out of jail, free.",
+		"imgResourceID": "cc_get_out_of_jail_free",
+		"action": "GET_OUT_OF_JAIL_FREE",
+		"numberOfValues": 0,
+		"values": []
+	},
+	{
+		"Text": "Go to jail",
+		"imgResourceID": "cc_go_to_jail",
+		"action": "GO_TO_JAIL",
+		"numberOfValues": 0,
+		"values": []
+	},
+	{
+		"Text": "Grand opera opening. Collect $50 from every player for opening night seats.",
+		"imgResourceID": "cc_grand_opera_opening",
+		"action": "COLLECT_FROM_PLAYERS",
+		"numberOfValues": 1,
+		"values": [50]
+	},
+	{
+		"Text": "Income tax refund. Collect $20.",
+		"imgResourceID": "cc_income_tax_refund",
+		"action": "COLLECT_FROM_BANK",
+		"numberOfValues": 1,
+		"values": [20]
+	},
+	{
+		"Text": "Life insurance matures, collect $100.",
+		"imgResourceID": "cc_life_insurance_matures",
+		"action": "COLLECT_FROM_BANK",
+		"numberOfValues": 1,
+		"values": [100]
+	},
+	{
+		"Text": "Pay hospital $100",
+		"imgResourceID": "cc_pay_hospital",
+		"action": "PAY_TO_BANK",
+		"numberOfValues": 1,
+		"values": [100]
+	},
+	{
+		"Text": "Receive for services $25",
+		"imgResourceID": "cc_receive_for_services",
+		"action": "COLLECT_FROM_BANK",
+		"numberOfValues": 1,
+		"values": [25]
+	},
+	{
+		"Text": "Pay school tax of $150",
+		"imgResourceID": "cc_school_tax",
+		"action": "PAY_TO_BANK",
+		"numberOfValues": 1,
+		"values": [150]
+	},
+	{
+		"Text": "Xmas fund matures collect $100",
+		"imgResourceID": "cc_xmas_fund_matures",
+		"action": "COLLECT_FROM_BANK",
+		"numberOfValues": 1,
+		"values": [100]
+	},
+	{
+		"Text": "You inherit $100",
+		"imgResourceID": "cc_you_inherit",
+		"action": "COLLECT_FROM_BANK",
+		"numberOfValues": 1,
+		"values": [100]
+	}
+]

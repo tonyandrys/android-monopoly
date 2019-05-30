@@ -1,0 +1,107 @@
+[
+ {
+   "Text": "Take a walk on the board walk. Advance token to board walk",
+   "imgResourceID": "ch_advance_boardwalk",
+   "action": "MOVE_TO_POSITION",
+   "numberOfValues": 1,
+   "values": [39]
+ },
+ {
+   "Text": "Advance to go (collect $200)",
+   "imgResourceID": "ch_advance_go",
+   "action": "MOVE_TO_POSITION",
+   "numberOfValues": 1,
+   "values": [0]
+ },
+ {
+   "Text": "Advance to Illinois Avenue",
+   "imgResourceID": "ch_advance_illinois_ave",
+   "action": "MOVE_TO_POSITION",
+   "numberOfValues": 1,
+   "values": [24]
+ },
+ {
+   "Text": "Advance token to nearest railroad...",
+   "imgResourceID": "ch_advance_nearest_railroad",
+   "action": "MOVE_TO_NEAREST_RAILROAD",
+   "numberOfValues": 0,
+   "values": []
+ },
+ {
+   "Text": "Advance token to nearest utility...",
+   "imgResourceID": "ch_advance_nearest_utility",
+   "action": "MOVE_TO_NEAREST_UTILITY",
+   "numberOfValues": 0,
+   "values": []
+ },
+ {
+   "Text": "Advance to St. Charles Place",
+   "imgResourceID": "ch_advance_st_charles_place",
+   "action": "MOVE_TO_POSITION",
+   "numberOfValues": 1,
+   "values": [11]
+ },
+ {
+   "Text": "Bank pays you dividend of $50",
+   "imgResourceID": "ch_bank_pays_dividend",
+   "action": "COLLECT_FROM_BANK",
+   "numberOfValues": 1,
+   "values": [50]
+ },
+ {
+   "Text": "Your building and loan matures collect $150",
+   "imgResourceID": "ch_building_loan_matures",
+   "action": "COLLECT_FROM_BANK",
+   "numberOfValues": 1,
+   "values": [150]
+ },
+ {
+   "Text": "You have been elected chairman of the board Pay each player $50",
+   "imgResourceID": "ch_elected_chairman",
+   "action": "PAY_TO_PLAYERS",
+   "numberOfValues": 1,
+   "values": [50]
+ },
+ {
+   "Text": "Get out of jail free",
+   "imgResourceID": "ch_get_out_of_jail_free",
+   "action": "GET_OUT_OF_JAIL_FREE",
+   "numberOfValues": 0,
+   "values": []
+ },
+ {
+   "Text": "Go back 3 spaces",
+   "imgResourceID": "ch_go_back_3_spaces",
+   "action": "MOVE_BACKWARDS",
+   "numberOfValues": 1,
+   "values": [3]
+ },
+ {
+   "Text": "Go directly to jail",
+   "imgResourceID": "ch_go_directly_to_jail",
+   "action": "GO_TO_JAIL",
+   "numberOfValues": 0,
+   "values": []
+ },
+ {
+   "Text": "Make general repairs on all your property",
+   "imgResourceID": "ch_make_general_repairs",
+   "action": "PAY_PER_DEVELOPMENT",
+   "numberOfValues": 2,
+   "values": [25,100]
+ },
+ {
+   "Text": "Pay poor tax of $15",
+   "imgResourceID": "ch_pay_poor_tax",
+   "action": "PAY_TO_BANK",
+   "numberOfValues": 1,
+   "values": [15]
+ },
+ {
+   "Text": "Take a ride on the reading ",
+   "imgResourceID": "ch_take_a_ride",
+   "action": "MOVE_TO_POSITION",
+   "numberOfValues": 1,
+   "values": [5]
+ }
+]
